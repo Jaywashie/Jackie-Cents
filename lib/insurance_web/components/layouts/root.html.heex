@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" style="scrollbar-gutter: stable;">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Phoenix Framework">
+      <%= assigns[:page_title] || "Insurance" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+
+
+  </head>
+  <body class="bg-white antialiased">
+    <%= @inner_content %>
+  </body>
+
+<footer class="bg-gray-900 text-white mt-12">
+  <div class="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
+
+    <!-- Brand -->
+    <div>
+      <h2 class="text-xl font-bold">JACKIE CENTS</h2>
+      <p class="text-gray-400 mt-2">
+        Plan today for a secure tommorrow
+      </p>
+    </div>
+
+    <!-- Links -->
+    <div>
+      <h3 class="font-semibold mb-3">Quick Links</h3>
+      <ul class="space-y-2 text-gray-400">
+        <li><.link navigate={~p"/home"} class="hover:text-white">Home</.link></li>
+        <li><.link navigate={~p"/medical"} class="hover:text-white">Medical</.link></li>
+        <li><.link navigate={~p"/life"} class="hover:text-white">Life</.link></li>
+        <li><.link navigate={~p"/motor"} class="hover:text-white">Motor</.link></li>
+        <li><.link navigate={~p"/pension"} class="hover:text-white">Pension</.link></li>
+
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <h3 class="font-semibold mb-3">Contact</h3>
+      <p class="text-gray-400">Nairobi, Kenya</p>
+      <p class="text-gray-400">Njerujackline78@gmail.com</p>
+      <p class="text-gray-400">+254 721343980</p>
+    </div>
+
+  </div>
+
+  <div class="border-t border-gray-700 text-center py-4 text-gray-400 text-sm">
+    © 2026 Jackie Cents. All rights reserved.
+  </div>
+</footer>
+
+
+</html>
