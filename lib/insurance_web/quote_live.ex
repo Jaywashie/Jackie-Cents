@@ -11,10 +11,13 @@ defmodule InsuranceWeb.QuoteLive do
     <div class="p-10">
 
         <nav class="bg-green-700 text-white p-4 flex justify-between">
-        <h1 class="font-bold">JACKIE CENTS</h1>
+
+       <h1 class="font-brand text-2xl font-semibold text-white-800">
+       Jackie<span class="text-white-600 font-bold">Cents</span>
+       </h1>
+
 
         <div class="space-x-4">
-          <.link navigate="/home">Home</.link>
            <.link navigate="/admin">Admin</.link>
 
         </div>

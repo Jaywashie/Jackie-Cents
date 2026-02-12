@@ -1,0 +1,23 @@
+<h2 class="text-xl font-bold mb-4">Create Policy</h2>
+
+<form phx-submit="save" class="space-y-4">
+
+  <input name="policy[policy_number]" placeholder="Policy Number"
+    class="input" />
+
+  <input name="policy[plan]" placeholder="Plan type"
+    class="input" />
+
+  <input name="policy[premium]" placeholder="Premium"
+    class="input" />
+
+  <input type="date" name="policy[start_date]" class="input" />
+  <input type="date" name="policy[end_date]" class="input" />
+
+  <input name="policy[customer_id]" placeholder="Customer ID"
+    class="input" />
+
+  <button class="bg-green-600 text-white px-4 py-2 rounded">
+    Create Policy
+  </button>
+</form>

@@ -10,20 +10,10 @@ def render(assigns) do
     ~H"""
     <div class="min-h-screen bg-gray-100">
 
-      <!-- NAV -->
-      <nav class="bg-green-700 text-white p-4 flex justify-between">
-        <h1 class="font-bold">Jackie Cents</h1>
-
-        <div class="space-x-4">
-          <.link navigate="/home">Home</.link>
-          <.link navigate="/quote">Quote</.link>
-          <.link navigate="/admin">Admin</.link>
-        </div>
-      </nav>
 
       <!-- HERO -->
-      <section class="text-center py-16 bg-white">
-        <h2 class="text-3xl font-bold mb-3">
+      <section class="text-center py-8 bg-white">
+        <h2 class="text-3xl font-bold mb-2">
           High-Value Financial Solutions
         </h2>
 
@@ -33,7 +23,7 @@ def render(assigns) do
 
         <.link
           navigate="/quote"
-          class="bg-green-600 text-white px-6 py-3 rounded-lg"
+          class="bg-green-600 text-white px-4 py-2 rounded-lg"
         >
           Get a Quote
         </.link>

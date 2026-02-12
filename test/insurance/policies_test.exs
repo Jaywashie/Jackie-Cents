@@ -3,61 +3,123 @@ defmodule Insurance.PoliciesTest do
 
   alias Insurance.Policies
 
-  describe "quotes" do
-    alias Insurance.Policies.Quote
+  describe "policies" do
+    alias Insurance.Policies.Policy
 
     import Insurance.PoliciesFixtures
 
-    @invalid_attrs %{name: nil, type: nil, email: nil}
+    @invalid_attrs %{"\\": nil}
 
-    test "list_quotes/0 returns all quotes" do
-      quote = quote_fixture()
-      assert Policies.list_quotes() == [quote]
+    test "list_policies/0 returns all policies" do
+      policy = policy_fixture()
+      assert Policies.list_policies() == [policy]
     end
 
-    test "get_quote!/1 returns the quote with given id" do
-      quote = quote_fixture()
-      assert Policies.get_quote!(quote.id) == quote
+    test "get_policy!/1 returns the policy with given id" do
+      policy = policy_fixture()
+      assert Policies.get_policy!(policy.id) == policy
     end
 
-    test "create_quote/1 with valid data creates a quote" do
-      valid_attrs = %{name: "some name", type: "some type", email: "some email"}
+    test "create_policy/1 with valid data creates a policy" do
+      valid_attrs = %{"\\": "some \\"}
 
-      assert {:ok, %Quote{} = quote} = Policies.create_quote(valid_attrs)
-      assert quote.name == "some name"
-      assert quote.type == "some type"
-      assert quote.email == "some email"
+      assert {:ok, %Policy{} = policy} = Policies.create_policy(valid_attrs)
+      assert policy.\ == "some \\"
     end
 
-    test "create_quote/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Policies.create_quote(@invalid_attrs)
+    test "create_policy/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Policies.create_policy(@invalid_attrs)
     end
 
-    test "update_quote/2 with valid data updates the quote" do
-      quote = quote_fixture()
-      update_attrs = %{name: "some updated name", type: "some updated type", email: "some updated email"}
+    test "update_policy/2 with valid data updates the policy" do
+      policy = policy_fixture()
+      update_attrs = %{"\\": "some updated \\"}
 
-      assert {:ok, %Quote{} = quote} = Policies.update_quote(quote, update_attrs)
-      assert quote.name == "some updated name"
-      assert quote.type == "some updated type"
-      assert quote.email == "some updated email"
+      assert {:ok, %Policy{} = policy} = Policies.update_policy(policy, update_attrs)
+      assert policy.\ == "some updated \\"
     end
 
-    test "update_quote/2 with invalid data returns error changeset" do
-      quote = quote_fixture()
-      assert {:error, %Ecto.Changeset{}} = Policies.update_quote(quote, @invalid_attrs)
-      assert quote == Policies.get_quote!(quote.id)
+    test "update_policy/2 with invalid data returns error changeset" do
+      policy = policy_fixture()
+      assert {:error, %Ecto.Changeset{}} = Policies.update_policy(policy, @invalid_attrs)
+      assert policy == Policies.get_policy!(policy.id)
     end
 
-    test "delete_quote/1 deletes the quote" do
-      quote = quote_fixture()
-      assert {:ok, %Quote{}} = Policies.delete_quote(quote)
-      assert_raise Ecto.NoResultsError, fn -> Policies.get_quote!(quote.id) end
+    test "delete_policy/1 deletes the policy" do
+      policy = policy_fixture()
+      assert {:ok, %Policy{}} = Policies.delete_policy(policy)
+      assert_raise Ecto.NoResultsError, fn -> Policies.get_policy!(policy.id) end
     end
 
-    test "change_quote/1 returns a quote changeset" do
-      quote = quote_fixture()
-      assert %Ecto.Changeset{} = Policies.change_quote(quote)
+    test "change_policy/1 returns a policy changeset" do
+      policy = policy_fixture()
+      assert %Ecto.Changeset{} = Policies.change_policy(policy)
+    end
+  end
+
+  describe "policies" do
+    alias Insurance.Policies.Policy
+
+    import Insurance.PoliciesFixtures
+
+    @invalid_attrs %{status: nil, plan: nil, policy_number: nil, customer_id: nil, premium: nil, start_date: nil, end_date: nil}
+
+    test "list_policies/0 returns all policies" do
+      policy = policy_fixture()
+      assert Policies.list_policies() == [policy]
+    end
+
+    test "get_policy!/1 returns the policy with given id" do
+      policy = policy_fixture()
+      assert Policies.get_policy!(policy.id) == policy
+    end
+
+    test "create_policy/1 with valid data creates a policy" do
+      valid_attrs = %{status: "some status", plan: "some plan", policy_number: "some policy_number", customer_id: 42, premium: "120.5", start_date: ~D[2026-02-08], end_date: ~D[2026-02-08]}
+
+      assert {:ok, %Policy{} = policy} = Policies.create_policy(valid_attrs)
+      assert policy.status == "some status"
+      assert policy.plan == "some plan"
+      assert policy.policy_number == "some policy_number"
+      assert policy.customer_id == 42
+      assert policy.premium == Decimal.new("120.5")
+      assert policy.start_date == ~D[2026-02-08]
+      assert policy.end_date == ~D[2026-02-08]
+    end
+
+    test "create_policy/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Policies.create_policy(@invalid_attrs)
+    end
+
+    test "update_policy/2 with valid data updates the policy" do
+      policy = policy_fixture()
+      update_attrs = %{status: "some updated status", plan: "some updated plan", policy_number: "some updated policy_number", customer_id: 43, premium: "456.7", start_date: ~D[2026-02-09], end_date: ~D[2026-02-09]}
+
+      assert {:ok, %Policy{} = policy} = Policies.update_policy(policy, update_attrs)
+      assert policy.status == "some updated status"
+      assert policy.plan == "some updated plan"
+      assert policy.policy_number == "some updated policy_number"
+      assert policy.customer_id == 43
+      assert policy.premium == Decimal.new("456.7")
+      assert policy.start_date == ~D[2026-02-09]
+      assert policy.end_date == ~D[2026-02-09]
+    end
+
+    test "update_policy/2 with invalid data returns error changeset" do
+      policy = policy_fixture()
+      assert {:error, %Ecto.Changeset{}} = Policies.update_policy(policy, @invalid_attrs)
+      assert policy == Policies.get_policy!(policy.id)
+    end
+
+    test "delete_policy/1 deletes the policy" do
+      policy = policy_fixture()
+      assert {:ok, %Policy{}} = Policies.delete_policy(policy)
+      assert_raise Ecto.NoResultsError, fn -> Policies.get_policy!(policy.id) end
+    end
+
+    test "change_policy/1 returns a policy changeset" do
+      policy = policy_fixture()
+      assert %Ecto.Changeset{} = Policies.change_policy(policy)
     end
   end
 end

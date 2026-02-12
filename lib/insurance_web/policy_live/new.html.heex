@@ -1,0 +1,20 @@
+<h2 class="text-xl font-bold">Policies</h2>
+
+<table class="w-full mt-4">
+  <%= for p <- @policy do %>
+    <tr class="border-b">
+      <td><%= p.policy_number %></td>
+      <td><%= p.plan %></td>
+      <td>Ksh <%= p.premium %></td>
+      <td>
+        <span class={
+          if p.status == "active",
+          do: "text-green-600",
+          else: "text-red-600"
+        }>
+          <%= p.status %>
+        </span>
+      </td>
+    </tr>
+  <% end %>
+</table>

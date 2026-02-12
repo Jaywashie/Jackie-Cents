@@ -5,18 +5,22 @@ defmodule Insurance.PoliciesFixtures do
   """
 
   @doc """
-  Generate a quote.
+  Generate a policy.
   """
-  def quote_fixture(attrs \\ %{}) do
-    {:ok, quote} =
+  def policy_fixture(attrs \\ %{}) do
+    {:ok, policy} =
       attrs
       |> Enum.into(%{
-        email: "some email",
-        name: "some name",
-        type: "some type"
+        customer_id: 42,
+        end_date: ~D[2026-02-08],
+        plan: "some plan",
+        policy_number: "some policy_number",
+        premium: "120.5",
+        start_date: ~D[2026-02-08],
+        status: "some status"
       })
-      |> Insurance.Policies.create_quote()
+      |> Insurance.Policies.create_policy()
 
-    quote
+    policy
   end
 end

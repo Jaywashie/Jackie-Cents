@@ -18,7 +18,7 @@ defmodule InsuranceWeb.AdminLive do
         <h1 class="font-bold">DASHBOARD</h1>
 
         <div class="space-x-4">
-          <.link navigate="/home">Home</.link>
+          <.link navigate="/">Home</.link>
           <.link navigate="/quote">Quote</.link>
         </div>
       </nav>
