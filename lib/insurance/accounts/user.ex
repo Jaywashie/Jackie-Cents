@@ -9,6 +9,7 @@ defmodule Insurance.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :naive_datetime
 
+
     timestamps()
   end
 

@@ -36,7 +36,7 @@ defmodule InsuranceWeb.UserConfirmationLive do
         {:noreply,
          socket
          |> put_flash(:info, "User confirmed successfully.")
-         |> redirect(to: ~p"/home")}
+         |> redirect(to: ~p"/")}
 
       :error ->
         # If there is a current user and the account was already confirmed,

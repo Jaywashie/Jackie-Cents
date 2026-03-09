@@ -24,7 +24,7 @@ defmodule InsuranceWeb.Router do
 
     live "/policies" , PolicyLive.Index
     live "/policies/new" , PolicyLive.New
-    live"/pension", PensionLive
+    #live "/pension", PensionLive
     live "/motor", MotorLive
     live "/life", LifeLive
     live "/medical", MedicalLive
@@ -33,6 +33,11 @@ defmodule InsuranceWeb.Router do
 
   end
 
+
+  live_session :default,
+  on_mount: [{InsuranceWeb.UserAuth, :mount_current_user}] do
+  live "/pension", PensionLive
+end
   # Other scopes may use custom stacks.
   # scope "/api", InsuranceWeb do
   #   pipe_through :api

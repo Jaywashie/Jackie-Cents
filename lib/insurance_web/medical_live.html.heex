@@ -1,0 +1,155 @@
+<div class="bg-gray-50 min-h-screen py-16">
+  <div class="max-w-8xl mx-auto px-2">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <h1 class="text-4xl font-extrabold text-gray-900">
+       Medical Insurance Plans
+      </h1>
+      <p class="mt-4 text-gray-600 text-lg">
+        Compare our comprehensive Milele Plan and affordable Bima ya Mwananchi plan.
+        Choose the cover that fits your healthcare needs.
+      </p>
+    </div>
+
+    <!-- Plans -->
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- Milele Plan -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 border relative">
+
+   
+
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+          Milele Plan
+        </h2>
+
+        <p class="text-gray-600 mb-6">
+          Designed for individuals and families seeking premium medical coverage
+          with extensive inpatient and outpatient benefits.
+        </p>
+
+        <ul class="space-y-3 text-gray-700 text-sm">
+          <li>✔ Inpatient Cover up to KES 2,000,000 annually</li>
+          <li>✔ Outpatient Cover including specialist visits</li>
+          <li>✔ Maternity Cover</li>
+          <li>✔ Dental & Optical Benefits</li>
+          <li>✔ International Emergency Cover</li>
+          <li>✔ Chronic Illness Management</li>
+        </ul>
+
+        <div class="mt-6">
+          <p class="text-xl font-bold text-gray-900">
+            From KES 12,000 / year
+          </p>
+        </div>
+
+        <button
+          phx-click="select_plan"
+          phx-value-plan="milele"
+          class="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
+        >
+          Get Quote
+        </button>
+
+      </div>
+
+      <!-- Mwananchi Plan -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 border relative">
+
+
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+          Bima ya Mwananchi
+        </h2>
+
+        <p class="text-gray-600 mb-6">
+          An affordable medical insurance solution offering essential hospital
+          and outpatient services for individuals and small families.
+        </p>
+
+        <ul class="space-y-3 text-gray-700 text-sm">
+          <li>✔ Inpatient Cover up to KES 500,000 annually</li>
+          <li>✔ Basic Outpatient Services</li>
+          <li>✔ Emergency Treatment</li>
+          <li>✔ Limited Maternity Cover</li>
+          <li>✔ Access to Approved Hospitals Nationwide</li>
+          <li>✔ Budget-Friendly Premiums</li>
+        </ul>
+
+        <div class="mt-6">
+          <p class="text-xl font-bold text-gray-900">
+            From KES 12,000 / year
+          </p>
+        </div>
+
+        <button
+          phx-click="select_plan"
+          phx-value-plan="mwananchi"
+          class="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
+        >
+          Get Quote
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="mt-16 bg-white shadow-xl rounded-2xl p-8 max-w-xl mx-auto">
+
+        <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+          Generate Your Quote
+        </h3>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              Your Age
+            </label>
+            <input
+              type="number"
+              name="age"
+              required
+              class="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              Number of Dependants
+            </label>
+            <input
+              type="number"
+              name="dependants"
+              required
+              class="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-xl font-semibold transition"
+          >
+            Calculate Premium
+          </button>
+
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote do %>
+      <div class="mt-10 text-center bg-green-100 border border-green-400 text-green-800 p-8 rounded-2xl max-w-lg mx-auto">
+        <h2 class="text-2xl font-bold">
+          Estimated Annual Premium
+        </h2>
+        <p class="text-4xl font-extrabold mt-4">
+          KES <%= @quote %>
+        </p>
+      </div>
+    <% end %>
+
+  </div>
+</div>

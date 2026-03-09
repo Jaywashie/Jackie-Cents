@@ -1,6 +1,6 @@
 defmodule Insurance.Quotes do
   @moduledoc """
-  The Policies context.
+  The Quotes context.
   """
 
   import Ecto.Query, warn: false

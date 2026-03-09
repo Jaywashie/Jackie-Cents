@@ -1,0 +1,143 @@
+<div class="max-w-7xl mx-auto px-6 py-10">
+
+  <h1 class="text-3xl font-bold text-gray-800 mb-2">
+    Pension Plans
+  </h1>
+
+  <p class="text-gray-600 mb-8">
+    Secure your retirement with professionally managed pension plans from Britam.
+  </p>
+
+  <!-- Plans -->
+  <div class="grid md:grid-cols-2 gap-6">
+
+    <%= for plan <- @plans do %>
+
+      <div class="border rounded-xl p-6 shadow hover:shadow-lg transition">
+
+        <h2 class="text-xl font-semibold text-gray-800">
+          <%= plan.name %>
+        </h2>
+
+        <p class="text-sm text-gray-500 mb-3">
+          Provider: <%= plan.provider %>
+        </p>
+
+        <p class="text-gray-600 mb-4">
+          <%= plan.description %>
+        </p>
+
+        <div class="text-sm text-gray-700 space-y-1 mb-4">
+          <p><strong>Contribution Range:</strong> <%= plan.range %></p>
+          <p><strong>Retirement Age:</strong> <%= plan.retirement_age %></p>
+        </div>
+
+        <ul class="text-sm text-gray-600 list-disc ml-5 mb-6">
+          <%= for benefit <- plan.benefits do %>
+            <li><%= benefit %></li>
+          <% end %>
+        </ul>
+
+        <button
+          phx-click="select_plan"
+          phx-value-id={plan.id}
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Select Plan
+        </button>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+  <!-- Quote Generator -->
+
+  <%= if @selected_plan do %>
+
+  <div class="mt-12 bg-white border rounded-xl p-8 shadow">
+
+    <h2 class="text-2xl font-semibold mb-4">
+      Generate Pension Quote
+    </h2>
+
+    <p class="text-gray-600 mb-6">
+      Selected Plan:
+      <strong><%= @selected_plan.name %></strong>
+    </p>
+
+    <form phx-submit="generate_quote" class="grid md:grid-cols-3 gap-4">
+
+      <div>
+        <label class="text-sm text-gray-600">Current Age</label>
+        <input
+          type="number"
+          name="age"
+          required
+          class="w-full border rounded px-3 py-2"
+        />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600">Monthly Contribution (KES)</label>
+        <input
+          type="number"
+          name="monthly_contribution"
+          required
+          class="w-full border rounded px-3 py-2"
+        />
+      </div>
+
+      <div class="flex items-end">
+        <button
+          type="submit"
+          class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+        >
+          Generate Quote
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Quote Result -->
+
+    <%= if @quote do %>
+
+      <div class="mt-8 bg-green-50 border border-green-200 rounded p-6">
+
+        <p class="text-lg font-semibold text-green-700">
+          Estimated Retirement Value
+        </p>
+
+        <p class="text-3xl font-bold text-green-800 mt-2">
+          KES <%= @quote %>
+        </p>
+
+        <button
+          phx-click="save_quote"
+          class="mt-4 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+        >
+          Save Quote
+        </button>
+
+      </div>
+
+      <%= if live_flash(@flash, :info) do %>
+  <div class="alert alert-info">
+    <%= live_flash(@flash, :info) %>
+  </div>
+<% end %>
+<%= if live_flash(@flash, :error) do %>
+  <div class="alert alert-red">
+    <%= live_flash(@flash, :error) %>
+  </div>
+<% end %>
+
+    <% end %>
+
+  </div>
+
+  <% end %>
+
+</div>

@@ -1,0 +1,203 @@
+<div class="min-h-screen bg-gray-50 py-12 px-6">
+<div class="max-w-7xl mx-auto">
+
+<!-- HEADER -->
+
+<div class="text-center mb-12">
+<h1 class="text-3xl font-bold text-gray-800">
+Motor Insurance Plans
+</h1>
+
+<p class="text-gray-500 mt-2">
+Protect your car with our Motor Insurance
+</p>
+</div>
+
+<!-- COMPARISON TABLE -->
+
+<div class="bg-white shadow rounded-xl overflow-hidden mb-16">
+
+<table class="w-full text-sm">
+
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+
+<th class="px-6 py-4 text-left">Plan</th>
+
+<th class="px-6 py-4 text-center">Vehicle Damage</th>
+
+<th class="px-6 py-4 text-center">Theft</th>
+
+<th class="px-6 py-4 text-center">Third Party Damage</th>
+
+<th class="px-6 py-4 text-center">Starting Premium</th>
+
+</tr>
+</thead>
+
+<tbody class="text-gray-600">
+
+<tr class="border-t">
+
+<td class="px-6 py-4 font-semibold">
+Motor Comprehensive
+</td>
+
+<td class="text-center">✔</td>
+
+<td class="text-center">✔</td>
+
+<td class="text-center">✔</td>
+
+<td class="text-center">KES 25,000+</td>
+
+</tr>
+
+<tr class="border-t">
+
+<td class="px-6 py-4 font-semibold">
+Third Party Only
+</td>
+
+<td class="text-center">✖</td>
+
+<td class="text-center">✖</td>
+
+<td class="text-center">✔</td>
+
+<td class="text-center">KES 7,500+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- PLAN CARDS -->
+
+<div class="grid md:grid-cols-2 gap-8 mb-16">
+
+<%= for plan <- @plans do %>
+
+<div class="bg-white shadow-lg rounded-2xl p-8 border hover:shadow-xl transition">
+
+<h3 class="text-xl font-bold mb-3">
+<%= plan.name %>
+</h3>
+
+<p class="text-gray-600 mb-4">
+<%= plan.description %>
+</p>
+
+<ul class="text-sm text-gray-600 mb-6 space-y-2">
+
+<%= for benefit <- plan.benefits do %>
+
+<li>✔ <%= benefit %></li>
+
+<% end %>
+
+</ul>
+
+<button
+phx-click="select_plan"
+phx-value-id={plan.id}
+class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl">
+
+Get Quote
+
+</button>
+
+</div>
+
+<% end %>
+
+</div>
+
+<!-- QUOTE FORM -->
+
+<%= if @selected_plan do %>
+
+<div class="max-w-xl mx-auto bg-white shadow-xl rounded-2xl p-10">
+
+<h2 class="text-xl font-bold mb-6 text-center">
+Generate Motor Insurance Quote
+</h2>
+
+<.form for={@quote_form} phx-submit="generate_quote" class="space-y-5">
+
+<input
+type="number"
+name="vehicle_value"
+placeholder="Vehicle Value (KES)"
+class="w-full border rounded-xl px-4 py-3"
+/>
+
+<input
+type="number"
+name="vehicle_age"
+placeholder="Vehicle Age (Years)"
+class="w-full border rounded-xl px-4 py-3"
+/>
+
+<select
+name="usage"
+class="w-full border rounded-xl px-4 py-3">
+
+<option value="private">Private Use</option>
+<option value="commercial">Commercial Use</option>
+
+</select>
+
+<button
+type="submit"
+class="w-full bg-green-600 text-white py-3 rounded-xl">
+
+<%= if @loading do %>
+Calculating...
+<% else %>
+Generate Quote
+<% end %>
+
+</button>
+
+</.form>
+
+</div>
+
+<% end %>
+
+<!-- QUOTE RESULT -->
+
+<%= if @quote do %>
+
+<div class="mt-12 max-w-xl mx-auto bg-green-600 text-white rounded-2xl shadow-xl p-10 text-center">
+
+<h2 class="text-lg mb-2">
+Estimated Annual Premium
+</h2>
+
+<h1 class="text-4xl font-bold mb-6">
+KES <%= @quote %>
+</h1>
+
+<button
+phx-click="save_quote"
+class="bg-white text-green-600 px-6 py-3 rounded-xl font-semibold">
+
+Save Quote
+
+</button>
+
+<%= if @saving do %>
+<p class="mt-4 text-sm">Quote saved successfully ✔</p>
+<% end %>
+
+</div>
+
+<% end %>
+
+</div>
+</div>

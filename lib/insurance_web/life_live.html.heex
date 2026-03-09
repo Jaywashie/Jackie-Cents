@@ -1,0 +1,154 @@
+<div class="bg-gray-50 min-h-screen py-16">
+  <div class="max-w-7xl mx-auto px-2">
+
+    <!-- Header -->
+    <div class="text-center mb-14">
+      <h1 class="text-4xl font-extrabold text-gray-900">
+        Life Insurance & Savings Plans
+      </h1>
+      <p class="mt-4 text-lg text-gray-600">
+        Protect your family and grow your savings with Britam's flexible life insurance solutions.
+      </p>
+    </div>
+
+    <!-- Plans Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+
+      <!-- Akiba -->
+      <div class="bg-white rounded-2xl shadow-xl p-6 border">
+        <h2 class="text-xl font-bold mb-3">Akiba Life Savings</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          A savings-focused life insurance plan combining protection and long-term wealth accumulation.
+        </p>
+        <ul class="text-sm space-y-2">
+          <li>✔ Flexible contributions</li>
+          <li>✔ Savings + life cover</li>
+          <li>✔ Maturity benefits</li>
+          <li>✔ Ideal for long-term wealth building</li>
+        </ul>
+        <p class="mt-4 font-semibold text-gray-900">
+          From KES 10,000 annually
+        </p>
+        <button phx-click="select_plan"
+                phx-value-plan="akiba"
+                class="mt-4 w-full bg-green-600 text-white py-2 rounded-xl hover:bg-blue-700">
+          Get Quote
+        </button>
+      </div>
+
+      <!-- Education Plan -->
+      <div class="bg-white rounded-2xl shadow-xl p-6 border">
+        <h2 class="text-xl font-bold mb-3">Education Plan</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          Secure your child’s future education with guaranteed payouts at key milestones.
+        </p>
+        <ul class="text-sm space-y-2">
+          <li>✔ School fee protection</li>
+          <li>✔ Guaranteed payouts</li>
+          <li>✔ Parent life cover included</li>
+          <li>✔ Structured maturity schedule</li>
+        </ul>
+        <p class="mt-4 font-semibold text-gray-900">
+          From KES 12,000 annually
+        </p>
+        <button phx-click="select_plan"
+                phx-value-plan="education"
+                class="mt-4 w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700">
+          Get Quote
+        </button>
+      </div>
+
+      <!-- Whole Life -->
+      <div class="bg-white rounded-2xl shadow-xl p-6 border">
+        <h2 class="text-xl font-bold mb-3">Whole Life Plan</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          Lifetime protection with guaranteed death benefits and potential cash value accumulation.
+        </p>
+        <ul class="text-sm space-y-2">
+          <li>✔ Lifetime coverage</li>
+          <li>✔ Cash value growth</li>
+          <li>✔ Estate planning tool</li>
+          <li>✔ Fixed premiums</li>
+        </ul>
+        <p class="mt-4 font-semibold text-gray-900">
+          From KES 15,000 annually
+        </p>
+        <button phx-click="select_plan"
+                phx-value-plan="whole_life"
+                class="mt-4 w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700">
+          Get Quote
+        </button>
+      </div>
+
+      <!-- Term Life -->
+      <div class="bg-white rounded-2xl shadow-xl p-6 border">
+        <h2 class="text-xl font-bold mb-3">Term Life Plan</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          Affordable protection for a specific period (10, 15, or 20 years).
+        </p>
+        <ul class="text-sm space-y-2">
+          <li>✔ Affordable premiums</li>
+          <li>✔ Fixed coverage period</li>
+          <li>✔ High coverage amounts</li>
+          <li>✔ Ideal for loans & mortgages</li>
+        </ul>
+        <p class="mt-4 font-semibold text-gray-900">
+          From KES 8,000 annually
+        </p>
+        <button phx-click="select_plan"
+                phx-value-plan="term_life"
+                class="mt-4 w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700">
+          Get Quote
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="mt-16 bg-white shadow-xl rounded-2xl p-8 max-w-xl mx-auto">
+        <h3 class="text-2xl font-bold text-center mb-6">
+          Generate Quote
+        </h3>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              Your Age
+            </label>
+            <input type="number" name="age" required
+                   class="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              Desired Cover Amount (KES)
+            </label>
+            <input type="number" name="cover_amount" required
+                   class="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"/>
+          </div>
+
+          <button type="submit"
+                  class="w-full bg-green-600 text-white py-3 rounded-xl hover:bg-green-700">
+            Calculate Premium
+          </button>
+
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote do %>
+      <div class="mt-10 text-center bg-green-100 border border-green-400 text-green-800 p-8 rounded-2xl max-w-lg mx-auto">
+        <h2 class="text-2xl font-bold">
+          Estimated Annual Premium
+        </h2>
+        <p class="text-4xl font-extrabold mt-4">
+          KES <%= @quote %>
+        </p>
+      </div>
+    <% end %>
+
+  </div>
+</div>

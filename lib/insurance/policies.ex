@@ -59,7 +59,7 @@ def create_policy(attrs) do
 end
 
 defp calculate_status(end_date) do
-  if Date.from_iso8601!(end_date) < Date.utc_today() do
+  if  Date.compare(Date.from_iso8601!(end_date), Date.utc_today()) == :lt do
     "expired"
   else
     "active"
