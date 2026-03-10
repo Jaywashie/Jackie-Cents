@@ -74,6 +74,11 @@
           <.link navigate="/life" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Life</.link>
           <.link navigate="/motor" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Motor</.link>
           <.link navigate="/pension" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Pension</.link>
+          <%= if @current_user do %>
+       <.link navigate="/my-quotes" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">
+       My Quotes
+       </.link>
+        <% end %>
         </div>
 
         <!-- Auth -->

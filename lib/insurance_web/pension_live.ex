@@ -13,7 +13,8 @@ defmodule InsuranceWeb.PensionLive do
         range: "KES 2,000 – No Maximum",
         retirement_age: "50 – 65 years",
         multiplier: 1.10,
-        description: "A flexible personal retirement savings plan designed for individuals and self-employed professionals.",
+        description:
+          "A flexible personal retirement savings plan designed for individuals and self-employed professionals.",
         benefits: [
           "Tax deductible contributions",
           "Flexible payment options (monthly, quarterly, yearly)",
@@ -30,7 +31,8 @@ defmodule InsuranceWeb.PensionLive do
         range: "KES 500 – No Maximum",
         retirement_age: "50 – 65 years",
         multiplier: 1.25,
-        description: "A structured retirement savings scheme allowing individuals to build a guaranteed retirement income.",
+        description:
+          "A structured retirement savings scheme allowing individuals to build a guaranteed retirement income.",
         benefits: [
           "Professional fund management",
           "Guaranteed minimum return",
@@ -93,7 +95,15 @@ defmodule InsuranceWeb.PensionLive do
 
         case Quotes.create_quote(quote_params) do
           {:ok, quote} ->
-            InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", quote)
+            InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", %{
+              id: quote.id,
+              plan_name: quote.plan_name,
+              plan_type: quote.plan_type,
+              email: quote.email,
+              monthly_contribution: quote.monthly_contribution,
+              estimated_value: quote.estimated_value
+            })
+
             {:noreply, assign(socket, saved: true) |> put_flash(:info, "Quote saved successfully!")}
 
           {:error, _} ->

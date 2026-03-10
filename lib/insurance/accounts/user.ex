@@ -10,6 +10,10 @@ defmodule Insurance.Accounts.User do
     field :confirmed_at, :naive_datetime
 
 
+
+    has_many :quotes, Insurance.Quotes.Quote
+    has_many :policies, Insurance.Policies.Policy
+
     timestamps()
   end
 

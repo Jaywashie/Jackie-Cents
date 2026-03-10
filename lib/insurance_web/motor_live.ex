@@ -11,7 +11,13 @@ defmodule InsuranceWeb.MotorLive do
         icon: "🚗",
         min_premium: 25000,
         description: "Full protection for your vehicle including accidents, theft and fire.",
-        benefits: ["Accidental damage cover", "Theft protection", "Fire damage cover", "Windscreen cover", "Third party liability"]
+        benefits: [
+          "Accidental damage cover",
+          "Theft protection",
+          "Fire damage cover",
+          "Windscreen cover",
+          "Third party liability"
+        ]
       },
       %{
         id: "third_party",
@@ -19,7 +25,12 @@ defmodule InsuranceWeb.MotorLive do
         icon: "🛡️",
         min_premium: 7500,
         description: "Affordable legal cover for damage caused to other people and property.",
-        benefits: ["Third party injury cover", "Third party property damage", "Legal liability protection", "Lowest cost motor cover"]
+        benefits: [
+          "Third party injury cover",
+          "Third party property damage",
+          "Legal liability protection",
+          "Lowest cost motor cover"
+        ]
       }
     ]
 
@@ -50,11 +61,12 @@ defmodule InsuranceWeb.MotorLive do
     value = parse_int(params["vehicle_value"])
     age = parse_int(params["vehicle_age"])
 
-    base_rate = case socket.assigns.selected_plan do
-      "comprehensive" -> 0.05
-      "third_party" -> 0.015
-      _ -> 0.05
-    end
+    base_rate =
+      case socket.assigns.selected_plan do
+        "comprehensive" -> 0.05
+        "third_party" -> 0.015
+        _ -> 0.05
+      end
 
     quote = round(value * base_rate + age * 200)
 
@@ -71,11 +83,12 @@ defmodule InsuranceWeb.MotorLive do
          |> push_navigate(to: "/users/log_in")}
 
       user ->
-        plan_name = case socket.assigns.selected_plan do
-          "comprehensive" -> "Motor Comprehensive Insurance"
-          "third_party" -> "Third Party Motor Insurance"
-          _ -> "Motor Insurance"
-        end
+        plan_name =
+          case socket.assigns.selected_plan do
+            "comprehensive" -> "Motor Comprehensive Insurance"
+            "third_party" -> "Third Party Motor Insurance"
+            _ -> "Motor Insurance"
+          end
 
         quote_params = %{
           user_id: user.id,
@@ -88,7 +101,15 @@ defmodule InsuranceWeb.MotorLive do
 
         case Quotes.create_quote(quote_params) do
           {:ok, quote} ->
-            InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", quote)
+            InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", %{
+              id: quote.id,
+              plan_name: quote.plan_name,
+              plan_type: quote.plan_type,
+              email: quote.email,
+              monthly_contribution: quote.monthly_contribution,
+              estimated_value: quote.estimated_value
+            })
+
             {:noreply, assign(socket, saved: true) |> put_flash(:info, "Quote saved!")}
 
           {:error, _} ->

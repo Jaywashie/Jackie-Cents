@@ -10,8 +10,11 @@ defmodule InsuranceWeb.AdminLive do
   end
 
   @impl true
-  def handle_info(%{event: "new_quote", payload: quote}, socket) do
-    {:noreply, assign(socket, quotes: [quote | socket.assigns.quotes])}
+  def handle_info(%{event: "new_quote", payload: _quote}, socket) do
+    # Re-fetch from DB instead of using the broadcast payload directly.
+    # This avoids crashes from Ecto struct serialization issues and ensures
+    # the admin list is always fully accurate.
+    {:noreply, assign(socket, quotes: Quotes.list_quotes())}
   end
 
   @impl true

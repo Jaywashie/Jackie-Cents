@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50 py-12">
   <div class="max-w-7xl mx-auto px-6">
 
-    <!-- Page Header -->
+    <!-- Page Header -->s
     <div class="text-center mb-14">
       <div class="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
         💊 Medical Insurance
@@ -83,7 +83,9 @@
       <div class="mt-6 bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
         <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Quote</h3>
         <p class="text-gray-500 text-sm text-center mb-8">
-          Plan: <span class="font-semibold text-green-700"><%= if @selected_plan == "milele", do: "Milele Medical Plan", else: "Bima ya Mwananchi" %></span>
+          Plan: <span class="font-semibold text-green-700">
+            <%= if @selected_plan == "milele", do: "Milele Medical Plan", else: "Bima ya Mwananchi" %>
+          </span>
         </p>
 
         <form phx-submit="generate_quote" class="space-y-5">
@@ -109,7 +111,9 @@
       <div class="mt-8 max-w-xl mx-auto">
         <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-8 text-center text-white shadow-xl">
           <p class="text-green-200 text-sm font-medium mb-2">Estimated Annual Premium</p>
-          <p class="text-5xl font-bold mb-1">KES <%= Number.Delimit.number_to_delimited(@quote) %></p>
+
+          <%!-- FIXED: removed Number.Delimit which was crashing the LiveView --%>
+          <p class="text-5xl font-bold mb-1">KES <%= @quote %></p>
           <p class="text-green-200 text-sm mb-8">≈ KES <%= div(@quote, 12) %>/month</p>
 
           <%= if @saved do %>

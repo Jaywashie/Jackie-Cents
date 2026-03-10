@@ -47,7 +47,15 @@ defmodule InsuranceWeb.LifeLive do
 
         case Quotes.create_quote(quote_params) do
           {:ok, quote} ->
-            InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", quote)
+            InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", %{
+              id: quote.id,
+              plan_name: quote.plan_name,
+              plan_type: quote.plan_type,
+              email: quote.email,
+              monthly_contribution: quote.monthly_contribution,
+              estimated_value: quote.estimated_value
+            })
+
             {:noreply, assign(socket, saved: true) |> put_flash(:info, "Quote saved!")}
 
           {:error, _} ->

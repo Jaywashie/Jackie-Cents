@@ -29,8 +29,6 @@ defmodule InsuranceWeb.Router do
       live "/motor", MotorLive
       live "/pension", PensionLive
       live "/admin", AdminLive
-      live "/policies", PolicyLive.Index
-      live "/policies/new", PolicyLive.New
     end
   end
 
@@ -41,6 +39,9 @@ defmodule InsuranceWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [{InsuranceWeb.UserAuth, :ensure_authenticated}] do
       live "/quote", QuoteLive, :show
+      live "/policies", PolicyLive.Index
+      live "/my-quotes", MyQuotesLive, :index
+      live "/policies/new", PolicyLive.New
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
