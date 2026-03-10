@@ -3,8 +3,7 @@ defmodule InsuranceWeb.PensionLive do
   alias Insurance.Quotes
 
   @impl true
-  def mount(_params, session, socket) do
-
+  def mount(_params, _session, socket) do
     plans = [
       %{
         id: "personal_pension",
@@ -13,8 +12,8 @@ defmodule InsuranceWeb.PensionLive do
         min_contribution: 2000,
         range: "KES 2,000 – No Maximum",
         retirement_age: "50 – 65 years",
-        description:
-          "A flexible personal retirement savings plan designed for individuals and self-employed professionals.",
+        multiplier: 1.10,
+        description: "A flexible personal retirement savings plan designed for individuals and self-employed professionals.",
         benefits: [
           "Tax deductible contributions",
           "Flexible payment options (monthly, quarterly, yearly)",
@@ -30,8 +29,8 @@ defmodule InsuranceWeb.PensionLive do
         min_contribution: 500,
         range: "KES 500 – No Maximum",
         retirement_age: "50 – 65 years",
-        description:
-          "A structured retirement savings scheme allowing individuals to build a guaranteed retirement income.",
+        multiplier: 1.25,
+        description: "A structured retirement savings scheme allowing individuals to build a guaranteed retirement income.",
         benefits: [
           "Professional fund management",
           "Guaranteed minimum return",
@@ -42,89 +41,64 @@ defmodule InsuranceWeb.PensionLive do
       }
     ]
 
-    {:ok, socket
-
+    {:ok,
+     socket
      |> assign(:plans, plans)
      |> assign(:selected_plan, nil)
      |> assign(:quote, nil)
      |> assign(:monthly_contribution, nil)
-     |> assign(:loading, false)
-     |> assign(:saving, false)}
-
+     |> assign(:saved, false)}
   end
-  # ================= SELECT PLAN =================
 
   @impl true
   def handle_event("select_plan", %{"id" => id}, socket) do
-    plan =
-      Enum.find(socket.assigns.plans, fn p ->
-        p.id == id
-      end)
-
-    {:noreply, assign(socket, :selected_plan, plan)}
+    plan = Enum.find(socket.assigns.plans, &(&1.id == id))
+    {:noreply, assign(socket, selected_plan: plan, quote: nil, saved: false)}
   end
-
-  # ================= GENERATE QUOTE =================
 
   @impl true
   def handle_event("generate_quote", params, socket) do
     age = String.to_integer(params["age"])
     monthly = String.to_integer(params["monthly_contribution"])
-
-    multiplier =
-      case socket.assigns.selected_plan.id do
-        "personal_pension" -> 1.10
-        "individual_pension" -> 1.25
-      end
-
-    estimated =
-      round(monthly * 12 * (65 - age) * multiplier)
+    multiplier = socket.assigns.selected_plan.multiplier
+    estimated = round(monthly * 12 * (65 - age) * multiplier)
 
     {:noreply,
      socket
      |> assign(:quote, estimated)
-     |> assign(:monthly_contribution, monthly)}
+     |> assign(:monthly_contribution, monthly)
+     |> assign(:saved, false)}
   end
-
-  # ================= SAVE QUOTE =================
 
   @impl true
   def handle_event("save_quote", _params, socket) do
-plan = socket.assigns.selected_plan
-
-if plan == nil do
-{:noreply, socket |> put_flash(:error, "Please select a plan first")}
-  else
-
     case socket.assigns.current_user do
       nil ->
-         {:noreply, socket |> put_flash(:error, "Please login to save a quote")}
-
-    user ->
-    quote_params = %{
-      user_id: user.id,
-      plan_name: plan.name,
-      plan_type: "pension",
-      monthly_contribution: socket.assigns.monthly_contribution,
-      estimated_value: socket.assigns.quote
-    }
-
-    case Quotes.create_quote(quote_params) do
-      {:ok, quote} ->
-
-     # Broadcast new quote
-    InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", quote)
-
         {:noreply,
          socket
-         |> assign(:saving, false)
-         |> put_flash(:info, "Quote saved successfully")
+         |> put_flash(:error, "Please log in to save a quote")
+         |> push_navigate(to: "/users/log_in")}
+
+      user ->
+        plan = socket.assigns.selected_plan
+
+        quote_params = %{
+          user_id: user.id,
+          plan_name: plan.name,
+          email: user.email,
+          plan_type: "pension",
+          monthly_contribution: socket.assigns.monthly_contribution,
+          estimated_value: socket.assigns.quote
         }
 
-      {:error, _} ->
-        {:noreply, socket |>  put_flash(:error, "Failed to save quote")}
+        case Quotes.create_quote(quote_params) do
+          {:ok, quote} ->
+            InsuranceWeb.Endpoint.broadcast("quotes", "new_quote", quote)
+            {:noreply, assign(socket, saved: true) |> put_flash(:info, "Quote saved successfully!")}
+
+          {:error, _} ->
+            {:noreply, put_flash(socket, :error, "Failed to save quote.")}
+        end
     end
   end
-  end
-end
 end

@@ -17,59 +17,36 @@ defmodule InsuranceWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # All public live routes — wrapped in live_session so @current_user is always available
   scope "/", InsuranceWeb do
     pipe_through :browser
 
-
-
-    live "/policies" , PolicyLive.Index
-    live "/policies/new" , PolicyLive.New
-    #live "/pension", PensionLive
-    live "/motor", MotorLive
-    live "/life", LifeLive
-    live "/medical", MedicalLive
-    live "/", HomeLive
-    live "/admin", AdminLive
-
-  end
-
-
-  live_session :default,
-  on_mount: [{InsuranceWeb.UserAuth, :mount_current_user}] do
-  live "/pension", PensionLive
-end
-  # Other scopes may use custom stacks.
-  # scope "/api", InsuranceWeb do
-  #   pipe_through :api
-  # end
-
-  # Enable LiveDashboard and Swoosh mailbox preview in development
-  if Application.compile_env(:insurance, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
-    import Phoenix.LiveDashboard.Router
-
-    scope "/dev" do
-      pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: InsuranceWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+    live_session :public,
+      on_mount: [{InsuranceWeb.UserAuth, :mount_current_user}] do
+      live "/", HomeLive
+      live "/medical", MedicalLive
+      live "/life", LifeLive
+      live "/motor", MotorLive
+      live "/pension", PensionLive
+      live "/admin", AdminLive
+      live "/policies", PolicyLive.Index
+      live "/policies/new", PolicyLive.New
     end
   end
 
-  ## Authentication routes
+  # Protected routes (auth required)
+  scope "/", InsuranceWeb do
+    pipe_through [:browser, :require_authenticated_user]
 
-scope "/", InsuranceWeb do
-  pipe_through [:browser, :require_authenticated_user]
+    live_session :require_authenticated_user,
+      on_mount: [{InsuranceWeb.UserAuth, :ensure_authenticated}] do
+      live "/quote", QuoteLive, :show
+      live "/users/settings", UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+    end
+  end
 
-  live "/quote", QuoteLive, :show   # ✅ protected
-end
-
-
-
+  # Auth routes (redirect if already logged in)
   scope "/", InsuranceWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
@@ -85,16 +62,6 @@ end
   end
 
   scope "/", InsuranceWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    live_session :require_authenticated_user,
-      on_mount: [{InsuranceWeb.UserAuth, :ensure_authenticated}] do
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-    end
-  end
-
-  scope "/", InsuranceWeb do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete
@@ -103,6 +70,17 @@ end
       on_mount: [{InsuranceWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+    end
+  end
+
+  if Application.compile_env(:insurance, :dev_routes) do
+    import Phoenix.LiveDashboard.Router
+
+    scope "/dev" do
+      pipe_through :browser
+
+      live_dashboard "/dashboard", metrics: InsuranceWeb.Telemetry
+      forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
 end

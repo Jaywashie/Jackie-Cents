@@ -1,203 +1,148 @@
-<div class="min-h-screen bg-gray-50 py-12 px-6">
-<div class="max-w-7xl mx-auto">
-
-<!-- HEADER -->
-
-<div class="text-center mb-12">
-<h1 class="text-3xl font-bold text-gray-800">
-Motor Insurance Plans
-</h1>
-
-<p class="text-gray-500 mt-2">
-Protect your car with our Motor Insurance
-</p>
-</div>
-
-<!-- COMPARISON TABLE -->
-
-<div class="bg-white shadow rounded-xl overflow-hidden mb-16">
-
-<table class="w-full text-sm">
-
-<thead class="bg-gray-100 text-gray-700">
-<tr>
-
-<th class="px-6 py-4 text-left">Plan</th>
-
-<th class="px-6 py-4 text-center">Vehicle Damage</th>
-
-<th class="px-6 py-4 text-center">Theft</th>
-
-<th class="px-6 py-4 text-center">Third Party Damage</th>
-
-<th class="px-6 py-4 text-center">Starting Premium</th>
-
-</tr>
-</thead>
-
-<tbody class="text-gray-600">
-
-<tr class="border-t">
-
-<td class="px-6 py-4 font-semibold">
-Motor Comprehensive
-</td>
-
-<td class="text-center">✔</td>
-
-<td class="text-center">✔</td>
-
-<td class="text-center">✔</td>
-
-<td class="text-center">KES 25,000+</td>
-
-</tr>
-
-<tr class="border-t">
-
-<td class="px-6 py-4 font-semibold">
-Third Party Only
-</td>
-
-<td class="text-center">✖</td>
-
-<td class="text-center">✖</td>
-
-<td class="text-center">✔</td>
-
-<td class="text-center">KES 7,500+</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-<!-- PLAN CARDS -->
-
-<div class="grid md:grid-cols-2 gap-8 mb-16">
-
-<%= for plan <- @plans do %>
-
-<div class="bg-white shadow-lg rounded-2xl p-8 border hover:shadow-xl transition">
-
-<h3 class="text-xl font-bold mb-3">
-<%= plan.name %>
-</h3>
-
-<p class="text-gray-600 mb-4">
-<%= plan.description %>
-</p>
-
-<ul class="text-sm text-gray-600 mb-6 space-y-2">
-
-<%= for benefit <- plan.benefits do %>
-
-<li>✔ <%= benefit %></li>
-
-<% end %>
-
-</ul>
-
-<button
-phx-click="select_plan"
-phx-value-id={plan.id}
-class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl">
-
-Get Quote
-
-</button>
-
-</div>
-
-<% end %>
-
-</div>
-
-<!-- QUOTE FORM -->
-
-<%= if @selected_plan do %>
-
-<div class="max-w-xl mx-auto bg-white shadow-xl rounded-2xl p-10">
-
-<h2 class="text-xl font-bold mb-6 text-center">
-Generate Motor Insurance Quote
-</h2>
-
-<.form for={@quote_form} phx-submit="generate_quote" class="space-y-5">
-
-<input
-type="number"
-name="vehicle_value"
-placeholder="Vehicle Value (KES)"
-class="w-full border rounded-xl px-4 py-3"
-/>
-
-<input
-type="number"
-name="vehicle_age"
-placeholder="Vehicle Age (Years)"
-class="w-full border rounded-xl px-4 py-3"
-/>
-
-<select
-name="usage"
-class="w-full border rounded-xl px-4 py-3">
-
-<option value="private">Private Use</option>
-<option value="commercial">Commercial Use</option>
-
-</select>
-
-<button
-type="submit"
-class="w-full bg-green-600 text-white py-3 rounded-xl">
-
-<%= if @loading do %>
-Calculating...
-<% else %>
-Generate Quote
-<% end %>
-
-</button>
-
-</.form>
-
-</div>
-
-<% end %>
-
-<!-- QUOTE RESULT -->
-
-<%= if @quote do %>
-
-<div class="mt-12 max-w-xl mx-auto bg-green-600 text-white rounded-2xl shadow-xl p-10 text-center">
-
-<h2 class="text-lg mb-2">
-Estimated Annual Premium
-</h2>
-
-<h1 class="text-4xl font-bold mb-6">
-KES <%= @quote %>
-</h1>
-
-<button
-phx-click="save_quote"
-class="bg-white text-green-600 px-6 py-3 rounded-xl font-semibold">
-
-Save Quote
-
-</button>
-
-<%= if @saving do %>
-<p class="mt-4 text-sm">Quote saved successfully ✔</p>
-<% end %>
-
-</div>
-
-<% end %>
-
-</div>
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        🚗 Motor Insurance
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Motor Insurance Plans
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Protect your vehicle with flexible motor insurance options designed for every budget.
+      </p>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="bg-white shadow-sm rounded-2xl overflow-hidden mb-10 border border-gray-100">
+      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+        <h3 class="font-semibold text-gray-700 text-sm uppercase tracking-wider">Plan Comparison</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-6 py-4 text-left">Plan</th>
+              <th class="px-6 py-4 text-center">Own Damage</th>
+              <th class="px-6 py-4 text-center">Theft</th>
+              <th class="px-6 py-4 text-center">Third Party</th>
+              <th class="px-6 py-4 text-center">Starting From</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-600 divide-y divide-gray-50">
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 font-semibold text-gray-900">Motor Comprehensive</td>
+              <td class="text-center"><span class="text-green-500 font-bold">✔</span></td>
+              <td class="text-center"><span class="text-green-500 font-bold">✔</span></td>
+              <td class="text-center"><span class="text-green-500 font-bold">✔</span></td>
+              <td class="text-center font-semibold text-gray-900">KES 25,000</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 font-semibold text-gray-900">Third Party Only</td>
+              <td class="text-center"><span class="text-red-400">✖</span></td>
+              <td class="text-center"><span class="text-red-400">✖</span></td>
+              <td class="text-center"><span class="text-green-500 font-bold">✔</span></td>
+              <td class="text-center font-semibold text-gray-900">KES 7,500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <%= for plan <- @plans do %>
+        <div class={"bg-white rounded-2xl p-8 border-2 transition-all duration-200 card-hover " <> if @selected_plan == plan.id, do: "border-green-500 shadow-lg", else: "border-gray-100 hover:border-green-200 shadow-sm"}>
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-xl">
+              <%= plan.icon %>
+            </div>
+            <%= if @selected_plan == plan.id do %>
+              <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3"><%= plan.name %></h3>
+          <p class="text-gray-500 text-sm mb-5 leading-relaxed"><%= plan.description %></p>
+          <ul class="space-y-2 mb-6">
+            <%= for benefit <- plan.benefits do %>
+              <li class="flex items-center gap-2 text-sm text-gray-700">
+                <span class="text-green-500">✔</span> <%= benefit %>
+              </li>
+            <% end %>
+          </ul>
+          <div class="flex items-center justify-between mb-5">
+            <span class="text-2xl font-bold text-gray-900">KES <%= plan.min_premium |> Integer.to_string() %>+</span>
+            <span class="text-gray-400 text-sm">/year</span>
+          </div>
+          <button phx-click="select_plan" phx-value-id={plan.id}
+            class={"w-full py-3 rounded-xl font-semibold transition-all " <> if @selected_plan == plan.id, do: "bg-green-600 text-white", else: "bg-gray-100 hover:bg-green-600 hover:text-white text-gray-700"}>
+            <%= if @selected_plan == plan.id, do: "✔ Plan Selected", else: "Get Quote" %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="max-w-xl mx-auto bg-white shadow-xl rounded-2xl p-10 border border-gray-100">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Quote</h2>
+        <p class="text-gray-500 text-sm text-center mb-8">
+          Plan: <span class="font-semibold text-green-700"><%= if @selected_plan == "comprehensive", do: "Motor Comprehensive", else: "Third Party Only" %></span>
+        </p>
+
+        <.form for={@quote_form} phx-submit="generate_quote" class="space-y-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Vehicle Value (KES)</label>
+            <input type="number" name="vehicle_value" required min="100000" placeholder="e.g. 1500000"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"/>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Vehicle Age (Years)</label>
+            <input type="number" name="vehicle_age" required min="0" max="20" placeholder="e.g. 3"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"/>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Usage Type</label>
+            <select name="usage" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white">
+              <option value="private">Private Use</option>
+              <option value="commercial">Commercial Use</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
+            <%= if @loading, do: "Calculating...", else: "Generate Quote" %>
+          </button>
+        </.form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-8 text-center text-white shadow-xl">
+          <p class="text-green-200 text-sm font-medium mb-2">Estimated Annual Premium</p>
+          <p class="text-5xl font-bold mb-1">KES <%= @quote %></p>
+          <p class="text-green-200 text-sm mb-8">≈ KES <%= div(@quote, 12) %>/month</p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold">✔ Quote Saved!</div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote" class="bg-white text-green-700 px-8 py-3 rounded-xl font-bold hover:bg-green-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3">
+                <p class="text-green-200 text-sm">Log in to save this quote</p>
+                <.link navigate="/users/log_in" class="bg-white text-green-700 px-8 py-3 rounded-xl font-bold hover:bg-green-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
 </div>
