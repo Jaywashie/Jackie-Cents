@@ -5,69 +5,110 @@ defmodule InsuranceWeb.UserSettingsLive do
 
   def render(assigns) do
     ~H"""
-    <.header class="text-center">
-      Account Settings
-      <:subtitle>Manage your account email address and password settings</:subtitle>
-    </.header>
+    <div class="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-4">
+      <div class="w-full max-w-md">
 
-    <div class="space-y-12 divide-y">
-      <div>
-        <.simple_form
-          for={@email_form}
-          id="email_form"
-          phx-submit="update_email"
-          phx-change="validate_email"
-        >
-          <.input field={@email_form[:email]} type="email" label="Email" required />
-          <.input
-            field={@email_form[:current_password]}
-            name="current_password"
-            id="current_password_for_email"
-            type="password"
-            label="Current password"
-            value={@email_form_current_password}
-            required
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">Change Email</.button>
-          </:actions>
-        </.simple_form>
-      </div>
-      <div>
-        <.simple_form
-          for={@password_form}
-          id="password_form"
-          action={~p"/users/log_in?_action=password_updated"}
-          method="post"
-          phx-change="validate_password"
-          phx-submit="update_password"
-          phx-trigger-action={@trigger_submit}
-        >
-          <input
-            name={@password_form[:email].name}
-            type="hidden"
-            id="hidden_user_email"
-            value={@current_email}
-          />
-          <.input field={@password_form[:password]} type="password" label="New password" required />
-          <.input
-            field={@password_form[:password_confirmation]}
-            type="password"
-            label="Confirm new password"
-          />
-          <.input
-            field={@password_form[:current_password]}
-            name="current_password"
-            type="password"
-            label="Current password"
-            id="current_password_for_password"
-            value={@current_password}
-            required
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">Change Password</.button>
-          </:actions>
-        </.simple_form>
+        <!-- Header -->
+        <div class="text-center mb-6">
+          <div class="inline-flex items-center justify-center w-10 h-10 bg-green-100 rounded-xl mb-3">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <h1 class="text-xl font-bold text-gray-900" style="font-family: 'DM Serif Display', serif;">
+            Account Settings
+          </h1>
+          <p class="text-gray-400 text-xs mt-1">Update your email and password</p>
+        </div>
+
+        <!-- Email Form -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-4">
+          <h2 class="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <span class="w-5 h-5 bg-blue-50 rounded-md flex items-center justify-center text-blue-500 text-xs">✉</span>
+            Change Email
+          </h2>
+          <.simple_form
+            for={@email_form}
+            id="email_form"
+            phx-submit="update_email"
+            phx-change="validate_email"
+          >
+            <div class="space-y-3">
+              <.input field={@email_form[:email]} type="email" label="New Email" required />
+              <.input
+                field={@email_form[:current_password]}
+                name="current_password"
+                id="current_password_for_email"
+                type="password"
+                label="Current Password"
+                value={@email_form_current_password}
+                required
+              />
+            </div>
+            <:actions>
+              <button
+                type="submit"
+                phx-disable-with="Saving..."
+                class="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-all mt-1"
+              >
+                Update Email
+              </button>
+            </:actions>
+          </.simple_form>
+        </div>
+
+        <!-- Password Form -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+          <h2 class="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <span class="w-5 h-5 bg-green-50 rounded-md flex items-center justify-center text-green-500 text-xs">🔒</span>
+            Change Password
+          </h2>
+          <.simple_form
+            for={@password_form}
+            id="password_form"
+            action={~p"/users/log_in?_action=password_updated"}
+            method="post"
+            phx-change="validate_password"
+            phx-submit="update_password"
+            phx-trigger-action={@trigger_submit}
+          >
+            <input
+              name={@password_form[:email].name}
+              type="hidden"
+              id="hidden_user_email"
+              value={@current_email}
+            />
+            <div class="space-y-3">
+              <.input field={@password_form[:password]} type="password" label="New Password" required />
+              <.input
+                field={@password_form[:password_confirmation]}
+                type="password"
+                label="Confirm New Password"
+              />
+              <.input
+                field={@password_form[:current_password]}
+                name="current_password"
+                type="password"
+                label="Current Password"
+                id="current_password_for_password"
+                value={@current_password}
+                required
+              />
+            </div>
+            <:actions>
+              <button
+                type="submit"
+                phx-disable-with="Saving..."
+                class="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-all mt-1"
+              >
+                Update Password
+              </button>
+            </:actions>
+          </.simple_form>
+        </div>
+
       </div>
     </div>
     """
@@ -76,11 +117,8 @@ defmodule InsuranceWeb.UserSettingsLive do
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
-        :ok ->
-          put_flash(socket, :info, "Email changed successfully.")
-
-        :error ->
-          put_flash(socket, :error, "Email change link is invalid or it has expired.")
+        :ok    -> put_flash(socket, :info, "Email changed successfully.")
+        :error -> put_flash(socket, :error, "Email change link is invalid or it has expired.")
       end
 
     {:ok, push_navigate(socket, to: ~p"/users/settings")}
@@ -88,7 +126,7 @@ defmodule InsuranceWeb.UserSettingsLive do
 
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
-    email_changeset = Accounts.change_user_email(user)
+    email_changeset    = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
 
     socket =

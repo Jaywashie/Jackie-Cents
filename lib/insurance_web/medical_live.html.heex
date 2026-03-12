@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50 py-12">
   <div class="max-w-7xl mx-auto px-6">
 
-    <!-- Page Header -->s
+    <!-- Page Header -->
     <div class="text-center mb-14">
       <div class="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
         💊 Medical Insurance
@@ -10,15 +10,15 @@
         Medical Insurance Plans
       </h1>
       <p class="text-lg text-gray-500 max-w-2xl mx-auto">
-        Compare our comprehensive Milele Plan and affordable Bima ya Mwananchi plan.
-        Choose the cover that fits your healthcare needs.
+        Compare the comprehensive Milele Health Plan and the affordable Bima ya Mwananchi cover.
+        Choose the plan that fits your healthcare needs and budget.
       </p>
     </div>
 
     <!-- Plans Grid -->
     <div class="grid md:grid-cols-2 gap-8 mb-12">
 
-      <!-- Milele Plan -->
+      <!-- Milele Health Plan -->
       <div class={"bg-white rounded-2xl shadow-sm p-8 border-2 transition-all duration-200 card-hover " <> if @selected_plan == "milele", do: "border-green-500 shadow-lg", else: "border-gray-100 hover:border-green-200"}>
         <div class="flex items-center justify-between mb-4">
           <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-xl">💊</div>
@@ -26,19 +26,24 @@
             <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
           <% end %>
         </div>
-        <h2 class="text-xl font-bold text-gray-900 mb-3">Milele Medical Plan</h2>
+        <h2 class="text-xl font-bold text-gray-900 mb-1">Milele Health Plan</h2>
+        <p class="text-xs text-green-700 font-medium mb-3">Entry Age: From birth – 80 years | Annual Renewable | No Exit Age</p>
         <p class="text-gray-500 text-sm mb-5 leading-relaxed">
-          Designed for individuals and families seeking premium medical coverage with extensive inpatient and outpatient benefits.
+          A comprehensive medical insurance cover providing lifetime renewable protection for individuals
+          and families. Available in five tiers — Essential, Bronze, Silver, Gold, and Platinum — with
+          inpatient limits ranging from KES 300,000 to KES 10,000,000. Includes access to the full
+          Britam hospital panel with no pre-approval required for outpatient visits. Pre-existing and
+          chronic conditions covered after the applicable waiting period.
         </p>
         <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Inpatient Cover up to KES 2,000,000 annually</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Outpatient Cover including specialist visits</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Maternity Cover</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Dental & Optical Benefits</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> International Emergency Cover</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Inpatient cover: KES 300,000 – KES 10,000,000</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Outpatient, dental & optical (optional add-ons)</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Maternity, mental health & chronic illness cover</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Annual wellness check-ups from 13th month</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Emergency evacuation & overseas referral cover</li>
         </ul>
         <div class="flex items-center justify-between mb-5">
-          <span class="text-2xl font-bold text-gray-900">KES 12,000</span>
+          <span class="text-2xl font-bold text-gray-900">From KES 12,000</span>
           <span class="text-gray-500 text-sm">/year</span>
         </div>
         <button phx-click="select_plan" phx-value-plan="milele"
@@ -47,7 +52,7 @@
         </button>
       </div>
 
-      <!-- Mwananchi Plan -->
+      <!-- Bima ya Mwananchi -->
       <div class={"bg-white rounded-2xl shadow-sm p-8 border-2 transition-all duration-200 card-hover " <> if @selected_plan == "mwananchi", do: "border-green-500 shadow-lg", else: "border-gray-100 hover:border-green-200"}>
         <div class="flex items-center justify-between mb-4">
           <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-xl">🏥</div>
@@ -55,19 +60,24 @@
             <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
           <% end %>
         </div>
-        <h2 class="text-xl font-bold text-gray-900 mb-3">Bima ya Mwananchi</h2>
+        <h2 class="text-xl font-bold text-gray-900 mb-1">Bima ya Mwananchi</h2>
+        <p class="text-xs text-green-700 font-medium mb-3">Entry Age: 18 – 65 years | Annual Renewable | Exit Age: 70 years</p>
         <p class="text-gray-500 text-sm mb-5 leading-relaxed">
-          An affordable medical insurance solution offering essential hospital and outpatient services for individuals and small families.
+          An affordable inpatient and outpatient medical cover designed for individuals and families
+          in Kenya. Available in five benefit options with inpatient limits from KES 75,000 to
+          KES 300,000. Covers hospitalization, chronic and pre-existing conditions (after waiting
+          period), maternity, emergency ambulance, and last expense benefit. A KES 300 co-payment
+          applies per outpatient visit. Enrol via Britam branches, agents, or WhatsApp (0705 100 100).
         </p>
         <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Inpatient Cover up to KES 500,000 annually</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Basic Outpatient Services</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Emergency Treatment</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Limited Maternity Cover</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Access to Approved Hospitals Nationwide</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Inpatient cover: KES 75,000 – KES 300,000</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Chronic & pre-existing conditions (10-month wait)</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Maternity cover: up to KES 30,000 (normal) / KES 45,000 (C-section)</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Emergency ambulance: up to KES 15,000</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Last expense benefit: KES 40,000</li>
         </ul>
         <div class="flex items-center justify-between mb-5">
-          <span class="text-2xl font-bold text-gray-900">KES 8,000</span>
+          <span class="text-2xl font-bold text-gray-900">From KES 4,600</span>
           <span class="text-gray-500 text-sm">/year</span>
         </div>
         <button phx-click="select_plan" phx-value-plan="mwananchi"
@@ -84,23 +94,60 @@
         <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Quote</h3>
         <p class="text-gray-500 text-sm text-center mb-8">
           Plan: <span class="font-semibold text-green-700">
-            <%= if @selected_plan == "milele", do: "Milele Medical Plan", else: "Bima ya Mwananchi" %>
+            <%= if @selected_plan == "milele", do: "Britam Milele Health Plan", else: "Britam Bima ya Mwananchi" %>
           </span>
         </p>
 
         <form phx-submit="generate_quote" class="space-y-5">
+
+          <!-- Milele tier selector -->
+          <%= if @selected_plan == "milele" do %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Cover Tier</label>
+              <select name="milele_tier"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white text-gray-900">
+                <option value="essential">Milele Essential — Inpatient up to KES 300,000</option>
+                <option value="bronze">Milele Bronze — Inpatient up to KES 500,000</option>
+                <option value="silver" selected>Milele Silver — Inpatient up to KES 1,000,000</option>
+                <option value="gold">Milele Gold — Inpatient up to KES 2,000,000</option>
+                <option value="platinum">Milele Platinum — Inpatient up to KES 10,000,000</option>
+              </select>
+            </div>
+          <% end %>
+
+          <!-- BYM option selector -->
+          <%= if @selected_plan == "mwananchi" do %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Benefit Option</label>
+              <select name="bym_option"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white text-gray-900">
+                <option value="option1">Option 1 — Inpatient KES 75,000 (KES 4,600/yr)</option>
+                <option value="option2">Option 2 — Inpatient KES 100,000 (KES 6,200/yr)</option>
+                <option value="option3">Option 3 — Inpatient KES 150,000 (KES 8,000/yr)</option>
+                <option value="option4">Option 4 — Inpatient KES 200,000 (KES 10,500/yr)</option>
+                <option value="option5">Option 5 — Inpatient KES 300,000 (KES 14,200/yr)</option>
+              </select>
+            </div>
+          <% end %>
+
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Your Age</label>
-            <input type="number" name="age" required min="18" max="65" placeholder="e.g. 30"
+            <input type="number" name="age" required
+              min={if @selected_plan == "milele", do: "0", else: "18"}
+              max={if @selected_plan == "milele", do: "80", else: "65"}
+              placeholder={if @selected_plan == "milele", do: "e.g. 30 (0–80 years)", else: "e.g. 30 (18–65 years)"}
               class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
           </div>
+
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Dependants</label>
-            <input type="number" name="dependants" required min="0" placeholder="e.g. 2"
+            <input type="number" name="dependants" required min="0" max="10" placeholder="e.g. 2 (children up to age 24 if students)"
               class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">Children from 38 weeks to 18 yrs; 18–24 yrs if enrolled in school/college.</p>
           </div>
+
           <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
-            Calculate Premium
+            Calculate Annual Premium
           </button>
         </form>
       </div>
@@ -111,10 +158,12 @@
       <div class="mt-8 max-w-xl mx-auto">
         <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-8 text-center text-white shadow-xl">
           <p class="text-green-200 text-sm font-medium mb-2">Estimated Annual Premium</p>
-
-          <%!-- FIXED: removed Number.Delimit which was crashing the LiveView --%>
-          <p class="text-5xl font-bold mb-1">KES <%= @quote %></p>
-          <p class="text-green-200 text-sm mb-8">≈ KES <%= div(@quote, 12) %>/month</p>
+          <p class="text-5xl font-bold mb-1">KES <%= InsuranceWeb.MedicalLive.format_number(@quote) %></p>
+          <p class="text-green-200 text-sm mb-2">≈ KES <%= InsuranceWeb.MedicalLive.format_number(div(@quote, 12)) %>/month</p>
+          <p class="text-green-300 text-xs mb-8">
+            Indicative premium only. Final premium is subject to underwriting by Britam General Insurance
+            (K) Ltd, regulated by the Insurance Regulatory Authority (IRA).
+          </p>
 
           <%= if @saved do %>
             <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-white">

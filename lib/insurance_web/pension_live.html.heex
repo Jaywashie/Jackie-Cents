@@ -10,7 +10,8 @@
         Secure Your Retirement
       </h1>
       <p class="text-lg text-gray-500 max-w-2xl mx-auto">
-        Professionally managed pension plans from Britam. Start saving today for the retirement you deserve.
+        RBA-registered and KRA-approved pension plans from Britam Life Assurance Co. (K) Ltd.
+        Start saving today for the retirement you deserve.
       </p>
     </div>
 
@@ -33,16 +34,26 @@
 
           <div class="bg-gray-50 rounded-xl p-4 mb-5 space-y-2">
             <div class="flex justify-between text-sm">
-              <span class="text-gray-500">Contribution Range</span>
-              <span class="font-semibold text-gray-900"><%= plan.range %></span>
+              <span class="text-gray-500">Min. Monthly Contribution</span>
+              <span class="font-semibold text-gray-900">KES <%= InsuranceWeb.PensionLive.format_number(plan.min_contribution) %></span>
             </div>
             <div class="flex justify-between text-sm">
-              <span class="text-gray-500">Retirement Age</span>
+              <span class="text-gray-500">Tax Deductible (max/month)</span>
+              <span class="font-semibold text-gray-900">KES <%= InsuranceWeb.PensionLive.format_number(plan.tax_deductible_max) %> or 1/3 of income</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-500">Retirement Age Range</span>
               <span class="font-semibold text-gray-900"><%= plan.retirement_age %></span>
             </div>
             <div class="flex justify-between text-sm">
-              <span class="text-gray-500">Min. Monthly</span>
-              <span class="font-semibold text-gray-900">KES <%= plan.min_contribution %></span>
+              <span class="text-gray-500">Guaranteed Return</span>
+              <span class="font-semibold text-green-700">Min. 5% p.a. compounded</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-500">Payout Option</span>
+              <span class="font-semibold text-gray-900">
+                <%= if plan.payout_type == "pension", do: "Pension Fund or Provident Fund", else: "Provident Fund (lump sum)" %>
+              </span>
             </div>
           </div>
 
@@ -75,14 +86,33 @@
         <form phx-submit="generate_quote" class="space-y-5">
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Current Age</label>
-            <input type="number" name="age" required min="18" max="60" placeholder="e.g. 35"
+            <input type="number" name="age" required min="18" max="59" placeholder="e.g. 35 (18–59 years)"
               class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"/>
           </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Target Retirement Age</label>
+            <select name="retirement_age"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="50">50 years (Early retirement)</option>
+              <option value="55">55 years</option>
+              <option value="60" selected>60 years (Standard)</option>
+              <option value="65">65 years (Extended)</option>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">Britam allows retirement from age 50 up to age 65 under this plan.</p>
+          </div>
+
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Monthly Contribution (KES)</label>
-            <input type="number" name="monthly_contribution" required min={@selected_plan.min_contribution} placeholder={"Min KES #{@selected_plan.min_contribution}"}
+            <input type="number" name="monthly_contribution" required
+              min={@selected_plan.min_contribution}
+              placeholder={"Min KES #{InsuranceWeb.PensionLive.format_number(@selected_plan.min_contribution)}/month"}
               class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"/>
+            <p class="text-xs text-gray-400 mt-1">
+              Contributions up to KES 20,000/month are tax deductible at source (or 1/3 of monthly income, whichever is lower).
+            </p>
           </div>
+
           <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
             Calculate Retirement Value
           </button>
@@ -93,10 +123,17 @@
       <%= if @quote do %>
         <div class="mt-8 max-w-xl mx-auto">
           <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-8 text-center text-white shadow-xl">
-            <p class="text-green-200 text-sm font-medium mb-2">Estimated Retirement Value at Age 65</p>
-            <p class="text-5xl font-bold mb-1">KES <%= @quote %></p>
-            <p class="text-green-200 text-sm mb-2">Contributing KES <%= @monthly_contribution %>/month</p>
-            <p class="text-green-300 text-xs mb-8">Based on <%= @selected_plan.name %> growth rate</p>
+            <p class="text-green-200 text-sm font-medium mb-2">Estimated Accumulated Fund at Retirement</p>
+            <p class="text-5xl font-bold mb-1">KES <%= InsuranceWeb.PensionLive.format_number(@quote) %></p>
+            <p class="text-green-200 text-sm mb-1">
+              Contributing KES <%= InsuranceWeb.PensionLive.format_number(@monthly_contribution) %>/month
+              over <%= @years_to_retire %> years
+            </p>
+            <p class="text-green-300 text-xs mb-8">
+              Calculated at Britam's guaranteed minimum rate of 5% p.a. compounded, net of
+              1.5% p.a. administration fee. Actual returns may be higher. Regulated by the
+              Retirement Benefits Authority (RBA) and Kenya Revenue Authority (KRA).
+            </p>
 
             <%= if @saved do %>
               <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold">✔ Quote Saved Successfully!</div>

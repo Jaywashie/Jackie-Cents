@@ -23,16 +23,22 @@
           <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center text-xl">💰</div>
           <%= if @selected_plan == "akiba" do %><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span><% end %>
         </div>
-        <h2 class="text-xl font-bold text-gray-900 mb-3">Akiba Life Savings</h2>
-        <p class="text-gray-500 text-sm mb-5 leading-relaxed">A savings-focused life insurance plan combining protection and long-term wealth accumulation.</p>
+        <h2 class="text-xl font-bold text-gray-900 mb-1">Akiba Life Savings Plan</h2>
+        <p class="text-xs text-green-700 font-medium mb-3">Policy Term: 5 – 12 years | Entry Age: 18 – 65</p>
+        <p class="text-gray-500 text-sm mb-5 leading-relaxed">
+          A pure endowment product that provides a systematic savings vehicle for short- to medium-term goals.
+          Pays a guaranteed lump sum at maturity or in the event of death before maturity, with a free waiver
+          of premium ensuring the maturity benefit is still paid. Offers higher returns than average insurance
+          savings products, with an optional death benefit rider.
+        </p>
         <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Flexible contributions</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Savings + life cover</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Maturity benefits</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Ideal for long-term wealth building</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Guaranteed lump sum payout at maturity</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Free waiver of premium on death</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Optional death benefit rider</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Surrender benefit from end of 25th policy month</li>
         </ul>
         <div class="flex items-center justify-between mb-5">
-          <span class="text-2xl font-bold text-gray-900">KES 10,000</span>
+          <span class="text-2xl font-bold text-gray-900">From KES 10,000</span>
           <span class="text-gray-400 text-sm">/year</span>
         </div>
         <button phx-click="select_plan" phx-value-plan="akiba"
@@ -47,16 +53,22 @@
           <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-xl">🎓</div>
           <%= if @selected_plan == "education" do %><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span><% end %>
         </div>
-        <h2 class="text-xl font-bold text-gray-900 mb-3">Education Plan</h2>
-        <p class="text-gray-500 text-sm mb-5 leading-relaxed">Secure your child's future education with guaranteed payouts at key milestones.</p>
+        <h2 class="text-xl font-bold text-gray-900 mb-1">Boresha Elimu Education Plan</h2>
+        <p class="text-xs text-green-700 font-medium mb-3">Policy Term: 6 – 18 years | Entry Age: 18 – 60</p>
+        <p class="text-gray-500 text-sm mb-5 leading-relaxed">
+          Designed in line with Kenya's 2-6-3-3-3 education curriculum, this plan provides guaranteed lump
+          sum payouts in the final years of the policy to cover school fees at key transition stages.
+          Premiums are waived in the last two years of the policy term. Includes life cover, disability
+          and critical illness insurance for the parent.
+        </p>
         <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> School fee protection</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Guaranteed payouts</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Parent life cover included</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Structured maturity schedule</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Guaranteed lump sum payouts at maturity</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Premium waiver on death or total permanent disability</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Parent life & critical illness cover included</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Tax relief of up to 15% on premiums (policies > 10 years)</li>
         </ul>
         <div class="flex items-center justify-between mb-5">
-          <span class="text-2xl font-bold text-gray-900">KES 12,000</span>
+          <span class="text-2xl font-bold text-gray-900">From KES 12,000</span>
           <span class="text-gray-400 text-sm">/year</span>
         </div>
         <button phx-click="select_plan" phx-value-plan="education"
@@ -71,16 +83,23 @@
           <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-xl">❤️</div>
           <%= if @selected_plan == "whole_life" do %><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span><% end %>
         </div>
-        <h2 class="text-xl font-bold text-gray-900 mb-3">Whole Life Plan</h2>
-        <p class="text-gray-500 text-sm mb-5 leading-relaxed">Lifetime protection with guaranteed death benefits and potential cash value accumulation.</p>
+        <h2 class="text-xl font-bold text-gray-900 mb-1">Whole Life Plan</h2>
+        <p class="text-xs text-green-700 font-medium mb-3">Lifetime Coverage | Entry Age: 18 – 65</p>
+        <p class="text-gray-500 text-sm mb-5 leading-relaxed">
+          Provides permanent life insurance coverage over your entire lifetime for wealth preservation
+          and intergenerational wealth transfer. The guaranteed death benefit payout increases by 3%
+          per year to keep pace with inflation. All insurance benefits — death, disability and critical
+          illness — are tax-free. Optional riders include Permanent Total Disability, Critical Illness
+          and Funeral Expense cover.
+        </p>
         <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Lifetime coverage</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Cash value growth</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Estate planning tool</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Fixed premiums</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Guaranteed death benefit, increasing 3% p.a.</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Tax-free benefits (death, disability & critical illness)</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Estate planning via Britam Trust Management Services</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Optional PTD, Critical Illness & Funeral Expense riders</li>
         </ul>
         <div class="flex items-center justify-between mb-5">
-          <span class="text-2xl font-bold text-gray-900">KES 15,000</span>
+          <span class="text-2xl font-bold text-gray-900">From KES 15,000</span>
           <span class="text-gray-400 text-sm">/year</span>
         </div>
         <button phx-click="select_plan" phx-value-plan="whole_life"
@@ -95,16 +114,22 @@
           <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-xl">📋</div>
           <%= if @selected_plan == "term_life" do %><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span><% end %>
         </div>
-        <h2 class="text-xl font-bold text-gray-900 mb-3">Term Life Plan</h2>
-        <p class="text-gray-500 text-sm mb-5 leading-relaxed">Affordable protection for a specific period (10, 15, or 20 years).</p>
+        <h2 class="text-xl font-bold text-gray-900 mb-1">Term Life Plan</h2>
+        <p class="text-xs text-green-700 font-medium mb-3">Policy Term: 10 – 20 years | Entry Age: 18 – 65</p>
+        <p class="text-gray-500 text-sm mb-5 leading-relaxed">
+          Affordable pure protection for a defined period, paying a lump sum death benefit to your
+          beneficiaries if the life assured passes away within the policy term. Ideal for covering
+          outstanding loans, mortgages or income replacement needs. Offers high sum assured amounts
+          at low premiums with fixed level premiums throughout the term.
+        </p>
         <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Affordable premiums</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Fixed coverage period</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> High coverage amounts</li>
-          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Ideal for loans & mortgages</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Lump sum death benefit to named beneficiaries</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Fixed level premiums for the full policy term</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> High sum assured at affordable premiums</li>
+          <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Ideal for loan & mortgage protection</li>
         </ul>
         <div class="flex items-center justify-between mb-5">
-          <span class="text-2xl font-bold text-gray-900">KES 8,000</span>
+          <span class="text-2xl font-bold text-gray-900">From KES 8,000</span>
           <span class="text-gray-400 text-sm">/year</span>
         </div>
         <button phx-click="select_plan" phx-value-plan="term_life"
@@ -123,18 +148,38 @@
           Plan: <span class="font-semibold text-green-700"><%= @plans[@selected_plan].name %></span>
         </p>
         <form phx-submit="generate_quote" class="space-y-5">
+
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Your Age</label>
-            <input type="number" name="age" required min="18" max="65" placeholder="e.g. 35"
+            <input type="number" name="age" required
+              min={@plans[@selected_plan].min_age}
+              max={@plans[@selected_plan].max_age}
+              placeholder={"e.g. 35 (#{@plans[@selected_plan].min_age}–#{@plans[@selected_plan].max_age} years)"}
               class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"/>
           </div>
+
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Desired Cover Amount (KES)</label>
-            <input type="number" name="cover_amount" required placeholder="e.g. 5000000"
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Sum Assured (KES)</label>
+            <input type="number" name="sum_assured" required placeholder="e.g. 5,000,000"
               class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"/>
+            <p class="text-xs text-gray-400 mt-1">The guaranteed benefit amount payable on maturity or death.</p>
           </div>
+
+          <%= if @plans[@selected_plan].min_term do %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Policy Term (Years)</label>
+              <input type="number" name="policy_term" required
+                min={@plans[@selected_plan].min_term}
+                max={@plans[@selected_plan].max_term}
+                placeholder={"#{@plans[@selected_plan].min_term}–#{@plans[@selected_plan].max_term} years"}
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"/>
+            </div>
+          <% else %>
+            <input type="hidden" name="policy_term" value="0" />
+          <% end %>
+
           <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
-            Calculate Premium
+            Calculate Annual Premium
           </button>
         </form>
       </div>
@@ -145,8 +190,12 @@
       <div class="mt-8 max-w-xl mx-auto">
         <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-8 text-center text-white shadow-xl">
           <p class="text-green-200 text-sm font-medium mb-2">Estimated Annual Premium</p>
-          <p class="text-5xl font-bold mb-1">KES <%= @quote %></p>
-          <p class="text-green-200 text-sm mb-8">≈ KES <%= div(@quote, 12) %>/month</p>
+          <p class="text-5xl font-bold mb-1">KES <%= InsuranceWeb.LifeLive.format_number(@quote) %></p>
+          <p class="text-green-200 text-sm mb-2">≈ KES <%= InsuranceWeb.LifeLive.format_number(div(@quote, 12)) %>/month</p>
+          <p class="text-green-300 text-xs mb-8">
+            This is an indicative premium. Final premium is subject to underwriting by Britam Life Assurance Co. (K) Ltd,
+            regulated by the Insurance Regulatory Authority (IRA).
+          </p>
           <%= if @saved do %>
             <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold">✔ Quote Saved!</div>
           <% else %>
@@ -156,7 +205,7 @@
               </button>
             <% else %>
               <div class="space-y-3">
-                <p class="text-green-200 text-sm">Log in to save this quote</p>
+                <p class="text-green-200 text-sm">Log in to save this quote to your profile</p>
                 <.link navigate="/users/log_in" class="bg-white text-green-700 px-8 py-3 rounded-xl font-bold hover:bg-green-50 transition-all shadow inline-block">
                   Log in to Save →
                 </.link>
