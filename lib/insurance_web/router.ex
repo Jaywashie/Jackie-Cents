@@ -17,7 +17,9 @@ defmodule InsuranceWeb.Router do
     plug :accepts, ["json"]
   end
 
-  # All public live routes — wrapped in live_session so @current_user is always available
+  # ---------------------------------------------------------------------------
+  # Public routes — @current_user always available, no auth required
+  # ---------------------------------------------------------------------------
   scope "/", InsuranceWeb do
     pipe_through :browser
 
@@ -28,11 +30,24 @@ defmodule InsuranceWeb.Router do
       live "/life", LifeLive
       live "/motor", MotorLive
       live "/pension", PensionLive
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # Admin-only routes — must be logged in AND have role == "admin"
+  # ---------------------------------------------------------------------------
+  scope "/", InsuranceWeb do
+    pipe_through [:browser, :require_authenticated_user, :require_admin_user]
+
+    live_session :admin,
+      on_mount: [{InsuranceWeb.UserAuth, :ensure_admin}] do
       live "/admin", AdminLive
     end
   end
 
-  # Protected routes (auth required)
+  # ---------------------------------------------------------------------------
+  # Authenticated user routes
+  # ---------------------------------------------------------------------------
   scope "/", InsuranceWeb do
     pipe_through [:browser, :require_authenticated_user]
 
@@ -47,7 +62,9 @@ defmodule InsuranceWeb.Router do
     end
   end
 
+  # ---------------------------------------------------------------------------
   # Auth routes (redirect if already logged in)
+  # ---------------------------------------------------------------------------
   scope "/", InsuranceWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 

@@ -8,8 +8,7 @@ defmodule Insurance.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :naive_datetime
-
-
+    field :role, :string, default: "user"
 
     has_many :quotes, Insurance.Quotes.Quote
     has_many :policies, Insurance.Policies.Policy
@@ -17,34 +16,24 @@ defmodule Insurance.Accounts.User do
     timestamps()
   end
 
-  @doc """
-  A user changeset for registration.
+  @valid_roles ~w(user admin)
 
-  It is important to validate the length of both email and password.
-  Otherwise databases may truncate the email without warnings, which
-  could lead to unpredictable or insecure behaviour. Long passwords may
-  also be very expensive to hash for certain algorithms.
-
-  ## Options
-
-    * `:hash_password` - Hashes the password so it can be stored securely
-      in the database and ensures the password field is cleared to prevent
-      leaks in the logs. If password hashing is not needed and clearing the
-      password field is not desired (like when using this changeset for
-      validations on a LiveView form), this option can be set to `false`.
-      Defaults to `true`.
-
-    * `:validate_email` - Validates the uniqueness of the email, in case
-      you don't want to validate the uniqueness of the email (like when
-      using this changeset for validations on a LiveView form before
-      submitting the form), this option can be set to `false`.
-      Defaults to `true`.
-  """
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email, :password])
     |> validate_email(opts)
     |> validate_password(opts)
+    # Role is NOT cast from user input during registration — always defaults to "user"
+  end
+
+  @doc """
+  Changeset for admin to update a user's role.
+  """
+  def role_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:role])
+    |> validate_required([:role])
+    |> validate_inclusion(:role, @valid_roles)
   end
 
   defp validate_email(changeset, opts) do
@@ -59,10 +48,6 @@ defmodule Insurance.Accounts.User do
     changeset
     |> validate_required([:password])
     |> validate_length(:password, min: 12, max: 72)
-    # Examples of additional password validation:
-    # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
-    # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
-    # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
   end
 
@@ -72,8 +57,6 @@ defmodule Insurance.Accounts.User do
 
     if hash_password? && password && changeset.valid? do
       changeset
-      # Hashing could be done with `Ecto.Changeset.prepare_changes/2`, but that
-      # would keep the database transaction open longer and hurt performance.
       |> put_change(:hashed_password, Pbkdf2.hash_pwd_salt(password))
       |> delete_change(:password)
     else
@@ -91,11 +74,6 @@ defmodule Insurance.Accounts.User do
     end
   end
 
-  @doc """
-  A user changeset for changing the email.
-
-  It requires the email to change otherwise an error is added.
-  """
   def email_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email])
@@ -106,18 +84,6 @@ defmodule Insurance.Accounts.User do
     end
   end
 
-  @doc """
-  A user changeset for changing the password.
-
-  ## Options
-
-    * `:hash_password` - Hashes the password so it can be stored securely
-      in the database and ensures the password field is cleared to prevent
-      leaks in the logs. If password hashing is not needed and clearing the
-      password field is not desired (like when using this changeset for
-      validations on a LiveView form), this option can be set to `false`.
-      Defaults to `true`.
-  """
   def password_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:password])
@@ -125,20 +91,11 @@ defmodule Insurance.Accounts.User do
     |> validate_password(opts)
   end
 
-  @doc """
-  Confirms the account by setting `confirmed_at`.
-  """
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
   end
 
-  @doc """
-  Verifies the password.
-
-  If there is no user or the user doesn't have a password, we call
-  `Pbkdf2.no_user_verify/0` to avoid timing attacks.
-  """
   def valid_password?(%Insurance.Accounts.User{hashed_password: hashed_password}, password)
       when is_binary(hashed_password) and byte_size(password) > 0 do
     Pbkdf2.verify_pass(password, hashed_password)
@@ -149,9 +106,6 @@ defmodule Insurance.Accounts.User do
     false
   end
 
-  @doc """
-  Validates the current password otherwise adds an error to the changeset.
-  """
   def validate_current_password(changeset, password) do
     changeset = cast(changeset, %{current_password: password}, [:current_password])
 
@@ -161,4 +115,8 @@ defmodule Insurance.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
+  @doc "Returns true if the user has the admin role."
+  def admin?(%__MODULE__{role: "admin"}), do: true
+  def admin?(_), do: false
 end
