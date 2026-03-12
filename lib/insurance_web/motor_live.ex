@@ -15,7 +15,7 @@ defmodule InsuranceWeb.MotorLive do
       %{
         id: "comprehensive",
         name: "Motor Comprehensive",
-        icon: "🚗",
+        icon: "",
         min_premium: 30_180,
         description:
           "Full protection covering accidental damage, fire, theft, malicious damage, and third-party liabilities. " <>
@@ -34,7 +34,7 @@ defmodule InsuranceWeb.MotorLive do
       %{
         id: "third_party",
         name: "Third Party Only",
-        icon: "🛡️",
+        icon: "",
         min_premium: 7_560,
         description:
           "Minimum statutory cover required under the Traffic Act, Chapter 403 of the Laws of Kenya. " <>

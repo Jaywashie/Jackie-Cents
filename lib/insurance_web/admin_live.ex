@@ -57,11 +57,11 @@ defmodule InsuranceWeb.AdminLive do
   defp plan_color("life"),    do: "bg-red-100 text-red-700"
   defp plan_color(_),         do: "bg-gray-100 text-gray-700"
 
-  defp plan_icon("pension"), do: "🏦"
-  defp plan_icon("medical"), do: "💊"
-  defp plan_icon("motor"),   do: "🚗"
-  defp plan_icon("life"),    do: "❤️"
-  defp plan_icon(_),         do: "📋"
+  defp plan_icon("pension"), do: ""
+  defp plan_icon("medical"), do: ""
+  defp plan_icon("motor"),   do: ""
+  defp plan_icon("life"),    do: ""
+  defp plan_icon(_),         do: ""
 
   @impl true
   def render(assigns) do
@@ -95,7 +95,7 @@ defmodule InsuranceWeb.AdminLive do
                 do: "bg-green-600 text-white shadow",
                 else: "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"}
           >
-            📋 Quotes (<%= length(@quotes) %>)
+             Quotes (<%= length(@quotes) %>)
           </button>
           <button
             phx-click="switch_tab" phx-value-tab="users"
@@ -121,15 +121,15 @@ defmodule InsuranceWeb.AdminLive do
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <div class="text-2xl font-bold text-blue-600"><%= Enum.count(@quotes, &(&1.plan_type == "medical")) %></div>
-              <div class="text-gray-500 text-sm">💊 Medical</div>
+              <div class="text-gray-500 text-sm"> Medical</div>
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <div class="text-2xl font-bold text-amber-600"><%= Enum.count(@quotes, &(&1.plan_type == "pension")) %></div>
-              <div class="text-gray-500 text-sm">🏦 Pension</div>
+              <div class="text-gray-500 text-sm"> Pension</div>
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <div class="text-2xl font-bold text-purple-600"><%= Enum.count(@quotes, &(&1.plan_type == "motor")) %></div>
-              <div class="text-gray-500 text-sm">🚗 Motor</div>
+              <div class="text-gray-500 text-sm"> Motor</div>
             </div>
           </div>
 
@@ -185,7 +185,7 @@ defmodule InsuranceWeb.AdminLive do
 
             <%= if @quotes == [] do %>
               <div class="text-center py-20">
-                <div class="text-4xl mb-4">📋</div>
+                <div class="text-4xl mb-4"></div>
                 <p class="text-gray-400 text-lg font-medium">No quotes yet</p>
               </div>
             <% end %>
@@ -234,7 +234,7 @@ defmodule InsuranceWeb.AdminLive do
                         </span>
                       </td>
                       <td class="px-6 py-4 text-gray-600">
-                        <%= if u.confirmed_at, do: "✅ Yes", else: "⏳ Pending" %>
+                        <%= if u.confirmed_at, do: "✅ Yes", else: " Pending" %>
                       </td>
                       <td class="px-6 py-4 text-gray-500">
                         <%= Calendar.strftime(u.inserted_at, "%d %b %Y") %>

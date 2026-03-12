@@ -89,9 +89,7 @@ defmodule InsuranceWeb.HomeLive do
           <!-- Medical -->
           <div phx-click="go_medical" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-green-50 text-green-700 flex items-center justify-center rounded-xl text-2xl flex-shrink-0 group-hover:bg-green-100 transition-colors">
-                💊
-              </div>
+
               <div class="flex-1">
                 <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
                   Medical Cover
@@ -109,9 +107,7 @@ defmodule InsuranceWeb.HomeLive do
           <!-- Life -->
           <div phx-click="go_life" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-red-50 text-red-500 flex items-center justify-center rounded-xl text-2xl flex-shrink-0 group-hover:bg-red-100 transition-colors">
-                ❤️
-              </div>
+
               <div class="flex-1">
                 <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
                   Life Insurance
@@ -129,9 +125,7 @@ defmodule InsuranceWeb.HomeLive do
           <!-- Motor -->
           <div phx-click="go_motor" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-blue-50 text-blue-600 flex items-center justify-center rounded-xl text-2xl flex-shrink-0 group-hover:bg-blue-100 transition-colors">
-                🚗
-              </div>
+
               <div class="flex-1">
                 <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
                   Motor Cover
@@ -149,9 +143,7 @@ defmodule InsuranceWeb.HomeLive do
           <!-- Pension -->
           <div phx-click="go_pension" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="flex items-start gap-5">
-              <div class="w-14 h-14 bg-amber-50 text-amber-600 flex items-center justify-center rounded-xl text-2xl flex-shrink-0 group-hover:bg-amber-100 transition-colors">
-                🏦
-              </div>
+
               <div class="flex-1">
                 <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
                   Pension Plan

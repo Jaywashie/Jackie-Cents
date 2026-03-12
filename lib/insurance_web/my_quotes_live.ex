@@ -53,11 +53,11 @@ defmodule InsuranceWeb.MyQuotesLive do
   defp plan_color("life"),    do: "bg-red-100 text-red-700"
   defp plan_color(_),         do: "bg-gray-100 text-gray-700"
 
-  defp plan_icon("pension"), do: "🏦"
-  defp plan_icon("medical"), do: "💊"
-  defp plan_icon("motor"),   do: "🚗"
-  defp plan_icon("life"),    do: "❤️"
-  defp plan_icon(_),         do: "📋"
+  defp plan_icon("pension"), do: ""
+  defp plan_icon("medical"), do: ""
+  defp plan_icon("motor"),   do: ""
+  defp plan_icon("life"),    do: ""
+  defp plan_icon(_),         do: ""
 
   defp plan_link("medical"), do: "/medical"
   defp plan_link("life"),    do: "/life"
@@ -103,25 +103,25 @@ defmodule InsuranceWeb.MyQuotesLive do
             <div class="text-2xl font-bold text-blue-600">
               <%= Enum.count(@all_quotes, &(&1.plan_type == "medical")) %>
             </div>
-            <div class="text-gray-500 text-xs mt-1">💊 Medical</div>
+            <div class="text-gray-500 text-xs mt-1"> Medical</div>
           </div>
           <div class="bg-white rounded-xl p-4 shadow-sm border border-red-100 text-center">
             <div class="text-2xl font-bold text-red-500">
               <%= Enum.count(@all_quotes, &(&1.plan_type == "life")) %>
             </div>
-            <div class="text-gray-500 text-xs mt-1">❤️ Life</div>
+            <div class="text-gray-500 text-xs mt-1"> Life</div>
           </div>
           <div class="bg-white rounded-xl p-4 shadow-sm border border-purple-100 text-center">
             <div class="text-2xl font-bold text-purple-600">
               <%= Enum.count(@all_quotes, &(&1.plan_type == "motor")) %>
             </div>
-            <div class="text-gray-500 text-xs mt-1">🚗 Motor</div>
+            <div class="text-gray-500 text-xs mt-1"> Motor</div>
           </div>
         </div>
 
         <!-- Filter Tabs -->
         <div class="flex gap-2 mb-6 flex-wrap">
-          <%= for {label, value} <- [{"All", "all"}, {"💊 Medical", "medical"}, {"❤️ Life", "life"}, {"🚗 Motor", "motor"}, {"🏦 Pension", "pension"}] do %>
+          <%= for {label, value} <- [{"All", "all"}, {" Medical", "medical"}, {" Life", "life"}, {" Motor", "motor"}, {" Pension", "pension"}] do %>
             <button
               phx-click="filter"
               phx-value-type={value}
@@ -138,23 +138,23 @@ defmodule InsuranceWeb.MyQuotesLive do
         <!-- Quotes List -->
         <%= if @quotes == [] do %>
           <div class="bg-white rounded-2xl p-16 text-center border border-gray-100 shadow-sm">
-            <div class="text-5xl mb-4">📋</div>
+            <div class="text-5xl mb-4"></div>
             <p class="text-gray-500 font-medium text-lg">
               <%= if @filter == "all", do: "No quotes yet", else: "No #{@filter} quotes saved" %>
             </p>
             <p class="text-gray-400 text-sm mt-2 mb-6">Generate a quote from any insurance product page</p>
             <div class="flex gap-3 justify-center flex-wrap">
               <.link navigate="/medical" class="bg-green-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-green-700 transition-all">
-                💊 Medical Quote
+                 Medical Quote
               </.link>
               <.link navigate="/life" class="bg-green-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-green-700 transition-all">
-                ❤️ Life Quote
+                 Life Quote
               </.link>
               <.link navigate="/motor" class="bg-green-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-green-700 transition-all">
-                🚗 Motor Quote
+                 Motor Quote
               </.link>
               <.link navigate="/pension" class="bg-green-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-green-700 transition-all">
-                🏦 Pension Quote
+                 Pension Quote
               </.link>
             </div>
           </div>
