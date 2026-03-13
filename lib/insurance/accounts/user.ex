@@ -3,14 +3,20 @@ defmodule Insurance.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
+    field :email,            :string
+    field :password,         :string, virtual: true, redact: true
+    field :hashed_password,  :string, redact: true
     field :current_password, :string, virtual: true, redact: true
-    field :confirmed_at, :naive_datetime
-    field :role, :string, default: "user"
+    field :confirmed_at,     :naive_datetime
+    field :role,             :string, default: "user"
 
-    has_many :quotes, Insurance.Quotes.Quote
+    # ── NEW profile fields ────────────────────────────────────────────
+    field :first_name,   :string
+    field :last_name,    :string
+    field :phone_number, :string
+    # ─────────────────────────────────────────────────────────────────
+
+    has_many :quotes,   Insurance.Quotes.Quote
     has_many :policies, Insurance.Policies.Policy
 
     timestamps()
@@ -18,17 +24,21 @@ defmodule Insurance.Accounts.User do
 
   @valid_roles ~w(user admin)
 
+  # ── Registration changeset — now includes profile fields ─────────────
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :first_name, :last_name, :phone_number])
+    |> validate_required([:first_name, :last_name, :phone_number])
+    |> validate_length(:first_name,   min: 2, max: 100)
+    |> validate_length(:last_name,    min: 2, max: 100)
+    |> validate_length(:phone_number, min: 9, max: 20)
+    |> validate_format(:phone_number, ~r/^\+?[0-9\s\-]+$/,
+        message: "must contain only digits, spaces, hyphens, or a leading +")
     |> validate_email(opts)
     |> validate_password(opts)
-    # Role is NOT cast from user input during registration — always defaults to "user"
   end
 
-  @doc """
-  Changeset for admin to update a user's role.
-  """
+  @doc "Changeset for admin to update a user's role."
   def role_changeset(user, attrs) do
     user
     |> cast(attrs, [:role])
@@ -39,7 +49,8 @@ defmodule Insurance.Accounts.User do
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])
-    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/,
+        message: "must have the @ sign and no spaces")
     |> validate_length(:email, max: 160)
     |> maybe_validate_unique_email(opts)
   end
@@ -119,4 +130,9 @@ defmodule Insurance.Accounts.User do
   @doc "Returns true if the user has the admin role."
   def admin?(%__MODULE__{role: "admin"}), do: true
   def admin?(_), do: false
+
+  @doc "Returns the user's full name, falling back to email."
+  def full_name(%__MODULE__{first_name: f, last_name: l})
+      when is_binary(f) and is_binary(l), do: "#{f} #{l}"
+  def full_name(%__MODULE__{email: email}), do: email
 end

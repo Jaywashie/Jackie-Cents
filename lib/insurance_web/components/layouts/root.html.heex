@@ -92,7 +92,7 @@
         <div class="flex items-center space-x-3">
           <%= if @current_user do %>
             <span class="hidden md:block text-green-200 text-sm">
-              👋 <%= @current_user.email %>
+             👋 <%= if @current_user.first_name, do: "#{@current_user.first_name} #{@current_user.last_name}", else: @current_user.email %>
             </span>
             <.link href={~p"/users/settings"} class="text-green-100 hover:text-white text-sm font-medium transition-all">
               Settings

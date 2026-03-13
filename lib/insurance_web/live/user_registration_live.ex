@@ -6,7 +6,7 @@ defmodule InsuranceWeb.UserRegistrationLive do
 
   def render(assigns) do
     ~H"""
-    <div class="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-4">
+    <div class="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-4">
       <div class="w-full max-w-md">
 
         <!-- Header -->
@@ -29,7 +29,7 @@ defmodule InsuranceWeb.UserRegistrationLive do
         </div>
 
         <!-- Form Card -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
           <.simple_form
             for={@form}
             id="registration_form"
@@ -44,15 +44,45 @@ defmodule InsuranceWeb.UserRegistrationLive do
             </.error>
 
             <div class="space-y-3">
-              <.input field={@form[:email]} type="email" label="Email" required />
+
+              <!-- Phone Number — first field as requested -->
+              <.input
+                field={@form[:phone_number]}
+                type="tel"
+                label="Phone Number"
+                placeholder="e.g. +254 712 345 678"
+                required
+              />
+
+              <!-- Name row -->
+              <div class="grid grid-cols-2 gap-3">
+                <.input
+                  field={@form[:first_name]}
+                  type="text"
+                  label="First Name"
+                  placeholder="Jane"
+                  required
+                />
+                <.input
+                  field={@form[:last_name]}
+                  type="text"
+                  label="Last Name"
+                  placeholder="Doe"
+                  required
+                />
+              </div>
+
+              <!-- Email & Password -->
+              <.input field={@form[:email]}    type="email"    label="Email"    required />
               <.input field={@form[:password]} type="password" label="Password" required />
+
             </div>
 
             <:actions>
               <button
                 type="submit"
                 phx-disable-with="Creating account..."
-                class="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-all mt-1"
+                class="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-all mt-2"
               >
                 Create account →
               </button>

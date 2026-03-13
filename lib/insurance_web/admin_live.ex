@@ -42,7 +42,6 @@ defmodule InsuranceWeb.AdminLive do
   def handle_event("demote", %{"id" => id}, socket) do
     user = Accounts.get_user!(String.to_integer(id))
 
-    # Prevent an admin from demoting themselves
     if user.id == socket.assigns.current_user.id do
       {:noreply, put_flash(socket, :error, "You cannot demote yourself.")}
     else
@@ -57,11 +56,20 @@ defmodule InsuranceWeb.AdminLive do
   defp plan_color("life"),    do: "bg-red-100 text-red-700"
   defp plan_color(_),         do: "bg-gray-100 text-gray-700"
 
-  defp plan_icon("pension"), do: ""
-  defp plan_icon("medical"), do: ""
-  defp plan_icon("motor"),   do: ""
-  defp plan_icon("life"),    do: ""
-  defp plan_icon(_),         do: ""
+  defp plan_icon("pension"), do: "🏦"
+  defp plan_icon("medical"), do: "🏥"
+  defp plan_icon("motor"),   do: "🚗"
+  defp plan_icon("life"),    do: "❤️"
+  defp plan_icon(_),         do: "📋"
+
+  # Show name or fall back to "—"
+  defp display_name(%User{first_name: f, last_name: l})
+       when is_binary(f) and is_binary(l) and f != "" and l != "",
+       do: "#{f} #{l}"
+  defp display_name(_), do: "—"
+
+  defp display_phone(%User{phone_number: p}) when is_binary(p) and p != "", do: p
+  defp display_phone(_), do: "—"
 
   @impl true
   def render(assigns) do
@@ -95,7 +103,7 @@ defmodule InsuranceWeb.AdminLive do
                 do: "bg-green-600 text-white shadow",
                 else: "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"}
           >
-             Quotes (<%= length(@quotes) %>)
+            📋 Quotes (<%= length(@quotes) %>)
           </button>
           <button
             phx-click="switch_tab" phx-value-tab="users"
@@ -113,7 +121,6 @@ defmodule InsuranceWeb.AdminLive do
 
         <!-- ── QUOTES TAB ──────────────────────────────────────────── -->
         <%= if @active_tab == "quotes" do %>
-          <!-- Stats -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <div class="text-2xl font-bold text-gray-900"><%= length(@quotes) %></div>
@@ -121,15 +128,15 @@ defmodule InsuranceWeb.AdminLive do
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <div class="text-2xl font-bold text-blue-600"><%= Enum.count(@quotes, &(&1.plan_type == "medical")) %></div>
-              <div class="text-gray-500 text-sm"> Medical</div>
+              <div class="text-gray-500 text-sm">🏥 Medical</div>
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <div class="text-2xl font-bold text-amber-600"><%= Enum.count(@quotes, &(&1.plan_type == "pension")) %></div>
-              <div class="text-gray-500 text-sm"> Pension</div>
+              <div class="text-gray-500 text-sm">🏦 Pension</div>
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
               <div class="text-2xl font-bold text-purple-600"><%= Enum.count(@quotes, &(&1.plan_type == "motor")) %></div>
-              <div class="text-gray-500 text-sm"> Motor</div>
+              <div class="text-gray-500 text-sm">🚗 Motor</div>
             </div>
           </div>
 
@@ -137,7 +144,6 @@ defmodule InsuranceWeb.AdminLive do
             <div class="px-6 py-4 border-b border-gray-100">
               <h2 class="font-semibold text-gray-800">All Quotes</h2>
             </div>
-
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
@@ -182,10 +188,8 @@ defmodule InsuranceWeb.AdminLive do
                 </tbody>
               </table>
             </div>
-
             <%= if @quotes == [] do %>
               <div class="text-center py-20">
-                <div class="text-4xl mb-4"></div>
                 <p class="text-gray-400 text-lg font-medium">No quotes yet</p>
               </div>
             <% end %>
@@ -207,6 +211,8 @@ defmodule InsuranceWeb.AdminLive do
               <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
                   <tr>
+                    <th class="px-6 py-4 text-left">Phone</th>
+                    <th class="px-6 py-4 text-left">Name</th>
                     <th class="px-6 py-4 text-left">Email</th>
                     <th class="px-6 py-4 text-left">Role</th>
                     <th class="px-6 py-4 text-left">Confirmed</th>
@@ -217,12 +223,26 @@ defmodule InsuranceWeb.AdminLive do
                 <tbody class="divide-y divide-gray-50">
                   <%= for u <- @users do %>
                     <tr class="hover:bg-gray-50 transition-colors">
-                      <td class="px-6 py-4 font-medium text-gray-900">
+
+                      <!-- Phone -->
+                      <td class="px-6 py-4 text-gray-700 font-medium">
+                        <%= display_phone(u) %>
+                      </td>
+
+                      <!-- Name -->
+                      <td class="px-6 py-4 text-gray-900 font-medium">
+                        <%= display_name(u) %>
+                      </td>
+
+                      <!-- Email -->
+                      <td class="px-6 py-4 text-gray-600">
                         <%= u.email %>
                         <%= if u.id == @current_user.id do %>
-                          <span class="ml-2 text-xs text-gray-400">(you)</span>
+                          <span class="ml-1 text-xs text-gray-400">(you)</span>
                         <% end %>
                       </td>
+
+                      <!-- Role badge -->
                       <td class="px-6 py-4">
                         <span class={
                           "px-3 py-1 text-xs font-semibold rounded-full " <>
@@ -233,12 +253,18 @@ defmodule InsuranceWeb.AdminLive do
                           <%= if User.admin?(u), do: "👑 Admin", else: "👤 User" %>
                         </span>
                       </td>
+
+                      <!-- Confirmed -->
                       <td class="px-6 py-4 text-gray-600">
-                        <%= if u.confirmed_at, do: "✅ Yes", else: " Pending" %>
+                        <%= if u.confirmed_at, do: "✅ Yes", else: "⏳ Pending" %>
                       </td>
+
+                      <!-- Joined -->
                       <td class="px-6 py-4 text-gray-500">
                         <%= Calendar.strftime(u.inserted_at, "%d %b %Y") %>
                       </td>
+
+                      <!-- Actions -->
                       <td class="px-6 py-4 text-right">
                         <%= if u.id != @current_user.id do %>
                           <%= if User.admin?(u) do %>
