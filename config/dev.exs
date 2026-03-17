@@ -29,6 +29,19 @@ config :insurance, InsuranceWeb.Endpoint,
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
+
+  config :insurance, Insurance.Mailer,
+    adapter: Swoosh.Adapters.SMTP,
+    relay: "smtp.gmail.com",
+    port: 587,
+    username: "jaywashie5735@gmail.com",
+    password: "tccoptxmzleeshyp",
+    ssl: false,
+    tls: :always,
+    auth: :always,
+    tls_options: [verify: :verify_none]
+
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

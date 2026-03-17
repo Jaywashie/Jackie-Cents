@@ -1,30 +1,32 @@
 defmodule Insurance.Accounts.UserNotifier do
   import Swoosh.Email
-
   alias Insurance.Mailer
 
-  # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     email =
       new()
       |> to(recipient)
-      |> from({"Insurance", "contact@example.com"})
+      |> from({"JackieCents Insurance", "jaywashie5735@gmail.com"})
       |> subject(subject)
       |> text_body(body)
+      |> html_body("""
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: #16a34a; padding: 20px; text-align: center;">
+            <h1 style="color: white; margin: 0;">JackieCents Insurance</h1>
+          </div>
+          <div style="padding: 30px; background: #f9fafb;">
+            <pre style="font-family: sans-serif; white-space: pre-wrap;">#{body}</pre>
+          </div>
+        </div>
+      """)
 
     with {:ok, _metadata} <- Mailer.deliver(email) do
       {:ok, email}
     end
   end
 
-  @doc """
-  Deliver instructions to confirm account.
-  """
   def deliver_confirmation_instructions(user, url) do
-    deliver(user.email, "Confirmation instructions", """
-
-    ==============================
-
+    deliver(user.email, "Confirm your JackieCents account", """
     Hi #{user.email},
 
     You can confirm your account by visiting the URL below:
@@ -32,19 +34,11 @@ defmodule Insurance.Accounts.UserNotifier do
     #{url}
 
     If you didn't create an account with us, please ignore this.
-
-    ==============================
     """)
   end
 
-  @doc """
-  Deliver instructions to reset a user password.
-  """
   def deliver_reset_password_instructions(user, url) do
-    deliver(user.email, "Reset password instructions", """
-
-    ==============================
-
+    deliver(user.email, "Reset your JackieCents password", """
     Hi #{user.email},
 
     You can reset your password by visiting the URL below:
@@ -52,19 +46,11 @@ defmodule Insurance.Accounts.UserNotifier do
     #{url}
 
     If you didn't request this change, please ignore this.
-
-    ==============================
     """)
   end
 
-  @doc """
-  Deliver instructions to update a user email.
-  """
   def deliver_update_email_instructions(user, url) do
-    deliver(user.email, "Update email instructions", """
-
-    ==============================
-
+    deliver(user.email, "Update your JackieCents email", """
     Hi #{user.email},
 
     You can change your email by visiting the URL below:
@@ -72,8 +58,6 @@ defmodule Insurance.Accounts.UserNotifier do
     #{url}
 
     If you didn't request this change, please ignore this.
-
-    ==============================
     """)
   end
 end
