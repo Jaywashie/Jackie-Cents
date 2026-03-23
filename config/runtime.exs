@@ -65,13 +65,13 @@ if config_env() == :prod do
 
 
   config :insurance, Insurance.Mailer,
-  adapter: Swoosh.Adapters.SMTP,
-  relay: "smtp.gmail.com",
-  port: 587,
-  username: System.get_env("jaywashie5735@gmail.com"),      # e.g. "yourapp@gmail.com"
-  password: System.get_env("ak1wash13w3w3"),  # Gmail App Password (not your login password)
-  tls: :always,
-  auth: :always
+    adapter: Swoosh.Adapters.SMTP,
+    relay: "smtp.gmail.com",
+    port: 587,
+    username: System.get_env("SMTP_USERNAME"),
+    password: System.get_env("SMTP_PASSWORD"),
+    tls: :always,
+    auth: :always
 
 
   # ## SSL Support
