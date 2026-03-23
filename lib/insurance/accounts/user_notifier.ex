@@ -20,9 +20,18 @@ defmodule Insurance.Accounts.UserNotifier do
         </div>
       """)
 
-    with {:ok, _metadata} <- Mailer.deliver(email) do
-      {:ok, email}
-    end
+    # Deliver asynchronously to prevent timeouts during registration/reset
+    Task.start(fn ->
+      case Mailer.deliver(email) do
+        {:ok, _metadata} -> :ok
+        {:error, reason} ->
+          # Log failure but don't crash the user's flow
+          require Logger
+          Logger.error("Failed to deliver email to #{email.to}: #{inspect(reason)}")
+      end
+    end)
+
+    {:ok, email}
   end
 
   def deliver_confirmation_instructions(user, url) do
