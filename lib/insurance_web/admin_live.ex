@@ -54,12 +54,20 @@ defmodule InsuranceWeb.AdminLive do
   defp plan_color("medical"), do: "bg-blue-100 text-blue-700"
   defp plan_color("motor"),   do: "bg-purple-100 text-purple-700"
   defp plan_color("life"),    do: "bg-red-100 text-red-700"
+  defp plan_color("unit_trust"), do: "bg-emerald-100 text-emerald-700"
+  defp plan_color("money_market"), do: "bg-cyan-100 text-cyan-700"
+  defp plan_color("sme"),     do: "bg-indigo-100 text-indigo-700"
+  defp plan_color("wiba"),    do: "bg-orange-100 text-orange-700"
   defp plan_color(_),         do: "bg-gray-100 text-gray-700"
 
   defp plan_icon("pension"), do: "🏦"
   defp plan_icon("medical"), do: "🏥"
   defp plan_icon("motor"),   do: "🚗"
   defp plan_icon("life"),    do: "❤️"
+  defp plan_icon("unit_trust"), do: "📈"
+  defp plan_icon("money_market"), do: "💰"
+  defp plan_icon("sme"),     do: "🏬"
+  defp plan_icon("wiba"),    do: "👷"
   defp plan_icon(_),         do: "📋"
 
   # Show name or fall back to "—"
@@ -121,22 +129,42 @@ defmodule InsuranceWeb.AdminLive do
 
         <!-- ── QUOTES TAB ──────────────────────────────────────────── -->
         <%= if @active_tab == "quotes" do %>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 col-span-2 md:col-span-4 lg:col-span-2">
               <div class="text-2xl font-bold text-gray-900"><%= length(@quotes) %></div>
               <div class="text-gray-500 text-sm">Total Quotes</div>
             </div>
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-              <div class="text-2xl font-bold text-blue-600"><%= Enum.count(@quotes, &(&1.plan_type == "medical")) %></div>
-              <div class="text-gray-500 text-sm">🏥 Medical</div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-blue-600"><%= Enum.count(@quotes, &(&1.plan_type == "medical")) %></div>
+              <div class="text-gray-500 text-xs">🏥 Medical</div>
             </div>
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-              <div class="text-2xl font-bold text-amber-600"><%= Enum.count(@quotes, &(&1.plan_type == "pension")) %></div>
-              <div class="text-gray-500 text-sm">🏦 Pension</div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-amber-600"><%= Enum.count(@quotes, &(&1.plan_type == "pension")) %></div>
+              <div class="text-gray-500 text-xs">🏦 Pension</div>
             </div>
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-              <div class="text-2xl font-bold text-purple-600"><%= Enum.count(@quotes, &(&1.plan_type == "motor")) %></div>
-              <div class="text-gray-500 text-sm">🚗 Motor</div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-purple-600"><%= Enum.count(@quotes, &(&1.plan_type == "motor")) %></div>
+              <div class="text-gray-500 text-xs">🚗 Motor</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-red-600"><%= Enum.count(@quotes, &(&1.plan_type == "life")) %></div>
+              <div class="text-gray-500 text-xs">❤️ Life</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-emerald-600"><%= Enum.count(@quotes, &(&1.plan_type == "unit_trust")) %></div>
+              <div class="text-gray-500 text-xs">📈 Units</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-cyan-600"><%= Enum.count(@quotes, &(&1.plan_type == "money_market")) %></div>
+              <div class="text-gray-500 text-xs">💰 MMF</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-indigo-600"><%= Enum.count(@quotes, &(&1.plan_type == "sme")) %></div>
+              <div class="text-gray-500 text-xs">🏬 SME</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <div class="text-xl font-bold text-orange-600"><%= Enum.count(@quotes, &(&1.plan_type == "wiba")) %></div>
+              <div class="text-gray-500 text-xs">👷 WIBA</div>
             </div>
           </div>
 

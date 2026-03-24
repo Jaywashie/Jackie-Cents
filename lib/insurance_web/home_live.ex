@@ -63,8 +63,8 @@ defmodule InsuranceWeb.HomeLive do
             <div class="text-gray-500 text-sm">Support</div>
           </div>
           <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center card-hover">
-            <div class="text-3xl font-bold text-green-700 mb-1">4</div>
-            <div class="text-gray-500 text-sm">Insurance Types</div>
+            <div class="text-3xl font-bold text-green-700 mb-1">8</div>
+            <div class="text-gray-500 text-sm">Product Types</div>
           </div>
           <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center card-hover">
             <div class="text-3xl font-bold text-green-700 mb-1">98%</div>
@@ -77,86 +77,79 @@ defmodule InsuranceWeb.HomeLive do
       <section class="max-w-7xl mx-auto px-6 pb-20">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold text-gray-900 mb-3" style="font-family: 'DM Serif Display', serif;">
-            Our Insurance Products
+            Our Products & Services
           </h2>
           <p class="text-gray-500 max-w-xl mx-auto">
-            Choose from our range of comprehensive insurance solutions designed to protect every aspect of your life.
+            Choose from our range of comprehensive solutions designed to protect your life and grow your wealth.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
           <!-- Medical -->
-          <div phx-click="go_medical" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="flex items-start gap-5">
-
-              <div class="flex-1">
-                <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
-                  Medical Cover
-                </h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-4">
-                  Comprehensive health protection for you and your family. Inpatient, outpatient, maternity and dental benefits.
-                </p>
-                <div class="flex items-center text-green-600 text-sm font-semibold group-hover:gap-2 transition-all">
-                  Get Quote <span class="ml-1">→</span>
-                </div>
-              </div>
-            </div>
+          <div phx-click="go_medical" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 text-xl">🏥</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Medical Cover</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Health protection for you and your family.</p>
+            <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
           <!-- Life -->
-          <div phx-click="go_life" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="flex items-start gap-5">
-
-              <div class="flex-1">
-                <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
-                  Life Insurance
-                </h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-4">
-                  Long-term financial protection and wealth planning. Whole life, term life, education and savings plans.
-                </p>
-                <div class="flex items-center text-green-600 text-sm font-semibold">
-                  Get Quote <span class="ml-1">→</span>
-                </div>
-              </div>
-            </div>
+          <div phx-click="go_life" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mb-4 text-xl">❤️</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Life Insurance</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Long-term financial protection for loved ones.</p>
+            <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
           <!-- Motor -->
-          <div phx-click="go_motor" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="flex items-start gap-5">
-
-              <div class="flex-1">
-                <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
-                  Motor Cover
-                </h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-4">
-                  Reliable protection for your vehicle. Comprehensive and third party options for every budget.
-                </p>
-                <div class="flex items-center text-green-600 text-sm font-semibold">
-                  Get Quote <span class="ml-1">→</span>
-                </div>
-              </div>
-            </div>
+          <div phx-click="go_motor" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4 text-xl">🚗</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Motor Cover</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Reliable protection for your vehicle.</p>
+            <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
           <!-- Pension -->
-          <div phx-click="go_pension" class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="flex items-start gap-5">
-
-              <div class="flex-1">
-                <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
-                  Pension Plan
-                </h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-4">
-                  Secure retirement planning and long-term savings. Build a guaranteed income for your golden years.
-                </p>
-                <div class="flex items-center text-green-600 text-sm font-semibold">
-                  Get Quote <span class="ml-1">→</span>
-                </div>
-              </div>
-            </div>
+          <div phx-click="go_pension" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 text-xl">🏦</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Pension Plan</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Secure retirement planning and savings.</p>
+            <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
+
+          <!-- Money Market -->
+          <div phx-click="go_mmf" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-4 text-xl">💰</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Money Market</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">High-yield savings with instant liquidity.</p>
+            <div class="text-green-600 text-xs font-semibold">Calculate →</div>
+          </div>
+
+          <!-- Unit Trust -->
+          <div phx-click="go_ut" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 text-xl">📈</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Unit Trusts</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Professional wealth management & growth.</p>
+            <div class="text-green-600 text-xs font-semibold">Invest Now →</div>
+          </div>
+
+          <!-- SME -->
+          <div phx-click="go_sme" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 text-xl">🏬</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">SME Insurance</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Tailored protection for your business.</p>
+            <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
+          </div>
+
+          <!-- WIBA -->
+          <div phx-click="go_wiba" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4 text-xl">👷</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">WIBA Cover</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Work Injury Benefits for your employees.</p>
+            <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
+          </div>
+
         </div>
       </section>
 
@@ -211,4 +204,8 @@ defmodule InsuranceWeb.HomeLive do
   def handle_event("go_life", _, socket), do: {:noreply, push_navigate(socket, to: "/life")}
   def handle_event("go_motor", _, socket), do: {:noreply, push_navigate(socket, to: "/motor")}
   def handle_event("go_pension", _, socket), do: {:noreply, push_navigate(socket, to: "/pension")}
+  def handle_event("go_mmf", _, socket), do: {:noreply, push_navigate(socket, to: "/money-market")}
+  def handle_event("go_ut", _, socket), do: {:noreply, push_navigate(socket, to: "/unit-trust")}
+  def handle_event("go_sme", _, socket), do: {:noreply, push_navigate(socket, to: "/sme-insurance")}
+  def handle_event("go_wiba", _, socket), do: {:noreply, push_navigate(socket, to: "/wiba")}
 end

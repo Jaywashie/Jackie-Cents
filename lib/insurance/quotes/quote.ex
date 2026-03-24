@@ -20,7 +20,7 @@ defmodule Insurance.Quotes.Quote do
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
     |> validate_length(:plan_name, max: 255)
-    |> validate_inclusion(:plan_type, ~w(life medical motor pension))
+    |> validate_inclusion(:plan_type, ~w(life medical motor pension unit_trust money_market sme wiba))
     # NOTE: No unique_constraint here — a user is allowed to save
     # as many quotes as they want, including duplicates.
   end
