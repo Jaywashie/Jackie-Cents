@@ -23,7 +23,7 @@ defmodule InsuranceWeb.HomeLive do
             <div class="inline-flex items-center bg-white/10 text-green-200 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-white/20">
               🇰🇪 Kenya's Trusted Insurance Partner
             </div>
-            <h1 class="text-5xl lg:text-6xl font-bold text-white leading-tight mb-6" style="font-family: 'DM Serif Display', serif;">
+            <h1 class="text-5xl lg:text-6xl font-bold text-yellow-500 leading-tight mb-6" style="font-family: 'DM Serif Display', serif;">
               Secure Your Future,
               <span class="text-green-300">Protect What Matters</span>
             </h1>

@@ -179,7 +179,7 @@
           <% end %>
 
           <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
-            Calculate Annual Premium
+            Calculate Monthly Premium
           </button>
         </form>
       </div>
@@ -189,9 +189,9 @@
     <%= if @quote do %>
       <div class="mt-8 max-w-xl mx-auto">
         <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-8 text-center text-white shadow-xl">
-          <p class="text-green-200 text-sm font-medium mb-2">Estimated Annual Premium</p>
+          <p class="text-green-200 text-sm font-medium mb-2">Estimated monthly Premium</p>
           <p class="text-5xl font-bold mb-1">KES <%= InsuranceWeb.LifeLive.format_number(@quote) %></p>
-          <p class="text-green-200 text-sm mb-2">≈ KES <%= InsuranceWeb.LifeLive.format_number(div(@quote, 12)) %>/month</p>
+
           <p class="text-green-300 text-xs mb-8">
             This is an indicative premium. Final premium is subject to underwriting by Life Assurance Co. (K) Ltd,
             regulated by the Insurance Regulatory Authority (IRA).
