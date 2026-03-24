@@ -19,7 +19,7 @@
 alias Insurance.Accounts
 alias Insurance.Repo
 
-admin_email    = System.get_env("ADMIN_EMAIL", "jackiecents@gmail.com")
+admin_email    = System.get_env("ADMIN_EMAIL", "JackieCents23@gmail.com")
 admin_password = System.get_env("ADMIN_PASSWORD", "123456789012")
 
 case Accounts.get_user_by_email(admin_email) do
