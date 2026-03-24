@@ -73,44 +73,6 @@ defmodule InsuranceWeb.MotorLive do
   end
 
   @impl true
-  def handle_info({:calculate_quote, params}, socket) do
-    value   = parse_int(params["vehicle_value"])
-    age     = parse_int(params["vehicle_age"])
-    usage   = params["usage"] || "private"
-
-    quote =
-      case socket.assigns.selected_plan do
-        "comprehensive" ->
-          # Step 1: base rate by value band
-          base_rate = if value <= 2_500_000, do: 0.0425, else: 0.035
-          base      = round(value * base_rate)
-
-          # Step 2: vehicle age loading — +0.5% per year beyond 5 yrs, capped at +3%
-          age_loading_pct = min((max(age - 5, 0)) * 0.005, 0.03)
-          age_load        = round(value * age_loading_pct)
-
-          # Step 3: commercial use loading +25% on base
-          usage_load = if usage == "commercial", do: round(base * 0.25), else: 0
-
-          raw = base + age_load + usage_load
-          # Enforce  minimum premium
-          max(raw, 30_180)
-
-        "third_party" ->
-          # Statutory minimum: KES 7,560 private / KES 13,440 commercial
-          base = if usage == "commercial", do: 13_440, else: 7_560
-          # Third party has no vehicle-value-based loading — flat statutory rate
-          base
-
-        _ -> 0
-      end
-
-    {:noreply,
-     socket
-     |> assign(quote: quote, loading: false, vehicle_value: value, saved: false)}
-  end
-
-  @impl true
   def handle_event("save_quote", _params, socket) do
     case socket.assigns.current_user do
       nil ->
@@ -154,6 +116,44 @@ defmodule InsuranceWeb.MotorLive do
             {:noreply, put_flash(socket, :error, "Failed to save quote. Please try again.")}
         end
     end
+  end
+
+  @impl true
+  def handle_info({:calculate_quote, params}, socket) do
+    value   = parse_int(params["vehicle_value"])
+    age     = parse_int(params["vehicle_age"])
+    usage   = params["usage"] || "private"
+
+    quote =
+      case socket.assigns.selected_plan do
+        "comprehensive" ->
+          # Step 1: base rate by value band
+          base_rate = if value <= 2_500_000, do: 0.0425, else: 0.035
+          base      = round(value * base_rate)
+
+          # Step 2: vehicle age loading — +0.5% per year beyond 5 yrs, capped at +3%
+          age_loading_pct = min((max(age - 5, 0)) * 0.005, 0.03)
+          age_load        = round(value * age_loading_pct)
+
+          # Step 3: commercial use loading +25% on base
+          usage_load = if usage == "commercial", do: round(base * 0.25), else: 0
+
+          raw = base + age_load + usage_load
+          # Enforce  minimum premium
+          max(raw, 30_180)
+
+        "third_party" ->
+          # Statutory minimum: KES 7,560 private / KES 13,440 commercial
+          base = if usage == "commercial", do: 13_440, else: 7_560
+          # Third party has no vehicle-value-based loading — flat statutory rate
+          base
+
+        _ -> 0
+      end
+
+    {:noreply,
+     socket
+     |> assign(quote: quote, loading: false, vehicle_value: value, saved: false)}
   end
 
   def format_number(n) when is_integer(n) do

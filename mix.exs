@@ -52,7 +52,7 @@ defmodule Insurance.MixProject do
     {:jason, "~> 1.4.4"},
     {:plug_cowboy, "~> 2.8.0"},
     {:pbkdf2_elixir, "~> 2.0"},
-    {:gen_smtp, "~> 1.2.0"}
+    {:gen_smtp, "~> 1.3"}
    
   ]
 end

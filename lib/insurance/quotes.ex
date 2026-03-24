@@ -1,11 +1,10 @@
 defmodule Insurance.Quotes do
+  require Logger
   import Ecto.Query
   alias Insurance.Repo
   alias Insurance.Quotes.Quote
 
   def create_quote(attrs \\ %{}) do
-    require Logger
-
     changeset = Quote.changeset(%Quote{}, attrs)
 
     unless changeset.valid? do

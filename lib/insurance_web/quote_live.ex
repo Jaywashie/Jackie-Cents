@@ -10,7 +10,7 @@ defmodule InsuranceWeb.QuoteLive do
     {:ok,
      socket
      |> put_flash(:error, "You must log in to save a quote")
-     |> push_redirect(to: "/users/log_in")}
+     |> push_navigate(to: "/users/log_in")}
   end
 end
 
@@ -98,19 +98,27 @@ end
 end
 
 
-  def handle_event("save", params, socket) do
-  user = socket.assigns.current_user
+  def handle_event("save", %{"name" => name, "email" => email, "type" => type} = _params, socket) do
+    user = socket.assigns.current_user
 
-  quote_params =
-    params
-    |> Map.put("user_id", user.id)
+    quote_params = %{
+      "user_id" => user.id,
+      "plan_name" => name,
+      "email" => email,
+      "plan_type" => String.downcase(type),
+      "monthly_contribution" => 0,
+      "estimated_value" => 0
+    }
 
-  case Quotes.create_quote(quote_params) do
-    {:ok, _quote} ->
-      {:noreply, assign(socket, message: "Saved successfully!")}
+    case Quotes.create_quote(quote_params) do
+      {:ok, _quote} ->
+        {:noreply, assign(socket, message: "Saved successfully!")}
 
-    {:error, message} ->
-      {:noreply, assign(socket, message: message)}
+      {:error, %Ecto.Changeset{} = _changeset} ->
+        {:noreply, assign(socket, message: "Failed to save quote. Please check your input.")}
+
+      {:error, _reason} ->
+        {:noreply, assign(socket, message: "An unexpected error occurred.")}
+    end
   end
-end
 end
