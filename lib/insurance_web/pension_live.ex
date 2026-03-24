@@ -2,7 +2,7 @@ defmodule InsuranceWeb.PensionLive do
   use InsuranceWeb, :live_view
   alias Insurance.Quotes
 
-  # Britam guaranteed minimum rate: 5% p.a. compounded (per official policy documents)
+  # guaranteed minimum rate: 5% p.a. compounded (per official policy documents)
   # Tax deductible contributions: max KES 20,000/month or 1/3 of monthly income, whichever is lower
   # Admin fee: 1.5% of contributions p.a. (waived first year)
 
@@ -15,7 +15,7 @@ defmodule InsuranceWeb.PensionLive do
       %{
         id: "personal_pension",
         name: "Personal Pension Plan",
-        provider: "Britam Life Assurance Co. (K) Ltd",
+        provider: "Jackie Cents Ltd",
         min_contribution: 2_000,
         tax_deductible_max: 20_000,
         retirement_age: "50 – 65 years",
@@ -40,7 +40,7 @@ defmodule InsuranceWeb.PensionLive do
       %{
         id: "individual_retirement",
         name: "Individual Retirement Plan",
-        provider: "Britam Life Assurance Co. (K) Ltd",
+        provider: "Jackie Cents Ltd",
         min_contribution: 500,
         tax_deductible_max: 20_000,
         retirement_age: "50 – 65 years",

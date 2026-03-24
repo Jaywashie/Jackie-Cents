@@ -30,6 +30,10 @@ defmodule InsuranceWeb.Router do
       live "/life", LifeLive
       live "/motor", MotorLive
       live "/pension", PensionLive
+      live "/money-market",   MoneyMarketLive
+      live "/unit-trust",     UnitTrustLive
+      live "/sme-insurance",  SmeLive
+      live "/wiba",          WibaLive
     end
   end
 

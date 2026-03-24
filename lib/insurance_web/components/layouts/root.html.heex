@@ -47,6 +47,81 @@
         background: linear-gradient(135deg, #fee2e2, #fecaca);
         color: #991b1b;
       }
+
+      /* ── Mobile menu ── */
+      #mobile-menu {
+        display: none;
+        flex-direction: column;
+        background: rgba(15, 60, 32, 0.98);
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
+      #mobile-menu.open {
+        display: flex;
+      }
+
+      /* Hamburger icon animation */
+      #hamburger-btn .bar {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: white;
+        border-radius: 2px;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+        transform-origin: center;
+      }
+      #hamburger-btn.open .bar:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      #hamburger-btn.open .bar:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      #hamburger-btn.open .bar:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      /* Mobile nav link style */
+      .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 24px;
+        color: rgba(187, 247, 208, 0.9);
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        transition: background 0.15s ease, color 0.15s ease;
+        text-decoration: none;
+      }
+      .mobile-nav-link:hover {
+        background: rgba(255,255,255,0.07);
+        color: white;
+      }
+      .mobile-nav-link .nav-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .mobile-nav-section {
+        padding: 10px 24px 4px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(134, 239, 172, 0.5);
+      }
+      .mobile-auth-row {
+        padding: 16px 24px;
+        display: flex;
+        gap: 10px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
     </style>
   </head>
 
@@ -67,60 +142,130 @@
           </span>
         </.link>
 
-        <!-- Nav Links -->
-<div class="hidden md:flex items-center space-x-1">
-  <.link navigate="/" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Home</.link>
-  <.link navigate="/medical" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Medical</.link>
-  <.link navigate="/life" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Life</.link>
-  <.link navigate="/motor" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Motor</.link>
-  <.link navigate="/pension" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Pension</.link>
-  <%= if @current_user do %>
-    <.link navigate="/my-quotes" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">
-      My Quotes
-    </.link>
-  <% end %>
-
- 
-  <%= if @current_user && @current_user.role == "admin" do %>
-    <.link navigate="/admin" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">
-      ⚙️ Admin
-    </.link>
-  <% end %>
-</div>
-
-        <!-- Auth -->
-        <div class="flex items-center space-x-3">
+        <!-- Desktop Nav Links -->
+        <div class="hidden lg:flex items-center space-x-1">
+          <.link navigate="/" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Home</.link>
+          <.link navigate="/medical" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Medical</.link>
+          <.link navigate="/life" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Life</.link>
+          <.link navigate="/motor" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Motor</.link>
+          <.link navigate="/pension" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Pension</.link>
+          <.link navigate="/money-market" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Money Market</.link>
+          <.link navigate="/unit-trust" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Unit Trust</.link>
+          <.link navigate="/wiba" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">WIBA</.link>
+          <.link navigate="/sme-insurance" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">SME</.link>
           <%= if @current_user do %>
-            <span class="hidden md:block text-green-200 text-sm">
-             👋 <%= if @current_user.first_name, do: "#{@current_user.first_name} #{@current_user.last_name}", else: @current_user.email %>
-            </span>
-            <.link href={~p"/users/settings"} class="text-green-100 hover:text-white text-sm font-medium transition-all">
-              Settings
-            </.link>
-            <.link
-              href={~p"/users/log_out"}
-              method="delete"
-              class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold border border-white/20 transition-all"
-            >
-              Log out
-            </.link>
-          <% else %>
-            <.link
-              href={~p"/users/register"}
-              class="text-green-100 hover:text-white text-sm font-medium transition-all"
-            >
-              Register
-            </.link>
-            <.link
-              href={~p"/users/log_in"}
-              class="bg-white text-green-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-50 transition-all shadow"
-            >
-              Log in
-            </.link>
+            <.link navigate="/my-quotes" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">My Quotes</.link>
+          <% end %>
+          <%= if @current_user && @current_user.role == "admin" do %>
+            <.link navigate="/admin" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">⚙️ Admin</.link>
           <% end %>
         </div>
 
+        <!-- Right side: auth + hamburger -->
+        <div class="flex items-center gap-3">
+          <!-- Desktop auth -->
+          <div class="hidden lg:flex items-center space-x-3">
+            <%= if @current_user do %>
+              <span class="text-green-200 text-sm">
+                👋 <%= if @current_user.first_name, do: "#{@current_user.first_name} #{@current_user.last_name}", else: @current_user.email %>
+              </span>
+              <.link href={~p"/users/settings"} class="text-green-100 hover:text-white text-sm font-medium transition-all">Settings</.link>
+              <.link href={~p"/users/log_out"} method="delete"
+                class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold border border-white/20 transition-all">
+                Log out
+              </.link>
+            <% else %>
+              <.link href={~p"/users/register"} class="text-green-100 hover:text-white text-sm font-medium transition-all">Register</.link>
+              <.link href={~p"/users/log_in"}
+                class="bg-white text-green-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-50 transition-all shadow">
+                Log in
+              </.link>
+            <% end %>
+          </div>
+
+          <!-- Hamburger button (visible below lg) -->
+          <button id="hamburger-btn"
+            aria-label="Toggle navigation menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            class="lg:hidden flex flex-col justify-center gap-[5px] w-9 h-9 rounded-lg hover:bg-white/10 items-center transition-all"
+            onclick="toggleMobileMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+
       </div>
+    </div>
+
+    <!-- Mobile Menu Panel -->
+    <div id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+
+      <!-- Insurance section -->
+      <span class="mobile-nav-section">Insurance</span>
+      <a href="/" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+      <a href="/medical" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🏥</span> Medical Cover
+      </a>
+      <a href="/life" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🛡️</span> Life Insurance
+      </a>
+      <a href="/motor" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🚗</span> Motor Cover
+      </a>
+      <a href="/pension" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🏦</span> Pension Plan
+      </a>
+      <a href="/wiba" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🦺</span> WIBA
+      </a>
+      <a href="/sme-insurance" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🏢</span> SME Insurance
+      </a>
+
+      <!-- Investments section -->
+      <span class="mobile-nav-section">Investments</span>
+      <a href="/money-market" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">💰</span> Money Market Fund
+      </a>
+      <a href="/unit-trust" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">📊</span> Unit Trust Funds
+      </a>
+
+      <!-- Account section -->
+      <span class="mobile-nav-section">Account</span>
+      <a href="/my-quotes" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">📋</span> My Quotes
+      </a>
+      <a href="/users/settings" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">⚙️</span> Settings
+      </a>
+
+      <!-- Mobile auth buttons -->
+      <div class="mobile-auth-row">
+        <%= if @current_user do %>
+          <span class="text-green-300 text-sm self-center flex-1">
+            👋 <%= if @current_user.first_name, do: @current_user.first_name, else: @current_user.email %>
+          </span>
+          <.link href={~p"/users/log_out"} method="delete"
+            class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold border border-white/20 transition-all">
+            Log out
+          </.link>
+        <% else %>
+          <.link href={~p"/users/register"}
+            class="flex-1 text-center bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold border border-white/20 transition-all">
+            Register
+          </.link>
+          <.link href={~p"/users/log_in"}
+            class="flex-1 text-center bg-white text-green-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-50 transition-all shadow">
+            Log in
+          </.link>
+        <% end %>
+      </div>
+
     </div>
   </nav>
 
@@ -129,7 +274,7 @@
   </body>
 
   <!-- FOOTER -->
-   <footer class="bg-gray-900 text-gray-300 mt-auto">
+  <footer class="bg-gray-900 text-gray-300 mt-auto">
     <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
 
       <!-- Brand -->
@@ -177,11 +322,6 @@
               <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8zM9.8 15.5v-7l6.2 3.5-6.2 3.5z"/>
             </svg>
           </a>
-
-      
-
-
-
         </div>
       </div>
 
@@ -207,6 +347,26 @@
           <li>
             <.link navigate="/pension" class="hover:text-green-400 transition-colors flex items-center gap-2">
               <span class="text-green-600">→</span> Pension Plan
+            </.link>
+          </li>
+          <li>
+            <.link navigate="/wiba" class="hover:text-green-400 transition-colors flex items-center gap-2">
+              <span class="text-green-600">→</span> WIBA Cover
+            </.link>
+          </li>
+          <li>
+            <.link navigate="/sme-insurance" class="hover:text-green-400 transition-colors flex items-center gap-2">
+              <span class="text-green-600">→</span> SME Insurance
+            </.link>
+          </li>
+          <li>
+            <.link navigate="/money-market" class="hover:text-green-400 transition-colors flex items-center gap-2">
+              <span class="text-green-600">→</span> Money Market Fund
+            </.link>
+          </li>
+          <li>
+            <.link navigate="/unit-trust" class="hover:text-green-400 transition-colors flex items-center gap-2">
+              <span class="text-green-600">→</span> Unit Trust Funds
             </.link>
           </li>
         </ul>
@@ -244,9 +404,9 @@
           </li>
           <li class="flex items-start gap-3">
             <span class="mt-0.5 text-green-500 shrink-0">✉️</span>
-            <a href="mailto:Njerujackline78@gmail.com"
+            <a href="mailto:JackieCents23@gmail.com"
               class="text-gray-400 hover:text-green-400 transition-colors break-all">
-              Njerujackline78@gmail.com
+              JackieCents23@gmail.com
             </a>
           </li>
           <li class="flex items-start gap-3">
@@ -265,10 +425,38 @@
     <div class="border-t border-gray-800">
       <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
         <span>© 2026 JackieCents Insurance. All rights reserved.</span>
-       
       </div>
     </div>
   </footer>
 
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const btn  = document.getElementById('hamburger-btn');
+      const isOpen = menu.classList.contains('open');
+      menu.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const btn  = document.getElementById('hamburger-btn');
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Close menu when clicking outside the navbar
+    document.addEventListener('click', function(e) {
+      const nav = document.querySelector('nav');
+      if (!nav.contains(e.target)) closeMobileMenu();
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMobileMenu();
+    });
+  </script>
 
 </html>

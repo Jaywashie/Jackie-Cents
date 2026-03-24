@@ -1,0 +1,219 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        💰 Money Market Fund
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Money Market Fund
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Grow your savings with a secure, liquid, and high-yield money market fund.
+        Capital preserved, competitive returns, accessible any time.
+      </p>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">Indicative Returns</h3>
+        <p class="text-2xl font-bold text-blue-600 mb-1">10% – 14% p.a.</p>
+        <p class="text-xs text-gray-400">Net of management fees. Past performance is not a guarantee of future returns.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">High Liquidity</h3>
+        <p class="text-sm text-gray-500">Access your funds within <span class="font-semibold text-gray-700">3–5 working days</span> at no penalty. No lock-in period.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">Capital Preservation</h3>
+        <p class="text-sm text-gray-500">Invests in government securities, fixed deposits, and treasury bills. Low-risk profile.</p>
+      </div>
+    </div>
+
+    <!-- Tier Cards -->
+    <div class="mb-12">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 text-center">Investment Tiers</h2>
+      <div class="grid md:grid-cols-5 gap-4">
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm text-center">
+          <p class="font-bold text-gray-900 text-sm">Starter</p>
+          <p class="text-blue-600 font-bold text-lg">10.0%</p>
+          <p class="text-xs text-gray-400">From KES 1,000</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm text-center">
+          <p class="font-bold text-gray-900 text-sm">Growth</p>
+          <p class="text-blue-600 font-bold text-lg">11.0%</p>
+          <p class="text-xs text-gray-400">From KES 10,000</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm text-center">
+          <p class="font-bold text-gray-900 text-sm">Premium</p>
+          <p class="text-blue-600 font-bold text-lg">12.0%</p>
+          <p class="text-xs text-gray-400">From KES 50,000</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm text-center">
+          <p class="font-bold text-gray-900 text-sm">Elite</p>
+          <p class="text-blue-600 font-bold text-lg">13.0%</p>
+          <p class="text-xs text-gray-400">From KES 250,000</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm text-center">
+          <p class="font-bold text-gray-900 text-sm">Corporate</p>
+          <p class="text-blue-600 font-bold text-lg">14.0%</p>
+          <p class="text-xs text-gray-400">From KES 1,000,000</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote Form -->
+    <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+      <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Project Your Returns</h3>
+      <p class="text-gray-500 text-sm text-center mb-8">
+        Enter your investment details to see a projected growth estimate.
+        <span class="text-blue-600 font-medium">Login required to generate a quote.</span>
+      </p>
+
+      <%= if @show_login_prompt do %>
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6 text-center">
+          <p class="text-blue-800 font-semibold mb-1">Login Required</p>
+          <p class="text-blue-600 text-sm mb-4">Please log in or create an account to generate and save your investment projection.</p>
+          <.link navigate="/users/log_in" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-all inline-block">
+            Log in to Continue →
+          </.link>
+        </div>
+      <% end %>
+
+      <form phx-submit="generate_quote" class="space-y-5">
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Investment Tier</label>
+          <select name="mmf_tier"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-gray-900">
+            <option value="starter">Starter — From KES 1,000 (10.0% p.a.)</option>
+            <option value="growth" selected>Growth — From KES 10,000 (11.0% p.a.)</option>
+            <option value="premium">Premium — From KES 50,000 (12.0% p.a.)</option>
+            <option value="elite">Elite — From KES 250,000 (13.0% p.a.)</option>
+            <option value="corporate">Corporate — From KES 1,000,000 (14.0% p.a.)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Contribution Frequency</label>
+          <select name="frequency"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-gray-900">
+            <option value="monthly" selected>Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+            <option value="once">Lump Sum (Once-off)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Contribution Amount (KES)</label>
+          <input type="number" name="amount" required min="1000" placeholder="e.g. 5,000"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+          <p class="text-xs text-gray-400 mt-1">Minimum KES 1,000 per contribution.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Investment Horizon (Years)</label>
+          <input type="number" name="goal_years" required min="1" max="30" placeholder="e.g. 5"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+          <p class="text-xs text-gray-400 mt-1">How many years do you plan to stay invested?</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+          <input type="text" name="full_name" required placeholder="e.g. Jane Wanjiku"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">ID / Passport Number</label>
+          <input type="text" name="id_number" required placeholder="e.g. 12345678"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">KRA PIN</label>
+          <input type="text" name="kra_pin" required placeholder="e.g. A012345678B"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+          <p class="text-xs text-gray-400 mt-1">Required for regulatory compliance (Capital Markets Authority).</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+          <input type="tel" name="phone" required placeholder="e.g. 0712 345 678"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Investment Purpose</label>
+          <select name="purpose"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-gray-900">
+            <option value="savings">General Savings</option>
+            <option value="emergency">Emergency Fund</option>
+            <option value="education">Education Fund</option>
+            <option value="retirement">Retirement Planning</option>
+            <option value="business">Business Capital</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold bg-blue-600 hover:bg-blue-700 transition-all">
+          Project My Returns
+        </button>
+      </form>
+    </div>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white shadow-xl">
+          <p class="text-blue-200 text-sm font-medium mb-2 text-center">Projected Portfolio Value</p>
+          <p class="text-5xl font-bold mb-1 text-center">KES <%= InsuranceWeb.MoneyMarketLive.format_number(@quote_data.projected_value) %></p>
+          <p class="text-blue-200 text-sm mb-6 text-center">after <%= @quote_data.goal_years %> year(s) — <%= @quote_data.tier %> Tier</p>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-blue-200 text-xs mb-1">Total Invested</p>
+              <p class="font-bold text-lg">KES <%= InsuranceWeb.MoneyMarketLive.format_number(@quote_data.total_invested) %></p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-blue-200 text-xs mb-1">Total Returns</p>
+              <p class="font-bold text-lg text-green-300">KES <%= InsuranceWeb.MoneyMarketLive.format_number(@quote_data.total_returns) %></p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-blue-200 text-xs mb-1">Indicative Rate</p>
+              <p class="font-bold text-lg"><%= @quote_data.indicative_rate %>% p.a.</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-blue-200 text-xs mb-1">Mgmt Fee</p>
+              <p class="font-bold text-lg"><%= @quote_data.management_fee %>% p.a.</p>
+            </div>
+          </div>
+
+          <p class="text-blue-300 text-xs mb-6 text-center">
+            Projections are indicative and based on current market rates. Actual returns may vary.
+            Regulated by the Capital Markets Authority (CMA) of Kenya.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-white text-center">
+              ✔ Quote Saved Successfully!
+            </div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote" class="w-full bg-white text-blue-700 px-8 py-3 rounded-xl font-bold hover:bg-blue-50 transition-all shadow">
+                Save This Projection →
+              </button>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

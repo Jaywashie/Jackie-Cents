@@ -32,7 +32,7 @@
           A comprehensive medical insurance cover providing lifetime renewable protection for individuals
           and families. Available in five tiers — Essential, Bronze, Silver, Gold, and Platinum — with
           inpatient limits ranging from KES 300,000 to KES 10,000,000. Includes access to the full
-          Britam hospital panel with no pre-approval required for outpatient visits. Pre-existing and
+          hospitals with no pre-approval required for outpatient visits. Pre-existing and
           chronic conditions covered after the applicable waiting period.
         </p>
         <ul class="space-y-2 mb-6">
@@ -67,7 +67,7 @@
           in Kenya. Available in five benefit options with inpatient limits from KES 75,000 to
           KES 300,000. Covers hospitalization, chronic and pre-existing conditions (after waiting
           period), maternity, emergency ambulance, and last expense benefit. A KES 300 co-payment
-          applies per outpatient visit. Enrol via Britam branches, agents, or WhatsApp (0705 100 100).
+          applies per outpatient visit.
         </p>
         <ul class="space-y-2 mb-6">
           <li class="flex items-center gap-2 text-sm text-gray-700"><span class="text-green-500">✔</span> Inpatient cover: KES 75,000 – KES 300,000</li>
@@ -94,7 +94,7 @@
         <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Quote</h3>
         <p class="text-gray-500 text-sm text-center mb-8">
           Plan: <span class="font-semibold text-green-700">
-            <%= if @selected_plan == "milele", do: "Britam Milele Health Plan", else: "Britam Bima ya Mwananchi" %>
+            <%= if @selected_plan == "milele", do: " Milele Health Plan", else: "Bima ya Mwananchi" %>
           </span>
         </p>
 
@@ -161,8 +161,7 @@
           <p class="text-5xl font-bold mb-1">KES <%= InsuranceWeb.MedicalLive.format_number(@quote) %></p>
           <p class="text-green-200 text-sm mb-2">≈ KES <%= InsuranceWeb.MedicalLive.format_number(div(@quote, 12)) %>/month</p>
           <p class="text-green-300 text-xs mb-8">
-            Indicative premium only. Final premium is subject to underwriting by Britam General Insurance
-            (K) Ltd, regulated by the Insurance Regulatory Authority (IRA).
+            Indicative premium only. Final premium is regulated by the Insurance Regulatory Authority (IRA).
           </p>
 
           <%= if @saved do %>

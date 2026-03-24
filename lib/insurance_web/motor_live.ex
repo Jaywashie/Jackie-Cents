@@ -2,7 +2,7 @@ defmodule InsuranceWeb.MotorLive do
   use InsuranceWeb, :live_view
   alias Insurance.Quotes
 
-  # Britam comprehensive premium rates (Kenya market standard):
+  #  comprehensive premium rates (Kenya market standard):
   # - Vehicles ≤ KES 2,500,000 → 4.25% of value (min KES 30,180)
   # - Vehicles > KES 2,500,000 → 3.50% of value
   # Third party only → statutory minimum: KES 7,560/year (private), KES 13,440 (commercial)
@@ -19,7 +19,7 @@ defmodule InsuranceWeb.MotorLive do
         min_premium: 30_180,
         description:
           "Full protection covering accidental damage, fire, theft, malicious damage, and third-party liabilities. " <>
-          "Britam's Motiflex option allows flexible monthly, quarterly, or semi-annual premium payments. " <>
+          "Motiflex option allows flexible monthly, quarterly, or semi-annual premium payments. " <>
           "Geographical scope is Kenya, extendable to other East African countries on request.",
         benefits: [
           "Accidental damage & overturning",
@@ -28,7 +28,7 @@ defmodule InsuranceWeb.MotorLive do
           "Free windscreen & audio/video accessories cover",
           "Third-party bodily injury & property damage",
           "Total loss: repairs exceeding 50% of sum insured",
-          "Flexible payment via Britam Motiflex"
+          "Flexible payment via Motiflex"
         ]
       },
       %{
@@ -93,7 +93,7 @@ defmodule InsuranceWeb.MotorLive do
           usage_load = if usage == "commercial", do: round(base * 0.25), else: 0
 
           raw = base + age_load + usage_load
-          # Enforce Britam minimum premium
+          # Enforce  minimum premium
           max(raw, 30_180)
 
         "third_party" ->
@@ -122,8 +122,8 @@ defmodule InsuranceWeb.MotorLive do
       user ->
         plan_name =
           case socket.assigns.selected_plan do
-            "comprehensive" -> "Britam Motor Comprehensive Insurance"
-            "third_party"   -> "Britam Third Party Motor Insurance"
+            "comprehensive" -> " Motor Comprehensive Insurance"
+            "third_party"   -> " Third Party Motor Insurance"
             _               -> "Motor Insurance"
           end
 

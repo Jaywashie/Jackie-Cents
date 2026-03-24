@@ -4,7 +4,7 @@ defmodule InsuranceWeb.LifeLive do
 
   @plans %{
     "akiba" => %{
-      name: "Britam Akiba Life Savings Plan",
+      name: "Akiba Life Savings Plan",
       base: 10000,
       icon: "",
       min_term: 5,
@@ -13,7 +13,7 @@ defmodule InsuranceWeb.LifeLive do
       max_age: 65
     },
     "education" => %{
-      name: "Britam Boresha Elimu Education Plan",
+      name: "Boresha Elimu Education Plan",
       base: 12000,
       icon: "",
       min_term: 6,
@@ -22,7 +22,7 @@ defmodule InsuranceWeb.LifeLive do
       max_age: 60
     },
     "whole_life" => %{
-      name: "Britam Whole Life Plan",
+      name: " Whole Life Plan",
       base: 15000,
       icon: "",
       min_term: nil,
@@ -31,7 +31,7 @@ defmodule InsuranceWeb.LifeLive do
       max_age: 65
     },
     "term_life" => %{
-      name: "Britam Term Life Plan",
+      name: " Term Life Plan",
       base: 8000,
       icon: "",
       min_term: 10,

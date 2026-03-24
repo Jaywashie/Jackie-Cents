@@ -1,0 +1,293 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+         WIBA Cover
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Work Injury Benefits (WIBA)
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Mandatory employer cover under the Work Injury Benefits Act (WIBA), Cap 236 — Laws of Kenya.
+        Protect your employees against work-related injuries, illnesses, and death.
+      </p>
+    </div>
+
+    <!-- Legal Notice -->
+    <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-10 max-w-4xl mx-auto">
+      <div class="flex gap-3">
+        <span class="text-red-500 text-xl"></span>
+        <div>
+          <p class="font-bold text-red-800 mb-1">Statutory Requirement — All Employers Must Comply</p>
+          <p class="text-red-700 text-sm leading-relaxed">
+            Every employer in Kenya is required by law to maintain a valid WIBA policy for all employees.
+            Failure to comply carries criminal liability under Section 10 of WIBA 2007, including fines
+            and imprisonment. Cover must be in place before any employee commences duties.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Benefits -->
+    <div class="grid md:grid-cols-4 gap-5 mb-12">
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Death Benefit</h3>
+        <p class="text-xs text-gray-500">96 months of earnings paid to dependants (minimum KES 960,000)</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Permanent Disability</h3>
+        <p class="text-xs text-gray-500">Lump sum based on degree of disability (up to 96 months earnings)</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Medical Expenses</h3>
+        <p class="text-xs text-gray-500">Reasonable and necessary medical treatment costs covered in full</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Temporary Disability</h3>
+        <p class="text-xs text-gray-500">50% of monthly earnings paid for up to 12 months during recovery</p>
+      </div>
+    </div>
+
+    <!-- Rate Table -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-12 max-w-4xl mx-auto overflow-x-auto">
+      <h2 class="text-lg font-bold text-gray-900 mb-4">WIBA Occupational Rate Schedule</h2>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-100">
+            <th class="text-left text-gray-500 font-semibold pb-2 pr-4">Occupation Category</th>
+            <th class="text-right text-gray-500 font-semibold pb-2">Rate (% of Payroll)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for {_key, rate} <- InsuranceWeb.WibaLive.wiba_rates() do %>
+            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+              <td class="py-2 pr-4 text-gray-700"><%= rate.label %></td>
+              <td class="py-2 text-right font-semibold text-red-600"><%= Float.round(rate.rate * 100, 2) %>%</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <p class="text-xs text-gray-400 mt-3">Rates per the IRA Kenya WIBA schedule. Mixed-occupation workforces are rated at the highest applicable rate.</p>
+    </div>
+
+    <!-- Quote Form -->
+    <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+      <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Calculate WIBA Premium</h3>
+      <p class="text-gray-500 text-sm text-center mb-2">
+        Enter your workforce details to get an accurate annual premium estimate.
+      </p>
+      <p class="text-gray-400 text-xs text-center mb-8">
+        <span class="text-red-600 font-medium">Login required</span> to generate your WIBA quote.
+      </p>
+
+      <%= if @show_login_prompt do %>
+        <div class="bg-red-50 border border-red-200 rounded-xl p-5 mb-6 text-center">
+          <p class="text-red-800 font-semibold mb-1">Login Required</p>
+          <p class="text-red-600 text-sm mb-4">Please log in or create an account to generate and save your WIBA quote.</p>
+          <.link navigate="/users/log_in" class="bg-red-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-red-700 transition-all inline-block">
+            Log in to Continue →
+          </.link>
+        </div>
+      <% end %>
+
+      <form phx-submit="generate_quote" class="space-y-5">
+
+        <!-- Employer Details -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Employer / Company Name</label>
+          <input type="text" name="employer_name" required placeholder="e.g. Kariuki & Sons Construction Ltd"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Business Registration Number</label>
+          <input type="text" name="reg_number" required placeholder="e.g. PVT-A12345678"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">KRA PIN (Employer)</label>
+          <input type="text" name="kra_pin" required placeholder="e.g. P051234567A"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Contact Name</label>
+          <input type="text" name="contact_name" required placeholder="e.g. Peter Njoroge"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+          <input type="tel" name="phone" required placeholder="e.g. 0720 000 111"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Business Location / County</label>
+          <input type="text" name="location" required placeholder="e.g. Kiambu, Kenya"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+        </div>
+
+        <!-- Workforce Details -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Occupation / Job Category</label>
+          <select name="occupation"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none bg-white text-gray-900">
+            <%= for {key, rate} <- InsuranceWeb.WibaLive.wiba_rates() do %>
+              <option value={key}><%= rate.label %> (<%=  Float.round(rate.rate * 100, 2) %>%)</option>
+            <% end %>
+          </select>
+          <p class="text-xs text-gray-400 mt-1">For mixed-occupation workforces, select the highest-risk occupation category.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Total Number of Employees</label>
+          <input type="number" name="employees" required min="1" placeholder="e.g. 25"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+          <p class="text-xs text-gray-400 mt-1">Include all full-time, part-time, and casual employees.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Gross Annual Payroll (KES)</label>
+          <input type="number" name="annual_payroll" required min="72000" placeholder="e.g. 3,600,000"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none text-gray-900"/>
+          <p class="text-xs text-gray-400 mt-1">Total gross salaries/wages paid to all employees annually before deductions.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Cover Period</label>
+          <select name="cover_period"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none bg-white text-gray-900">
+            <option value="12">12 Months (Annual)</option>
+            <option value="6">6 Months (Short-term)</option>
+            <option value="3">3 Months (Short-term)</option>
+          </select>
+          <p class="text-xs text-gray-400 mt-1">Short-term rates carry a 25% loading on the pro-rated annual premium.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Include Employer's Liability Extension?</label>
+          <select name="include_el"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none bg-white text-gray-900">
+            <option value="false">No — WIBA only (statutory minimum)</option>
+            <option value="true">Yes — Add Employer's Liability extension (+25%)</option>
+          </select>
+          <p class="text-xs text-gray-400 mt-1">Employer's Liability covers claims arising from negligence beyond WIBA's statutory scope.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Previous WIBA Claims (Last 3 Years)</label>
+          <select name="previous_claims"
+            class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none bg-white text-gray-900">
+            <option value="none">No claims</option>
+            <option value="one">1 claim</option>
+            <option value="two">2 claims</option>
+            <option value="three_plus">3 or more claims</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full text-white py-3 rounded-xl font-semibold bg-green-600 hover:bg-green-700 transition-all">
+          Calculate WIBA Premium →
+        </button>
+      </form>
+    </div>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-2xl p-8 text-white shadow-xl">
+          <p class="text-green-200 text-sm font-medium mb-2 text-center">Estimated Annual WIBA Premium</p>
+          <p class="text-5xl font-bold mb-1 text-center">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.total_annual) %></p>
+          <p class="text-red-200 text-sm mb-2 text-center">≈ KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.monthly) %>/month</p>
+          <p class="text-red-200 text-xs mb-6 text-center">
+            Occupation: <%= @quote_data.occupation %> | Rate: <%= @quote_data.rate_percent %>% | Employees: <%= @quote_data.employees %>
+          </p>
+
+          <!-- Premium Breakdown -->
+          <div class="bg-white/10 rounded-xl p-4 mb-6">
+            <p class="text-red-200 text-xs font-semibold mb-3 uppercase tracking-wide">Premium Breakdown</p>
+            <div class="space-y-2">
+              <div class="flex justify-between text-sm">
+                <span class="text-red-200">WIBA Base Premium</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.wiba_premium) %></span>
+              </div>
+              <%= if @quote_data.include_el do %>
+                <div class="flex justify-between text-sm">
+                  <span class="text-red-200">Employer's Liability Extension</span>
+                  <span class="font-semibold">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.el_premium) %></span>
+                </div>
+              <% end %>
+              <div class="flex justify-between text-sm">
+                <span class="text-red-200">IRA Levy (0.25%)</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.ira_levy) %></span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-red-200">PHCF Levy (0.25%)</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.phcf_levy) %></span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-red-200">Stamp Duty</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.stamp_duty) %></span>
+              </div>
+              <div class="flex justify-between text-sm border-t border-white/20 pt-2 mt-2">
+                <span class="text-white font-bold">Total Annual Premium</span>
+                <span class="font-bold text-lg">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.total_annual) %></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statutory Benefits Summary -->
+          <div class="bg-white/10 rounded-xl p-4 mb-6">
+            <p class="text-red-200 text-xs font-semibold mb-3 uppercase tracking-wide">Statutory Benefits Per Employee</p>
+            <div class="space-y-2">
+              <div class="flex justify-between text-sm">
+                <span class="text-red-200">Max Death / Total Disability Benefit</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.max_death_benefit) %></span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-red-200">Temporary Disability (monthly)</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.WibaLive.format_number(@quote_data.temp_disability_monthly) %>/mo</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-red-200">Medical Expenses</span>
+                <span class="font-semibold">Reasonable & Necessary</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-red-300 text-xs mb-6 text-center">
+            Indicative premium based on WIBA Act Cap 236. Final premium subject to underwriting and
+            payroll verification. Regulated by the IRA Kenya.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-white text-center">
+              ✔ Quote Saved Successfully!
+            </div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote" class="w-full bg-white text-red-700 px-8 py-3 rounded-xl font-bold hover:bg-red-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3 text-center">
+                <p class="text-green-200 text-sm">Log in to save this quote to your account</p>
+                <.link navigate="/users/log_in" class="bg-white text-green-700 px-8 py-3 rounded-xl font-bold hover:bg-green-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

@@ -57,7 +57,7 @@ defmodule InsuranceWeb.MedicalLive do
           option      = params["bym_option"] || socket.assigns.bym_option
           option_data = @bym_options[option] || @bym_options["option1"]
           base        = option_data.base_annual
-          # Additional dependants: ~KES 2,400 each (per Britam schedule)
+          # Additional dependants: ~KES 2,400 each (per  schedule)
           dep_premium = dependants * 2_400
           base + dep_premium
 
@@ -79,8 +79,8 @@ defmodule InsuranceWeb.MedicalLive do
       user ->
         plan_name =
           case socket.assigns.selected_plan do
-            "milele"    -> "Britam Milele Health Plan"
-            "mwananchi" -> "Britam Bima ya Mwananchi"
+            "milele"    -> "Milele Health Plan"
+            "mwananchi" -> "Bima ya Mwananchi"
             _           -> "Medical Plan"
           end
 

@@ -1,0 +1,222 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        Unit Trust Funds
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Unit Trust Funds
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Invest in professionally managed funds tailored to your risk appetite and financial goals.
+        Choose from equity, balanced, bond, income, or Sharia-compliant options.
+      </p>
+    </div>
+
+    <!-- Fund Cards Grid -->
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+
+      <%= for {key, fund} <- InsuranceWeb.UnitTrustLive.ut_funds() do %>
+        <div class={"bg-white rounded-2xl shadow-sm p-6 border-2 transition-all duration-200 card-hover cursor-pointer " <> if @selected_fund == key, do: "border-green-500 shadow-lg", else: "border-gray-100 hover:border-green-200"}>
+          <div class="flex items-center justify-between mb-3">
+            <span class={"text-xs font-semibold px-2 py-1 rounded-full " <> InsuranceWeb.UnitTrustLive.risk_color(fund.risk)}>
+              <%= fund.risk %> Risk
+            </span>
+            <%= if @selected_fund == key do %>
+              <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2"><%= fund.label %></h3>
+          <p class="text-gray-500 text-xs mb-4 leading-relaxed"><%= fund.description %></p>
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <p class="text-xs text-gray-400">Indicative Return</p>
+              <p class="text-xl font-bold text-green-600"><%= round(fund.indicative_rate * 100) %>% p.a.</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-gray-400">Min. Investment</p>
+              <p class="text-sm font-semibold text-gray-700">KES <%= InsuranceWeb.UnitTrustLive.format_number(fund.min_amount) %></p>
+            </div>
+          </div>
+          <button phx-click="select_fund" phx-value-fund={key}
+            class={"w-full py-2 rounded-xl font-semibold text-sm transition-all " <> if @selected_fund == key, do: "bg-green-600 text-white", else: "bg-gray-100 hover:bg-green-600 hover:text-white text-gray-700"}>
+            <%= if @selected_fund == key, do: "✔ Fund Selected", else: "Select Fund" %>
+          </button>
+        </div>
+      <% end %>
+
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_fund do %>
+      <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Projection</h3>
+        <p class="text-gray-500 text-sm text-center mb-2">
+          Fund: <span class="font-semibold text-green-700">
+            <%= (InsuranceWeb.UnitTrustLive.ut_funds()[@selected_fund] || %{label: ""}).label %>
+          </span>
+        </p>
+        <p class="text-gray-400 text-xs text-center mb-8">
+          <span class="text-green-600 font-medium">Login required</span> to generate a quote.
+        </p>
+
+        <%= if @show_login_prompt do %>
+          <div class="bg-green-50 border border-green-200 rounded-xl p-5 mb-6 text-center">
+            <p class="text-green-800 font-semibold mb-1">Login Required</p>
+            <p class="text-green-600 text-sm mb-4">Please log in or create an account to generate your investment projection.</p>
+            <.link navigate="/users/log_in" class="bg-green-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-green-700 transition-all inline-block">
+              Log in to Continue →
+            </.link>
+          </div>
+        <% end %>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <input type="hidden" name="fund_key" value={@selected_fund} />
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+            <input type="text" name="full_name" required placeholder="e.g. John Kamau"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
+            <input type="date" name="dob" required
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">ID / Passport Number</label>
+            <input type="text" name="id_number" required placeholder="e.g. 12345678"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">KRA PIN</label>
+            <input type="text" name="kra_pin" required placeholder="e.g. A012345678B"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">Mandatory for CMA regulatory reporting.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+            <input type="tel" name="phone" required placeholder="e.g. 0712 345 678"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Lump Sum Investment (KES)</label>
+            <input type="number" name="lump_sum" min="0" placeholder="e.g. 50,000 (leave 0 if none)"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">Initial one-off investment. Minimum KES 5,000.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Monthly Top-Up (KES)</label>
+            <input type="number" name="monthly_topup" min="0" placeholder="e.g. 3,000 (leave 0 if none)"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">Regular monthly addition to your investment.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Investment Horizon (Years)</label>
+            <input type="number" name="goal_years" required min="1" max="40" placeholder="e.g. 10"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Risk Profile</label>
+            <select name="risk_profile"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="conservative">Conservative — Capital preservation, low risk</option>
+              <option value="moderate" selected>Moderate — Balanced growth and safety</option>
+              <option value="aggressive">Aggressive — Maximum growth, comfortable with volatility</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Investment Goal</label>
+            <select name="goal"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="retirement">Retirement</option>
+              <option value="education">Children's Education</option>
+              <option value="wealth">Wealth Creation</option>
+              <option value="income">Regular Income</option>
+              <option value="property">Property Purchase</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Source of Funds</label>
+            <select name="source_of_funds"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="salary">Salary / Employment Income</option>
+              <option value="business">Business Income</option>
+              <option value="savings">Personal Savings</option>
+              <option value="inheritance">Inheritance / Gift</option>
+              <option value="rental">Rental Income</option>
+              <option value="other">Other</option>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">Required under Anti-Money Laundering (AML) regulations.</p>
+          </div>
+
+          <button type="submit" class="w-full text-white py-3 rounded-xl font-semibold bg-green-600 hover:bg-green-700 transition-all">
+            Project My Investment →
+          </button>
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-2xl p-8 text-white shadow-xl">
+          <p class="text-green-200 text-sm font-medium mb-2 text-center">Projected Portfolio Value</p>
+          <p class="text-5xl font-bold mb-1 text-center">KES <%= InsuranceWeb.UnitTrustLive.format_number(@quote_data.projected_value) %></p>
+          <p class="text-green-200 text-sm mb-6 text-center">after <%= @quote_data.goal_years %> year(s) — <%= @quote_data.fund %></p>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-green-200 text-xs mb-1">Total Invested</p>
+              <p class="font-bold text-lg">KES <%= InsuranceWeb.UnitTrustLive.format_number(@quote_data.total_invested) %></p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-green-200 text-xs mb-1">Total Returns</p>
+              <p class="font-bold text-lg text-green-300">KES <%= InsuranceWeb.UnitTrustLive.format_number(@quote_data.total_returns) %></p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-green-200 text-xs mb-1">Indicative Rate</p>
+              <p class="font-bold text-lg"><%= @quote_data.indicative_rate %>% p.a.</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+              <p class="text-green-200 text-xs mb-1">Risk Level</p>
+              <p class="font-bold text-lg"><%= @quote_data.risk %></p>
+            </div>
+          </div>
+
+          <p class="text-green-300 text-xs mb-6 text-center">
+            Projections are indicative. Unit trust investments are subject to market risk.
+            Past performance does not guarantee future results. Regulated by the CMA Kenya.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-white text-center">
+              ✔ Quote Saved Successfully!
+            </div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote" class="w-full bg-white text-green-700 px-8 py-3 rounded-xl font-bold hover:bg-purple-50 transition-all shadow">
+                Save This Projection →
+              </button>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>
