@@ -1,0 +1,201 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-violet-100 text-violet-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        👥 Group Life Assurance
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Group Life Assurance
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Protect your employees and their families with group life assurance.
+        No individual medicals required up to the free cover limit.
+      </p>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <%= for {key, plan} <- InsuranceWeb.GroupLifeLive.plans() do %>
+        <div class={"bg-white rounded-2xl shadow-sm p-8 border-2 transition-all duration-200 card-hover " <>
+          if @selected_plan == key, do: "border-violet-500 shadow-lg", else: "border-gray-100 hover:border-violet-200"}>
+
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-3xl"><%= plan.icon %></span>
+            <%= if @selected_plan == key do %>
+              <span class="bg-violet-100 text-violet-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl font-bold text-gray-900 mb-1"><%= plan.name %></h2>
+          <p class="text-xs text-violet-700 font-medium mb-3">
+            Min. 10 employees | Annual renewable | RBA & IRA regulated
+          </p>
+          <p class="text-gray-500 text-sm mb-5 leading-relaxed"><%= plan.description %></p>
+
+          <ul class="space-y-2 mb-6">
+            <%= for benefit <- plan.benefits do %>
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-violet-500 mt-0.5">✔</span>
+                <span><%= benefit %></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <button phx-click="select_plan" phx-value-plan={key}
+            class={"w-full py-3 rounded-xl font-semibold transition-all " <>
+              if @selected_plan == key,
+                do: "bg-violet-600 text-white",
+                else: "bg-gray-100 hover:bg-violet-600 hover:text-white text-gray-700"}>
+            <%= if @selected_plan == key, do: "✔ Plan Selected", else: "Get Quote" %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Group Life Quote</h3>
+        <p class="text-gray-500 text-sm text-center mb-8">
+          Plan: <span class="font-semibold text-violet-700"><%= InsuranceWeb.GroupLifeLive.plans()[@selected_plan].name %></span>
+        </p>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Organisation / Company Name</label>
+            <input type="text" name="company_name" required placeholder="e.g. Acme Kenya Ltd"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Group Size</label>
+            <select name="group_size"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <%= for {val, label, _rate} <- InsuranceWeb.GroupLifeLive.group_sizes() do %>
+                <option value={val}><%= label %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Total Number of Employees</label>
+            <input type="number" name="employees" required min="10" placeholder="e.g. 50"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">Minimum group size: 10 employees.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Average Annual Salary per Employee (KES)</label>
+            <input type="number" name="avg_salary" required min="60000" placeholder="e.g. 600,000"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">Gross annual salary. Used to calculate sum assured per employee.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Benefit Multiple (× Annual Salary)</label>
+            <select name="multiple"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <%= for {val, label, _n} <- InsuranceWeb.GroupLifeLive.benefit_multiples() do %>
+                <option value={val}><%= label %></option>
+              <% end %>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">Death benefit paid to beneficiaries = multiple × employee's annual salary.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Industry / Sector</label>
+            <select name="industry"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="services">Professional Services / Office</option>
+              <option value="retail">Retail / Sales</option>
+              <option value="manufacturing">Manufacturing / Industrial</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="education">Education</option>
+              <option value="construction">Construction / Engineering</option>
+              <option value="hospitality">Hospitality / Tourism</option>
+              <option value="ngo">NGO / Non-Profit</option>
+              <option value="government">Government / Public Sector</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-xl font-semibold transition-all">
+            Calculate Group Life Premium
+          </button>
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-violet-600 to-violet-800 rounded-2xl p-8 text-white shadow-xl">
+          <p class="text-violet-200 text-sm font-medium mb-2 text-center">Estimated Annual Group Premium</p>
+          <p class="text-5xl font-bold mb-1 text-center">KES <%= InsuranceWeb.GroupLifeLive.format_number(@quote_data.total) %></p>
+          <p class="text-violet-200 text-sm mb-6 text-center">
+            ≈ KES <%= InsuranceWeb.GroupLifeLive.format_number(@quote_data.per_employee) %> per employee / year
+          </p>
+
+          <!-- Breakdown -->
+          <div class="bg-white/10 rounded-xl p-4 mb-6">
+            <p class="text-violet-200 text-xs font-semibold mb-3 uppercase tracking-wide">Summary</p>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-violet-200">Employees Covered</span>
+                <span class="font-semibold"><%= @quote_data.employees %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-violet-200">Benefit Multiple</span>
+                <span class="font-semibold"><%= @quote_data.multiple %>× annual salary</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-violet-200">Total Sum Assured</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.GroupLifeLive.format_number(@quote_data.total_sum_assured) %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-violet-200">Rate Applied</span>
+                <span class="font-semibold"><%= @quote_data.rate_pct %>% of TSA</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-violet-200">IRA Levy (0.25%)</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.GroupLifeLive.format_number(@quote_data.ira_levy) %></span>
+              </div>
+              <div class="flex justify-between border-t border-white/20 pt-2 mt-2">
+                <span class="font-bold text-white">Total Annual Premium</span>
+                <span class="font-bold text-lg">KES <%= InsuranceWeb.GroupLifeLive.format_number(@quote_data.total) %></span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-violet-300 text-xs mb-6 text-center">
+            Indicative premium. Final rates subject to underwriting and group census data.
+            Regulated by the Insurance Regulatory Authority (IRA) of Kenya.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-center">✔ Quote Saved!</div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote"
+                class="w-full bg-white text-violet-700 px-8 py-3 rounded-xl font-bold hover:bg-violet-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3 text-center">
+                <p class="text-violet-200 text-sm">Log in to save this quote to your profile</p>
+                <.link navigate="/users/log_in"
+                  class="bg-white text-violet-700 px-8 py-3 rounded-xl font-bold hover:bg-violet-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

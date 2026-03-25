@@ -1,0 +1,217 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
+         Amani Shield — Personal Protection
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Amani Shield Plans
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        All-in-one personal protection bundling personal accident, home contents, and liability cover.
+        One plan. One payment. Complete peace of mind.
+      </p>
+    </div>
+
+    <!-- What's Bundled -->
+    <div class="grid md:grid-cols-4 gap-4 mb-12">
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-2xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Personal Accident</h3>
+        <p class="text-xs text-gray-500">Death, disability & emergency medical from accidents.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-2xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Home Contents</h3>
+        <p class="text-xs text-gray-500">Theft, fire, and malicious damage to household goods.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-2xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Personal Liability</h3>
+        <p class="text-xs text-gray-500">Protection if you accidentally injure someone or damage property.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+        <div class="text-2xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1">Critical Illness</h3>
+        <p class="text-xs text-gray-500">Lump sum on diagnosis of a listed critical illness (Plus & Family plans).</p>
+      </div>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <%= for {key, plan} <- InsuranceWeb.AmaniShieldLive.plans() do %>
+        <div class={"bg-white rounded-2xl shadow-sm p-6 border-2 transition-all duration-200 card-hover " <>
+          if @selected_plan == key, do: "border-green-600 shadow-lg", else: "border-gray-100 hover:border-green-200"}>
+
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-3xl"><%= plan.icon %></span>
+            <%= if @selected_plan == key do %>
+              <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+
+          <h2 class="text-lg font-bold text-gray-900 mb-1"><%= plan.name %></h2>
+          <p class="text-xs text-green-700 font-medium mb-3">
+            From KES <%= InsuranceWeb.AmaniShieldLive.format_number(plan.annual_premium) %>/year
+          </p>
+          <p class="text-gray-500 text-xs mb-4 leading-relaxed"><%= plan.description %></p>
+
+          <!-- Benefit highlights -->
+          <div class="bg-gray-50 rounded-xl p-3 mb-4 space-y-1.5 text-xs">
+            <div class="flex justify-between">
+              <span class="text-gray-500">PA Death / Disability</span>
+              <span class="font-semibold text-gray-800">KES <%= InsuranceWeb.AmaniShieldLive.format_number(plan.pa_death) %></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Home Contents</span>
+              <span class="font-semibold text-gray-800">KES <%= InsuranceWeb.AmaniShieldLive.format_number(plan.home_contents) %></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Personal Liability</span>
+              <span class="font-semibold text-gray-800">KES <%= InsuranceWeb.AmaniShieldLive.format_number(plan.personal_liab) %></span>
+            </div>
+            <%= if plan.critical_illness do %>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Critical Illness</span>
+                <span class="font-semibold text-green-700">KES <%= InsuranceWeb.AmaniShieldLive.format_number(plan.critical_illness) %></span>
+              </div>
+            <% end %>
+          </div>
+
+          <ul class="space-y-1.5 mb-5">
+            <%= for benefit <- plan.benefits do %>
+              <li class="flex items-start gap-2 text-xs text-gray-700">
+                <span class="text-green-500 mt-0.5">✔</span>
+                <span><%= benefit %></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <button phx-click="select_plan" phx-value-plan={key}
+            class={"w-full py-2.5 rounded-xl font-semibold text-sm transition-all " <>
+              if @selected_plan == key,
+                do: "bg-green-700 text-white",
+                else: "bg-gray-100 hover:bg-green-700 hover:text-white text-gray-700"}>
+            <%= if @selected_plan == key, do: "✔ Plan Selected", else: "Get Quote" %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Quote</h3>
+        <p class="text-gray-500 text-sm text-center mb-8">
+          Plan: <span class="font-semibold text-green-700"><%= InsuranceWeb.AmaniShieldLive.plans()[@selected_plan].name %></span>
+        </p>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Your Age</label>
+            <input type="number" name="age" required min="18" max="65" placeholder="e.g. 35 (18–65 years)"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Occupation Type</label>
+            <select name="occupation"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="office">Professional / Office / Administrative</option>
+              <option value="manual_light">Light Manual Work (e.g. Driver, Technician)</option>
+              <option value="manual_heavy">Heavy Manual Work (e.g. Mechanic, Factory Worker)</option>
+              <option value="construction">Construction / High-Risk Work</option>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">Occupation determines the personal accident loading.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+            <input type="text" name="full_name" required placeholder="e.g. John Kamau"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+            <input type="tel" name="phone" required placeholder="e.g. +254 712 345 678"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Residential Area</label>
+            <input type="text" name="location" required placeholder="e.g. Westlands, Nairobi"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white py-3 rounded-xl font-semibold transition-all">
+            Calculate Amani Shield Premium
+          </button>
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-green-700 to-green-900 rounded-2xl p-8 text-white shadow-xl">
+          <p class="text-green-200 text-sm font-medium mb-2 text-center">Estimated Annual Premium</p>
+          <p class="text-5xl font-bold mb-1 text-center">KES <%= InsuranceWeb.AmaniShieldLive.format_number(@quote_data.total) %></p>
+          <p class="text-green-200 text-sm mb-6 text-center">
+            ≈ KES <%= InsuranceWeb.AmaniShieldLive.format_number(@quote_data.monthly) %>/month
+          </p>
+
+          <!-- Cover Summary -->
+          <div class="bg-white/10 rounded-xl p-4 mb-6">
+            <p class="text-green-200 text-xs font-semibold mb-3 uppercase tracking-wide">Your Cover Summary</p>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-green-200">Accidental Death / Disability</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.AmaniShieldLive.format_number(@quote_data.pa_death) %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-green-200">Home Contents</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.AmaniShieldLive.format_number(@quote_data.home_contents) %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-green-200">IRA Levy</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.AmaniShieldLive.format_number(@quote_data.ira_levy) %></span>
+              </div>
+              <div class="flex justify-between border-t border-white/20 pt-2 mt-2">
+                <span class="font-bold text-white">Total Annual</span>
+                <span class="font-bold text-lg">KES <%= InsuranceWeb.AmaniShieldLive.format_number(@quote_data.total) %></span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-green-300 text-xs mb-6 text-center">
+            Indicative premium. Final premium subject to underwriting.
+            Regulated by the Insurance Regulatory Authority (IRA) of Kenya.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-center">✔ Quote Saved!</div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote"
+                class="w-full bg-white text-green-800 px-8 py-3 rounded-xl font-bold hover:bg-green-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3 text-center">
+                <p class="text-green-200 text-sm">Log in to save this quote to your profile</p>
+                <.link navigate="/users/log_in"
+                  class="bg-white text-green-800 px-8 py-3 rounded-xl font-bold hover:bg-green-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

@@ -1,0 +1,214 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        🚢 Marine Insurance
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Marine & Cargo Insurance
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Protect your goods in transit and vessels on Kenyan waters. Covers imports, exports,
+        inland transit, and marine hull under Institute Cargo Clauses.
+      </p>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <%= for {key, plan} <- InsuranceWeb.MarineLive.plans() do %>
+        <div class={"bg-white rounded-2xl shadow-sm p-8 border-2 transition-all duration-200 card-hover " <>
+          if @selected_plan == key, do: "border-blue-600 shadow-lg", else: "border-gray-100 hover:border-blue-200"}>
+
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-3xl"><%= plan.icon %></span>
+            <%= if @selected_plan == key do %>
+              <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl font-bold text-gray-900 mb-1"><%= plan.name %></h2>
+          <p class="text-xs text-blue-700 font-medium mb-3">
+            Rate: <%= InsuranceWeb.MarineLive.format_rate(plan.rate * 100) %>% of cargo value | Min. KES <%= InsuranceWeb.MarineLive.format_number(plan.min_premium) %>
+          </p>
+          <p class="text-gray-500 text-sm mb-5 leading-relaxed"><%= plan.description %></p>
+
+          <ul class="space-y-2 mb-6">
+            <%= for benefit <- plan.benefits do %>
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-blue-500 mt-0.5">✔</span>
+                <span><%= benefit %></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <div class="flex items-center justify-between mb-5">
+            <span class="text-xl font-bold text-gray-900">Min. KES <%= InsuranceWeb.MarineLive.format_number(plan.min_premium) %></span>
+            <span class="text-gray-400 text-sm">per consignment</span>
+          </div>
+
+          <button phx-click="select_plan" phx-value-plan={key}
+            class={"w-full py-3 rounded-xl font-semibold transition-all " <>
+              if @selected_plan == key,
+                do: "bg-blue-700 text-white",
+                else: "bg-gray-100 hover:bg-blue-700 hover:text-white text-gray-700"}>
+            <%= if @selected_plan == key, do: "✔ Plan Selected", else: "Get Quote" %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Marine Quote</h3>
+        <p class="text-gray-500 text-sm text-center mb-8">
+          Plan: <span class="font-semibold text-blue-700"><%= InsuranceWeb.MarineLive.plans()[@selected_plan].name %></span>
+        </p>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <%= if @selected_plan == "marine_hull", do: "Vessel Insured Value (KES)", else: "Cargo / Consignment Value (KES)" %>
+            </label>
+            <input type="number" name="cargo_value" required min="100000"
+              placeholder="e.g. 2,000,000"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">
+              Enter the CIF (Cost + Insurance + Freight) value or vessel agreed value.
+            </p>
+          </div>
+
+          <%= if @selected_plan != "marine_hull" do %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Type of Cargo</label>
+              <select name="cargo_type"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-gray-900">
+                <%= for ct <- InsuranceWeb.MarineLive.cargo_types() do %>
+                  <option value={ct}><%= ct %></option>
+                <% end %>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Mode of Transport</label>
+              <select name="transport_mode"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-gray-900">
+                <option value="sea">Sea Freight</option>
+                <option value="air">Air Freight</option>
+                <option value="road">Road / Inland Transit</option>
+                <option value="multimodal">Multi-modal (Sea + Road)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Origin</label>
+              <input type="text" name="origin" required placeholder="e.g. Mombasa Port / Dubai / China"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Destination</label>
+              <input type="text" name="destination" required placeholder="e.g. Nairobi / Kampala"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-900"/>
+            </div>
+
+            <!-- Extensions -->
+            <div class="bg-gray-50 rounded-xl p-4 space-y-3">
+              <p class="text-sm font-semibold text-gray-700">Optional Extensions</p>
+              <label class="flex items-center gap-3 text-sm text-gray-700 cursor-pointer">
+                <input type="checkbox" name="war_extension" value="true"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                War & Strikes Extension (+0.025%)
+              </label>
+              <label class="flex items-center gap-3 text-sm text-gray-700 cursor-pointer">
+                <input type="checkbox" name="srcc_extension" value="true"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                SRCC (Strikes, Riots & Civil Commotion) Extension (+0.015%)
+              </label>
+            </div>
+          <% end %>
+
+          <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-xl font-semibold transition-all">
+            Calculate Marine Premium
+          </button>
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-blue-700 to-blue-900 rounded-2xl p-8 text-white shadow-xl">
+          <p class="text-blue-200 text-sm font-medium mb-2 text-center">Estimated Premium</p>
+          <p class="text-5xl font-bold mb-1 text-center">KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.total) %></p>
+          <p class="text-blue-200 text-sm mb-6 text-center">
+            Cargo / Vessel Value: KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.cargo_value) %>
+          </p>
+
+          <!-- Breakdown -->
+          <div class="bg-white/10 rounded-xl p-4 mb-6">
+            <p class="text-blue-200 text-xs font-semibold mb-3 uppercase tracking-wide">Premium Breakdown</p>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-blue-200">Base Premium (<%= @quote_data.rate %>%)</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.base) %></span>
+              </div>
+              <%= if @quote_data.war_ext > 0 do %>
+                <div class="flex justify-between">
+                  <span class="text-blue-200">War & Strikes Extension</span>
+                  <span class="font-semibold">KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.war_ext) %></span>
+                </div>
+              <% end %>
+              <%= if @quote_data.srcc_ext > 0 do %>
+                <div class="flex justify-between">
+                  <span class="text-blue-200">SRCC Extension</span>
+                  <span class="font-semibold">KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.srcc_ext) %></span>
+                </div>
+              <% end %>
+              <div class="flex justify-between">
+                <span class="text-blue-200">IRA Levy (0.25%)</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.ira_levy) %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-blue-200">Stamp Duty</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.stamp) %></span>
+              </div>
+              <div class="flex justify-between border-t border-white/20 pt-2 mt-2">
+                <span class="font-bold text-white">Total Premium</span>
+                <span class="font-bold text-lg">KES <%= InsuranceWeb.MarineLive.format_number(@quote_data.total) %></span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-blue-300 text-xs mb-6 text-center">
+            Indicative premium only. Regulated by the Insurance Regulatory Authority (IRA) of Kenya.
+            Cover is subject to Institute Cargo Clauses and full underwriting.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-center">✔ Quote Saved!</div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote"
+                class="w-full bg-white text-blue-800 px-8 py-3 rounded-xl font-bold hover:bg-blue-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3 text-center">
+                <p class="text-blue-200 text-sm">Log in to save this quote to your profile</p>
+                <.link navigate="/users/log_in"
+                  class="bg-white text-blue-800 px-8 py-3 rounded-xl font-bold hover:bg-blue-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

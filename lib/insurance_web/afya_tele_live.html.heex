@@ -1,0 +1,169 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-teal-100 text-teal-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+         Afya Tele — Telemedicine Health Cover
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Afya Tele Health Plans
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Affordable outpatient and telemedicine cover for individuals, families, and organisations.
+        See a doctor anytime, anywhere — from your phone.
+      </p>
+    </div>
+
+    <!-- Feature Highlights -->
+    <div class="grid md:grid-cols-3 gap-5 mb-12">
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">24/7 Doctor Access</h3>
+        <p class="text-xs text-gray-500">Unlimited virtual consultations by phone, video, or chat — any time, any day.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">Prescriptions & Labs</h3>
+        <p class="text-xs text-gray-500">E-prescriptions delivered to your pharmacy. Diagnostics and lab test cover included.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">Mental Health Support</h3>
+        <p class="text-xs text-gray-500">Access to licensed counsellors and psychologists through the telehealth platform.</p>
+      </div>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <%= for {key, plan} <- InsuranceWeb.AfyaTeleLive.plans() do %>
+        <div class={"bg-white rounded-2xl shadow-sm p-6 border-2 transition-all duration-200 card-hover " <>
+          if @selected_plan == key, do: "border-teal-500 shadow-lg", else: "border-gray-100 hover:border-teal-200"}>
+
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-3xl"><%= plan.icon %></span>
+            <%= if @selected_plan == key do %>
+              <span class="bg-teal-100 text-teal-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+
+          <h2 class="text-lg font-bold text-gray-900 mb-1"><%= plan.name %></h2>
+          <p class="text-xs text-teal-700 font-medium mb-3">
+            <%= if key == "tele_corporate" do %>
+              KES <%= InsuranceWeb.AfyaTeleLive.format_number(plan.per_employee) %>/employee/year | Min. 5 employees
+            <% else %>
+              From KES <%= InsuranceWeb.AfyaTeleLive.format_number(plan.annual_individual) %>/individual/year
+            <% end %>
+          </p>
+          <p class="text-gray-500 text-xs mb-4 leading-relaxed"><%= plan.description %></p>
+
+          <ul class="space-y-1.5 mb-5">
+            <%= for benefit <- plan.benefits do %>
+              <li class="flex items-start gap-2 text-xs text-gray-700">
+                <span class="text-teal-500 mt-0.5">✔</span>
+                <span><%= benefit %></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <button phx-click="select_plan" phx-value-plan={key}
+            class={"w-full py-2.5 rounded-xl font-semibold text-sm transition-all " <>
+              if @selected_plan == key,
+                do: "bg-teal-600 text-white",
+                else: "bg-gray-100 hover:bg-teal-600 hover:text-white text-gray-700"}>
+            <%= if @selected_plan == key, do: "✔ Plan Selected", else: "Get Quote" %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Quote</h3>
+        <p class="text-gray-500 text-sm text-center mb-8">
+          Plan: <span class="font-semibold text-teal-700"><%= InsuranceWeb.AfyaTeleLive.plans()[@selected_plan].name %></span>
+        </p>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <%= if @selected_plan == "tele_corporate" do %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Organisation Name</label>
+              <input type="text" name="company_name" required placeholder="e.g. Acme Kenya Ltd"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none text-gray-900"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Employees</label>
+              <input type="number" name="employees" required min="5" placeholder="e.g. 30"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none text-gray-900"/>
+              <p class="text-xs text-gray-400 mt-1">Minimum 5 employees for corporate plan.</p>
+            </div>
+          <% else %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Cover Type</label>
+              <select name="member_type"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none bg-white text-gray-900">
+                <%= for {val, label} <- InsuranceWeb.AfyaTeleLive.member_types() do %>
+                  <option value={val}><%= label %></option>
+                <% end %>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Your Age</label>
+              <input type="number" name="age" required min="1" max="70" placeholder="e.g. 35"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none text-gray-900"/>
+            </div>
+          <% end %>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+            <input type="tel" name="phone" required placeholder="e.g. +254 712 345 678"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold transition-all">
+            Calculate Premium
+          </button>
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl p-8 text-center text-white shadow-xl">
+          <p class="text-teal-200 text-sm font-medium mb-2">Estimated Annual Premium</p>
+          <p class="text-5xl font-bold mb-1">KES <%= InsuranceWeb.AfyaTeleLive.format_number(@quote_data.total) %></p>
+          <p class="text-teal-200 text-sm mb-2">≈ KES <%= InsuranceWeb.AfyaTeleLive.format_number(@quote_data.monthly) %>/month</p>
+          <%= if @quote_data.corporate? do %>
+            <p class="text-teal-200 text-sm mb-2">For <%= @quote_data.employees %> employees</p>
+          <% end %>
+          <p class="text-teal-300 text-xs mb-8">
+            Indicative premium. Regulated by the Insurance Regulatory Authority (IRA) of Kenya.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold">✔ Quote Saved!</div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote"
+                class="bg-white text-teal-700 px-8 py-3 rounded-xl font-bold hover:bg-teal-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3">
+                <p class="text-teal-200 text-sm">Log in to save this quote to your profile</p>
+                <.link navigate="/users/log_in"
+                  class="bg-white text-teal-700 px-8 py-3 rounded-xl font-bold hover:bg-teal-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

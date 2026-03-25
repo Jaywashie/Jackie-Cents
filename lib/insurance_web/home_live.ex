@@ -11,7 +11,6 @@ defmodule InsuranceWeb.HomeLive do
 
       <!-- HERO SECTION -->
       <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #14532d 0%, #166534 50%, #15803d 100%);">
-        <!-- Background decoration -->
         <div class="absolute inset-0 overflow-hidden">
           <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full"></div>
           <div class="absolute top-1/2 -left-16 w-64 h-64 bg-white/5 rounded-full"></div>
@@ -28,7 +27,7 @@ defmodule InsuranceWeb.HomeLive do
               <span class="text-green-300">Protect What Matters</span>
             </h1>
             <p class="text-xl text-green-100 mb-10 leading-relaxed max-w-2xl">
-              Comprehensive insurance solutions tailored for Kenyans. Medical, life, motor, and pension plans designed to give you peace of mind every day.
+              Comprehensive insurance solutions tailored for Kenyans. Medical, life, motor, travel, marine, and more — designed to give you peace of mind every day.
             </p>
             <div class="flex flex-wrap gap-4">
               <.link navigate="/medical" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-base shadow-lg inline-flex items-center gap-2">
@@ -43,7 +42,6 @@ defmodule InsuranceWeb.HomeLive do
           </div>
         </div>
 
-        <!-- Wave divider -->
         <div class="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 60L1440 60L1440 0C1440 0 1080 60 720 60C360 60 0 0 0 0L0 60Z" fill="#f9fafb"/>
@@ -63,7 +61,7 @@ defmodule InsuranceWeb.HomeLive do
             <div class="text-gray-500 text-sm">Support</div>
           </div>
           <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center card-hover">
-            <div class="text-3xl font-bold text-green-700 mb-1">8</div>
+            <div class="text-3xl font-bold text-green-700 mb-1">14</div>
             <div class="text-gray-500 text-sm">Product Types</div>
           </div>
           <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center card-hover">
@@ -74,7 +72,7 @@ defmodule InsuranceWeb.HomeLive do
       </section>
 
       <!-- PRODUCTS SECTION -->
-      <section class="max-w-7xl mx-auto px-6 pb-20">
+      <section class="max-w-7xl mx-auto px-6 pb-10">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold text-gray-900 mb-3" style="font-family: 'DM Serif Display', serif;">
             Our Products & Services
@@ -84,9 +82,10 @@ defmodule InsuranceWeb.HomeLive do
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Insurance -->
+        <h3 class="text-lg font-bold text-gray-700 mb-4 border-b border-gray-100 pb-2">Insurance</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
-          <!-- Medical -->
           <div phx-click="go_medical" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 text-xl">🏥</div>
             <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Medical Cover</h3>
@@ -94,7 +93,6 @@ defmodule InsuranceWeb.HomeLive do
             <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
-          <!-- Life -->
           <div phx-click="go_life" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mb-4 text-xl">❤️</div>
             <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Life Insurance</h3>
@@ -102,7 +100,6 @@ defmodule InsuranceWeb.HomeLive do
             <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
-          <!-- Motor -->
           <div phx-click="go_motor" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4 text-xl">🚗</div>
             <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Motor Cover</h3>
@@ -110,31 +107,13 @@ defmodule InsuranceWeb.HomeLive do
             <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
-          <!-- Pension -->
-          <div phx-click="go_pension" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 text-xl">🏦</div>
-            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Pension Plan</h3>
-            <p class="text-gray-500 text-xs leading-relaxed mb-4">Secure retirement planning and savings.</p>
+          <div phx-click="go_wiba" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4 text-xl">👷</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">WIBA Cover</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Work Injury Benefits for your employees.</p>
             <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
-          <!-- Money Market -->
-          <div phx-click="go_mmf" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-4 text-xl">💰</div>
-            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Money Market</h3>
-            <p class="text-gray-500 text-xs leading-relaxed mb-4">High-yield savings with instant liquidity.</p>
-            <div class="text-green-600 text-xs font-semibold">Calculate →</div>
-          </div>
-
-          <!-- Unit Trust -->
-          <div phx-click="go_ut" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 text-xl">📈</div>
-            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Unit Trusts</h3>
-            <p class="text-gray-500 text-xs leading-relaxed mb-4">Professional wealth management & growth.</p>
-            <div class="text-green-600 text-xs font-semibold">Invest Now →</div>
-          </div>
-
-          <!-- SME -->
           <div phx-click="go_sme" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
             <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 text-xl">🏬</div>
             <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">SME Insurance</h3>
@@ -142,12 +121,73 @@ defmodule InsuranceWeb.HomeLive do
             <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
-          <!-- WIBA -->
-          <div phx-click="go_wiba" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
-            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4 text-xl">👷</div>
-            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">WIBA Cover</h3>
-            <p class="text-gray-500 text-xs leading-relaxed mb-4">Work Injury Benefits for your employees.</p>
+          <div phx-click="go_travel" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-sky-200 card-hover">
+            <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center mb-4 text-xl">✈️</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-sky-700">Travel Insurance</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Protection for trips within Africa and worldwide.</p>
+            <div class="text-sky-600 text-xs font-semibold">Get Quote →</div>
+          </div>
+
+          <div phx-click="go_marine" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-blue-200 card-hover">
+            <div class="w-12 h-12 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center mb-4 text-xl">🚢</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-blue-700">Marine & Cargo</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Cargo in transit and marine hull protection.</p>
+            <div class="text-blue-700 text-xs font-semibold">Get Quote →</div>
+          </div>
+
+          <div phx-click="go_group_life" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-violet-200 card-hover">
+            <div class="w-12 h-12 bg-violet-50 text-violet-600 rounded-xl flex items-center justify-center mb-4 text-xl">👥</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-violet-700">Group Life</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Group life assurance for employers and organisations.</p>
+            <div class="text-violet-600 text-xs font-semibold">Get Quote →</div>
+          </div>
+
+          <div phx-click="go_last_expense" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-rose-200 card-hover">
+            <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center mb-4 text-xl">🕊️</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-rose-700">Group Last Expense</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">48-hour funeral payout for groups and saccos.</p>
+            <div class="text-rose-600 text-xs font-semibold">Get Quote →</div>
+          </div>
+
+          <div phx-click="go_amani" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-green-50 text-green-700 rounded-xl flex items-center justify-center mb-4 text-xl">🛡️</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Amani Shield</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Bundled personal accident, home & liability cover.</p>
             <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
+          </div>
+
+        </div>
+
+        <!-- Investments & Health -->
+        <h3 class="text-lg font-bold text-gray-700 mb-4 border-b border-gray-100 pb-2">Investments & Health</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+
+          <div phx-click="go_pension" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 text-xl">🏦</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Pension Plan</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Secure retirement planning and savings.</p>
+            <div class="text-green-600 text-xs font-semibold">Get Quote →</div>
+          </div>
+
+          <div phx-click="go_mmf" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-4 text-xl">💰</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Money Market</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">High-yield savings with instant liquidity.</p>
+            <div class="text-green-600 text-xs font-semibold">Calculate →</div>
+          </div>
+
+          <div phx-click="go_ut" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 card-hover">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 text-xl">📈</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-green-700">Unit Trusts</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Professional wealth management & growth.</p>
+            <div class="text-green-600 text-xs font-semibold">Invest Now →</div>
+          </div>
+
+          <div phx-click="go_afya" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-teal-200 card-hover">
+            <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center mb-4 text-xl">📱</div>
+            <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-teal-700">Afya Tele</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">24/7 telemedicine & outpatient health cover.</p>
+            <div class="text-teal-600 text-xs font-semibold">Get Quote →</div>
           </div>
 
         </div>
@@ -200,12 +240,21 @@ defmodule InsuranceWeb.HomeLive do
     """
   end
 
-  def handle_event("go_medical", _, socket), do: {:noreply, push_navigate(socket, to: "/medical")}
-  def handle_event("go_life", _, socket), do: {:noreply, push_navigate(socket, to: "/life")}
-  def handle_event("go_motor", _, socket), do: {:noreply, push_navigate(socket, to: "/motor")}
-  def handle_event("go_pension", _, socket), do: {:noreply, push_navigate(socket, to: "/pension")}
-  def handle_event("go_mmf", _, socket), do: {:noreply, push_navigate(socket, to: "/money-market")}
-  def handle_event("go_ut", _, socket), do: {:noreply, push_navigate(socket, to: "/unit-trust")}
-  def handle_event("go_sme", _, socket), do: {:noreply, push_navigate(socket, to: "/sme-insurance")}
-  def handle_event("go_wiba", _, socket), do: {:noreply, push_navigate(socket, to: "/wiba")}
+  # Original plan navigation
+  def handle_event("go_medical",    _, socket), do: {:noreply, push_navigate(socket, to: "/medical")}
+  def handle_event("go_life",       _, socket), do: {:noreply, push_navigate(socket, to: "/life")}
+  def handle_event("go_motor",      _, socket), do: {:noreply, push_navigate(socket, to: "/motor")}
+  def handle_event("go_pension",    _, socket), do: {:noreply, push_navigate(socket, to: "/pension")}
+  def handle_event("go_mmf",        _, socket), do: {:noreply, push_navigate(socket, to: "/money-market")}
+  def handle_event("go_ut",         _, socket), do: {:noreply, push_navigate(socket, to: "/unit-trust")}
+  def handle_event("go_sme",        _, socket), do: {:noreply, push_navigate(socket, to: "/sme-insurance")}
+  def handle_event("go_wiba",       _, socket), do: {:noreply, push_navigate(socket, to: "/wiba")}
+
+  # New plan navigation
+  def handle_event("go_travel",       _, socket), do: {:noreply, push_navigate(socket, to: "/travel")}
+  def handle_event("go_marine",       _, socket), do: {:noreply, push_navigate(socket, to: "/marine")}
+  def handle_event("go_group_life",   _, socket), do: {:noreply, push_navigate(socket, to: "/group-life")}
+  def handle_event("go_afya",         _, socket), do: {:noreply, push_navigate(socket, to: "/afya-tele")}
+  def handle_event("go_last_expense", _, socket), do: {:noreply, push_navigate(socket, to: "/group-last-expense")}
+  def handle_event("go_amani",        _, socket), do: {:noreply, push_navigate(socket, to: "/amani-shield")}
 end

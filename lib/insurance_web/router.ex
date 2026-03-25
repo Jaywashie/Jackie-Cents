@@ -26,19 +26,29 @@ defmodule InsuranceWeb.Router do
     live_session :public,
       on_mount: [{InsuranceWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive
-      live "/medical", MedicalLive
-      live "/life", LifeLive
-      live "/motor", MotorLive
-      live "/pension", PensionLive
-      live "/money-market",   MoneyMarketLive
-      live "/unit-trust",     UnitTrustLive
-      live "/sme-insurance",  SmeLive
+
+      # Original insurance plans
+      live "/medical",       MedicalLive
+      live "/life",          LifeLive
+      live "/motor",         MotorLive
+      live "/pension",       PensionLive
+      live "/money-market",  MoneyMarketLive
+      live "/unit-trust",    UnitTrustLive
+      live "/sme-insurance", SmeLive
       live "/wiba",          WibaLive
+
+      # New plans
+      live "/travel",            TravelLive
+      live "/marine",            MarineLive
+      live "/group-life",        GroupLifeLive
+      live "/afya-tele",         AfyaTeleLive
+      live "/group-last-expense", GroupLastExpenseLive
+      live "/amani-shield",      AmaniShieldLive
     end
   end
 
   # ---------------------------------------------------------------------------
-  # Admin-only routes — must be logged in AND have role == "admin"
+  # Admin-only routes
   # ---------------------------------------------------------------------------
   scope "/", InsuranceWeb do
     pipe_through [:browser, :require_authenticated_user, :require_admin_user]
@@ -57,11 +67,11 @@ defmodule InsuranceWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{InsuranceWeb.UserAuth, :ensure_authenticated}] do
-      live "/quote", QuoteLive, :show
-      live "/policies", PolicyLive.Index
-      live "/my-quotes", MyQuotesLive, :index
-      live "/policies/new", PolicyLive.New
-      live "/users/settings", UserSettingsLive, :edit
+      live "/quote",                               QuoteLive, :show
+      live "/policies",                            PolicyLive.Index
+      live "/my-quotes",                           MyQuotesLive, :index
+      live "/policies/new",                        PolicyLive.New
+      live "/users/settings",                      UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
   end
@@ -74,10 +84,10 @@ defmodule InsuranceWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{InsuranceWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/users/register", UserRegistrationLive, :new
-      live "/users/log_in", UserLoginLive, :new
-      live "/users/reset_password", UserForgotPasswordLive, :new
-      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+      live "/users/register",               UserRegistrationLive, :new
+      live "/users/log_in",                 UserLoginLive, :new
+      live "/users/reset_password",         UserForgotPasswordLive, :new
+      live "/users/reset_password/:token",  UserResetPasswordLive, :edit
     end
 
     post "/users/log_in", UserSessionController, :create
@@ -91,7 +101,7 @@ defmodule InsuranceWeb.Router do
     live_session :current_user,
       on_mount: [{InsuranceWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
-      live "/users/confirm", UserConfirmationInstructionsLive, :new
+      live "/users/confirm",        UserConfirmationInstructionsLive, :new
     end
   end
 

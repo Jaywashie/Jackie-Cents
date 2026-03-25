@@ -122,6 +122,56 @@
         gap: 10px;
         border-top: 1px solid rgba(255,255,255,0.08);
       }
+
+      /* Dropdown nav */
+      .nav-dropdown {
+        position: relative;
+      }
+      .nav-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        min-width: 220px;
+        background: #14532d;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 6px;
+        z-index: 100;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      }
+      .nav-dropdown:hover .nav-dropdown-menu,
+      .nav-dropdown:focus-within .nav-dropdown-menu {
+        display: block;
+      }
+      .nav-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        color: rgba(187, 247, 208, 0.9);
+        font-size: 0.82rem;
+        font-weight: 500;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.15s ease, color 0.15s ease;
+        white-space: nowrap;
+      }
+      .nav-dropdown-menu a:hover {
+        background: rgba(255,255,255,0.1);
+        color: white;
+      }
+      .nav-dropdown-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-dropdown-btn svg {
+        transition: transform 0.2s ease;
+      }
+      .nav-dropdown:hover .nav-dropdown-btn svg {
+        transform: rotate(180deg);
+      }
     </style>
   </head>
 
@@ -145,14 +195,47 @@
         <!-- Desktop Nav Links -->
         <div class="hidden lg:flex items-center space-x-1">
           <.link navigate="/" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Home</.link>
-          <.link navigate="/medical" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Medical</.link>
-          <.link navigate="/life" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Life</.link>
-          <.link navigate="/motor" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Motor</.link>
-          <.link navigate="/pension" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Pension</.link>
-          <.link navigate="/money-market" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Money Market</.link>
-          <.link navigate="/unit-trust" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">Unit Trust</.link>
-          <.link navigate="/wiba" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">WIBA</.link>
-          <.link navigate="/sme-insurance" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">SME</.link>
+
+          <!-- Insurance dropdown -->
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-btn text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">
+              Insurance
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a href="/medical">🏥 Medical Cover</a>
+              <a href="/life">❤️ Life Insurance</a>
+              <a href="/motor">🚗 Motor Cover</a>
+              <a href="/wiba">👷 WIBA</a>
+              <a href="/sme-insurance">🏬 SME Insurance</a>
+              <a href="/travel">✈️ Travel Insurance</a>
+              <a href="/marine">🚢 Marine &amp; Cargo</a>
+              <a href="/group-life">👥 Group Life</a>
+              <a href="/group-last-expense">🕊️ Group Last Expense</a>
+              <a href="/amani-shield">🛡️ Amani Shield</a>
+            </div>
+          </div>
+
+          <!-- Investments dropdown -->
+          <div class="nav-dropdown">
+            <button class="nav-dropdown-btn text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">
+              Investments
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a href="/pension">🏦 Pension Plan</a>
+              <a href="/money-market">💰 Money Market Fund</a>
+              <a href="/unit-trust">📈 Unit Trust Funds</a>
+            </div>
+          </div>
+
+          <!-- Health -->
+          <.link navigate="/afya-tele" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all"> Afya Tele</.link>
+
           <%= if @current_user do %>
             <.link navigate="/my-quotes" class="text-green-100 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-all">My Quotes</.link>
           <% end %>
@@ -216,18 +299,39 @@
       <a href="/motor" class="mobile-nav-link" onclick="closeMobileMenu()">
         <span class="nav-icon">🚗</span> Motor Cover
       </a>
-      <a href="/pension" class="mobile-nav-link" onclick="closeMobileMenu()">
-        <span class="nav-icon">🏦</span> Pension Plan
-      </a>
       <a href="/wiba" class="mobile-nav-link" onclick="closeMobileMenu()">
         <span class="nav-icon">🦺</span> WIBA
       </a>
       <a href="/sme-insurance" class="mobile-nav-link" onclick="closeMobileMenu()">
         <span class="nav-icon">🏢</span> SME Insurance
       </a>
+      <a href="/travel" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">✈️</span> Travel Insurance
+      </a>
+      <a href="/marine" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🚢</span> Marine &amp; Cargo
+      </a>
+      <a href="/group-life" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">👥</span> Group Life
+      </a>
+      <a href="/group-last-expense" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🕊️</span> Group Last Expense
+      </a>
+      <a href="/amani-shield" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🛡️</span> Amani Shield
+      </a>
+
+      <!-- Health & Wellness -->
+      <span class="mobile-nav-section">Health & Wellness</span>
+      <a href="/afya-tele" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">📱</span> Afya Tele
+      </a>
 
       <!-- Investments section -->
       <span class="mobile-nav-section">Investments</span>
+      <a href="/pension" class="mobile-nav-link" onclick="closeMobileMenu()">
+        <span class="nav-icon">🏦</span> Pension Plan
+      </a>
       <a href="/money-market" class="mobile-nav-link" onclick="closeMobileMenu()">
         <span class="nav-icon">💰</span> Money Market Fund
       </a>
@@ -325,72 +429,37 @@
         </div>
       </div>
 
-      <!-- Products -->
+      <!-- Insurance Products -->
       <div>
-        <h3 class="text-white font-semibold mb-5 text-sm uppercase tracking-widest">Products</h3>
-        <ul class="space-y-3 text-sm">
-          <li>
-            <.link navigate="/medical" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Medical Cover
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/life" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Life Insurance
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/motor" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Motor Cover
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/pension" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Pension Plan
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/wiba" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> WIBA Cover
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/sme-insurance" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> SME Insurance
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/money-market" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Money Market Fund
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/unit-trust" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Unit Trust Funds
-            </.link>
-          </li>
+        <h3 class="text-white font-semibold mb-5 text-sm uppercase tracking-widest">Insurance</h3>
+        <ul class="space-y-2 text-sm">
+          <li><.link navigate="/medical" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Medical Cover</.link></li>
+          <li><.link navigate="/life" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Life Insurance</.link></li>
+          <li><.link navigate="/motor" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Motor Cover</.link></li>
+          <li><.link navigate="/wiba" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> WIBA Cover</.link></li>
+          <li><.link navigate="/sme-insurance" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> SME Insurance</.link></li>
+          <li><.link navigate="/travel" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Travel Insurance</.link></li>
+          <li><.link navigate="/marine" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Marine &amp; Cargo</.link></li>
+          <li><.link navigate="/group-life" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Group Life</.link></li>
+          <li><.link navigate="/group-last-expense" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Group Last Expense</.link></li>
+          <li><.link navigate="/amani-shield" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Amani Shield</.link></li>
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Investments + Health -->
       <div>
-        <h3 class="text-white font-semibold mb-5 text-sm uppercase tracking-widest">Company</h3>
-        <ul class="space-y-3 text-sm">
-          <li>
-            <.link navigate="/" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Home
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/my-quotes" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> My Quotes
-            </.link>
-          </li>
-          <li>
-            <.link navigate="/users/register" class="hover:text-green-400 transition-colors flex items-center gap-2">
-              <span class="text-green-600">→</span> Get Started
-            </.link>
-          </li>
+        <h3 class="text-white font-semibold mb-5 text-sm uppercase tracking-widest">Investments &amp; Health</h3>
+        <ul class="space-y-2 text-sm">
+          <li><.link navigate="/pension" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Pension Plan</.link></li>
+          <li><.link navigate="/money-market" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Money Market Fund</.link></li>
+          <li><.link navigate="/unit-trust" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Unit Trust Funds</.link></li>
+          <li><.link navigate="/afya-tele" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Afya Tele</.link></li>
+        </ul>
+        <h3 class="text-white font-semibold mt-7 mb-4 text-sm uppercase tracking-widest">Company</h3>
+        <ul class="space-y-2 text-sm">
+          <li><.link navigate="/" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Home</.link></li>
+          <li><.link navigate="/my-quotes" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> My Quotes</.link></li>
+          <li><.link navigate="/users/register" class="hover:text-green-400 transition-colors flex items-center gap-2"><span class="text-green-600">→</span> Get Started</.link></li>
         </ul>
       </div>
 
@@ -400,7 +469,7 @@
         <ul class="space-y-4 text-sm">
           <li class="flex items-start gap-3">
             <span class="mt-0.5 text-green-500 shrink-0">📍</span>
-            <span class="text-gray-400">Nairobi, Kenya</span>
+            <span class="text-gray-400">Kilimani,Jabavu Heights Apartments</span>
           </li>
           <li class="flex items-start gap-3">
             <span class="mt-0.5 text-green-500 shrink-0">✉️</span>

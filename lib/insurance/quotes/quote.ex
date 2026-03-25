@@ -13,6 +13,12 @@ defmodule Insurance.Quotes.Quote do
     timestamps()
   end
 
+  # Original types + 6 new plan types
+  @valid_plan_types ~w(
+    life medical motor pension unit_trust money_market sme wiba
+    travel marine group_life afya_tele last_expense amani_shield
+  )
+
   @required_fields ~w(user_id plan_name plan_type email monthly_contribution estimated_value)a
 
   def changeset(quote, attrs) do
@@ -20,8 +26,6 @@ defmodule Insurance.Quotes.Quote do
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
     |> validate_length(:plan_name, max: 255)
-    |> validate_inclusion(:plan_type, ~w(life medical motor pension unit_trust money_market sme wiba))
-    # NOTE: No unique_constraint here — a user is allowed to save
-    # as many quotes as they want, including duplicates.
+    |> validate_inclusion(:plan_type, @valid_plan_types)
   end
 end

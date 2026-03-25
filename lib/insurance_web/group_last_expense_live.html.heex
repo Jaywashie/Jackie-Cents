@@ -1,0 +1,213 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-rose-100 text-rose-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+         Group Last Expense Cover
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Group Last Expense Cover
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Guaranteed lump-sum funeral cover for groups, saccos, employers, chamas, and community organisations.
+        Payout within 48 hours — when your members need it most.
+      </p>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="grid md:grid-cols-3 gap-5 mb-12">
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">48-Hour Payout</h3>
+        <p class="text-xs text-gray-500">Guaranteed claim settlement within 48 hours of submitting documents.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">Whole Family Covered</h3>
+        <p class="text-xs text-gray-500">Extend cover to spouse, children, parents, and in-laws under one policy.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <div class="text-3xl mb-2"></div>
+        <h3 class="font-bold text-gray-900 mb-1">No Medicals Required</h3>
+        <p class="text-xs text-gray-500">No individual medical underwriting for groups of 10 or more members.</p>
+      </div>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <%= for {key, plan} <- InsuranceWeb.GroupLastExpenseLive.plans() do %>
+        <div class={"bg-white rounded-2xl shadow-sm p-8 border-2 transition-all duration-200 card-hover " <>
+          if @selected_plan == key, do: "border-rose-500 shadow-lg", else: "border-gray-100 hover:border-rose-200"}>
+
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-3xl"><%= plan.icon %></span>
+            <%= if @selected_plan == key do %>
+              <span class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl font-bold text-gray-900 mb-1"><%= plan.name %></h2>
+          <p class="text-xs text-rose-700 font-medium mb-3">Min. 10 members | Annual renewable | IRA regulated</p>
+          <p class="text-gray-500 text-sm mb-5 leading-relaxed"><%= plan.description %></p>
+
+          <ul class="space-y-2 mb-6">
+            <%= for benefit <- plan.benefits do %>
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-rose-500 mt-0.5">✔</span>
+                <span><%= benefit %></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <button phx-click="select_plan" phx-value-plan={key}
+            class={"w-full py-3 rounded-xl font-semibold transition-all " <>
+              if @selected_plan == key,
+                do: "bg-rose-600 text-white",
+                else: "bg-gray-100 hover:bg-rose-600 hover:text-white text-gray-700"}>
+            <%= if @selected_plan == key, do: "✔ Plan Selected", else: "Get Quote" %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Quote</h3>
+        <p class="text-gray-500 text-sm text-center mb-8">
+          Plan: <span class="font-semibold text-rose-700"><%= InsuranceWeb.GroupLastExpenseLive.plans()[@selected_plan].name %></span>
+        </p>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Group / Organisation Name</label>
+            <input type="text" name="group_name" required placeholder="e.g. Umoja Sacco / ABC Church"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Principal Members</label>
+            <input type="number" name="members" required min="10" placeholder="e.g. 50"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none text-gray-900"/>
+            <p class="text-xs text-gray-400 mt-1">Minimum 10 principal members required.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Cover Per Life (KES)</label>
+            <select name="cover_level"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <%= for {val, label, _sum, _rate} <- InsuranceWeb.GroupLastExpenseLive.cover_levels() do %>
+                <% available = @selected_plan == "last_expense_plus" || String.to_integer(String.replace(label, ~r/[^0-9]/, "")) <= 300_000 %>
+                <option value={val} disabled={!available}><%= label %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Lives Covered per Member</label>
+            <select name="member_type"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <%= for {val, label, _n} <- InsuranceWeb.GroupLastExpenseLive.member_types() do %>
+                <% show_extended = @selected_plan == "last_expense_plus" || val != "family_extended" %>
+                <%= if show_extended do %>
+                  <option value={val}><%= label %></option>
+                <% end %>
+              <% end %>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">
+              Extended family (parents/in-laws) available on Plus plan only.
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Group Type</label>
+            <select name="group_type"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="employer">Employer / Company</option>
+              <option value="sacco">SACCO</option>
+              <option value="chama">Investment Group / Chama</option>
+              <option value="church">Church / Religious Organisation</option>
+              <option value="ngo">NGO / Community Group</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl font-semibold transition-all">
+            Calculate Group Premium
+          </button>
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-rose-600 to-rose-800 rounded-2xl p-8 text-white shadow-xl">
+          <p class="text-rose-200 text-sm font-medium mb-2 text-center">Estimated Annual Group Premium</p>
+          <p class="text-5xl font-bold mb-1 text-center">KES <%= InsuranceWeb.GroupLastExpenseLive.format_number(@quote_data.total) %></p>
+          <p class="text-rose-200 text-sm mb-6 text-center">
+            ≈ KES <%= InsuranceWeb.GroupLastExpenseLive.format_number(@quote_data.per_member) %> per member / year
+          </p>
+
+          <!-- Breakdown -->
+          <div class="bg-white/10 rounded-xl p-4 mb-6">
+            <p class="text-rose-200 text-xs font-semibold mb-3 uppercase tracking-wide">Summary</p>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-rose-200">Principal Members</span>
+                <span class="font-semibold"><%= @quote_data.members %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-rose-200">Total Lives Covered</span>
+                <span class="font-semibold"><%= @quote_data.lives_covered %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-rose-200">Cover Per Life</span>
+                <span class="font-semibold"><%= @quote_data.cover_label %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-rose-200">Rate Applied</span>
+                <span class="font-semibold"><%= @quote_data.rate_pct %>% per life</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-rose-200">IRA Levy (0.25%)</span>
+                <span class="font-semibold">KES <%= InsuranceWeb.GroupLastExpenseLive.format_number(@quote_data.ira_levy) %></span>
+              </div>
+              <div class="flex justify-between border-t border-white/20 pt-2 mt-2">
+                <span class="font-bold text-white">Total Annual Premium</span>
+                <span class="font-bold text-lg">KES <%= InsuranceWeb.GroupLastExpenseLive.format_number(@quote_data.total) %></span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-rose-300 text-xs mb-6 text-center">
+            Indicative premium. Regulated by the Insurance Regulatory Authority (IRA) of Kenya.
+            Final premium subject to group census and underwriting.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold text-center">✔ Quote Saved!</div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote"
+                class="w-full bg-white text-rose-700 px-8 py-3 rounded-xl font-bold hover:bg-rose-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3 text-center">
+                <p class="text-rose-200 text-sm">Log in to save this quote to your profile</p>
+                <.link navigate="/users/log_in"
+                  class="bg-white text-rose-700 px-8 py-3 rounded-xl font-bold hover:bg-rose-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

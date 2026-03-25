@@ -1,0 +1,182 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Page Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center bg-sky-100 text-sky-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+         Travel Insurance
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4" style="font-family: 'DM Serif Display', serif;">
+        Travel Insurance Plans
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+        Comprehensive travel protection for individuals, families, and frequent flyers.
+        Covering East Africa, Africa, and worldwide destinations.
+      </p>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <%= for {key, plan} <- InsuranceWeb.TravelLive.plans() do %>
+        <div class={"bg-white rounded-2xl shadow-sm p-8 border-2 transition-all duration-200 card-hover " <>
+          if @selected_plan == key, do: "border-sky-500 shadow-lg", else: "border-gray-100 hover:border-sky-200"}>
+
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-3xl"><%= plan.icon %></span>
+            <%= if @selected_plan == key do %>
+              <span class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-xs font-semibold">Selected</span>
+            <% end %>
+          </div>
+
+          <h2 class="text-xl font-bold text-gray-900 mb-1"><%= plan.name %></h2>
+          <p class="text-xs text-sky-700 font-medium mb-3">
+            <%= if key == "annual_multi_trip" do %>
+              Annual Cover | Unlimited Trips (max 90 days each) | Age <%= plan.min_age %>–<%= plan.max_age %>
+            <% else %>
+              Single Trip | Entry Age: <%= plan.min_age %>–<%= plan.max_age %> years
+            <% end %>
+          </p>
+          <p class="text-gray-500 text-sm mb-5 leading-relaxed"><%= plan.description %></p>
+
+          <ul class="space-y-2 mb-6">
+            <%= for benefit <- plan.benefits do %>
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-sky-500 mt-0.5">✔</span>
+                <span><%= benefit %></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <div class="flex items-center justify-between mb-5">
+            <span class="text-xl font-bold text-gray-900">
+              <%= if key == "annual_multi_trip" do %>
+                From KES <%= InsuranceWeb.TravelLive.format_number(plan.zone_a_annual) %>/year
+              <% else %>
+                From KES <%= plan.zone_a_daily %>/day
+              <% end %>
+            </span>
+          </div>
+
+          <button phx-click="select_plan" phx-value-plan={key}
+            class={"w-full py-3 rounded-xl font-semibold transition-all " <>
+              if @selected_plan == key,
+                do: "bg-sky-600 text-white",
+                else: "bg-gray-100 hover:bg-sky-600 hover:text-white text-gray-700"}>
+            <%= if @selected_plan == key, do: "✔ Plan Selected", else: "Get Quote" %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Quote Form -->
+    <%= if @selected_plan do %>
+      <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto border border-gray-100">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 text-center">Generate Your Quote</h3>
+        <p class="text-gray-500 text-sm text-center mb-8">
+          Plan: <span class="font-semibold text-sky-700"><%= InsuranceWeb.TravelLive.plans()[@selected_plan].name %></span>
+        </p>
+
+        <form phx-submit="generate_quote" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Destination Zone</label>
+            <select name="zone"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <%= for {val, label} <- InsuranceWeb.TravelLive.zones() do %>
+                <option value={val}><%= label %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <%= if @selected_plan != "annual_multi_trip" do %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Trip Duration (Days)</label>
+              <input type="number" name="days" required min="1" max="180" placeholder="e.g. 14"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none text-gray-900"/>
+              <p class="text-xs text-gray-400 mt-1">Maximum single trip duration: 180 days.</p>
+            </div>
+          <% else %>
+            <input type="hidden" name="days" value="365" />
+          <% end %>
+
+          <%= if @selected_plan != "family" do %>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Travellers</label>
+              <input type="number" name="travellers" required min="1" max="10" placeholder="e.g. 1"
+                class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none text-gray-900"/>
+            </div>
+          <% else %>
+            <input type="hidden" name="travellers" value="1" />
+            <div class="bg-sky-50 border border-sky-100 rounded-xl p-4">
+              <p class="text-sky-800 text-sm font-medium">Family Plan covers 2 adults + up to 4 children under 18 at one flat rate.</p>
+            </div>
+          <% end %>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Traveller's Age (Oldest)</label>
+            <input type="number" name="age" required
+              min={InsuranceWeb.TravelLive.plans()[@selected_plan].min_age}
+              max={InsuranceWeb.TravelLive.plans()[@selected_plan].max_age}
+              placeholder={"e.g. 35 (#{InsuranceWeb.TravelLive.plans()[@selected_plan].min_age}–#{InsuranceWeb.TravelLive.plans()[@selected_plan].max_age})"}
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none text-gray-900"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Purpose of Travel</label>
+            <select name="purpose"
+              class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none bg-white text-gray-900">
+              <option value="leisure">Leisure / Tourism</option>
+              <option value="business">Business</option>
+              <option value="education">Education / Study</option>
+              <option value="medical">Medical Treatment</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-xl font-semibold transition-all">
+            Calculate Premium
+          </button>
+        </form>
+      </div>
+    <% end %>
+
+    <!-- Quote Result -->
+    <%= if @quote_data do %>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="bg-gradient-to-br from-sky-600 to-sky-800 rounded-2xl p-8 text-center text-white shadow-xl">
+          <p class="text-sky-200 text-sm font-medium mb-2">
+            <%= if @quote_data.annual_plan?, do: "Annual Premium", else: "Trip Premium" %>
+          </p>
+          <p class="text-5xl font-bold mb-1">KES <%= InsuranceWeb.TravelLive.format_number(@quote_data.total) %></p>
+          <%= unless @quote_data.annual_plan? do %>
+            <p class="text-sky-200 text-sm mb-2">
+              <%= @quote_data.travellers %> traveller(s) × <%= @quote_data.days %> day(s)
+            </p>
+          <% end %>
+          <p class="text-sky-300 text-xs mb-8">
+            Indicative premium. Regulated by the Insurance Regulatory Authority (IRA) of Kenya.
+          </p>
+
+          <%= if @saved do %>
+            <div class="bg-white/20 rounded-xl py-3 px-6 font-semibold">✔ Quote Saved!</div>
+          <% else %>
+            <%= if @current_user do %>
+              <button phx-click="save_quote"
+                class="bg-white text-sky-700 px-8 py-3 rounded-xl font-bold hover:bg-sky-50 transition-all shadow">
+                Save This Quote →
+              </button>
+            <% else %>
+              <div class="space-y-3">
+                <p class="text-sky-200 text-sm">Log in to save this quote to your profile</p>
+                <.link navigate="/users/log_in"
+                  class="bg-white text-sky-700 px-8 py-3 rounded-xl font-bold hover:bg-sky-50 transition-all shadow inline-block">
+                  Log in to Save →
+                </.link>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

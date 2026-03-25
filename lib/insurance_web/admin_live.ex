@@ -59,6 +59,13 @@ defmodule InsuranceWeb.AdminLive do
   defp plan_color("sme"),     do: "bg-indigo-100 text-indigo-700"
   defp plan_color("wiba"),    do: "bg-orange-100 text-orange-700"
   defp plan_color(_),         do: "bg-gray-100 text-gray-700"
+  defp plan_color("travel"),       do: "bg-sky-100 text-sky-700"
+  defp plan_color("marine"),       do: "bg-blue-100 text-blue-800"
+  defp plan_color("group_life"),   do: "bg-violet-100 text-violet-700"
+  defp plan_color("afya_tele"),    do: "bg-teal-100 text-teal-700"
+  defp plan_color("last_expense"), do: "bg-rose-100 text-rose-700"
+  defp plan_color("amani_shield"), do: "bg-green-100 text-green-800"
+
 
   defp plan_icon("pension"), do: "🏦"
   defp plan_icon("medical"), do: "🏥"
@@ -69,6 +76,12 @@ defmodule InsuranceWeb.AdminLive do
   defp plan_icon("sme"),     do: "🏬"
   defp plan_icon("wiba"),    do: "👷"
   defp plan_icon(_),         do: "📋"
+  defp plan_icon("travel"),       do: "✈️"
+  defp plan_icon("marine"),       do: "🚢"
+  defp plan_icon("group_life"),   do: "👥"
+  defp plan_icon("afya_tele"),    do: "📱"
+  defp plan_icon("last_expense"), do: "🕊️"
+  defp plan_icon("amani_shield"), do: "🛡️"
 
   # Show name or fall back to "—"
   defp display_name(%User{first_name: f, last_name: l})
