@@ -347,9 +347,11 @@
       <a href="/users/settings" class="mobile-nav-link" onclick="closeMobileMenu()">
         <span class="nav-icon">⚙️</span> Settings
       </a>
-      <a href="/admin" class="mobile-nav-link" onclick="closeMobileMenu()">
-        <span class="nav-icon">👑</span> admin
-      </a>
+      <%= if @current_user && @current_user.role == "admin" do %>
+    <a href="/admin" class="mobile-nav-link" onclick="closeMobileMenu()">
+    <span class="nav-icon">👑</span> admin
+    </a>
+    <% end %>
 
       <!-- Mobile auth buttons -->
       <div class="mobile-auth-row">
