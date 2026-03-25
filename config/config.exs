@@ -12,7 +12,7 @@ config :insurance,
 
 # Configures the endpoint
 config :insurance, InsuranceWeb.Endpoint,
-  url: [host: "	jackiecents.gigalixirapp.com"],
+  url: [host: "localhost"],
   render_errors: [
     formats: [html: InsuranceWeb.ErrorHTML, json: InsuranceWeb.ErrorJSON],
     layout: false
