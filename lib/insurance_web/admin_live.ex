@@ -81,7 +81,7 @@ defmodule InsuranceWeb.AdminLive do
   defp plan_icon("group_life"),   do: "👥"
   defp plan_icon("afya_tele"),    do: "📱"
   defp plan_icon("last_expense"), do: "🕊️"
-  defp plan_icon("amani_shield"), do: "🛡️"
+  defp plan_icon("amani_shield"), do: ""
 
   # Show name or fall back to "—"
   defp display_name(%User{first_name: f, last_name: l})
