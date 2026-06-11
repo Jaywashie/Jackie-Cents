@@ -20,7 +20,7 @@ defmodule InsuranceWeb.HomeLive do
         <div class="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
           <div class="max-w-3xl">
             <div class="inline-flex items-center bg-white/10 text-green-200 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-white/20">
-              🇰🇪 Kenya's Trusted Insurance Partner
+             Where Money Makes Sense
             </div>
             <h1 class="text-5xl lg:text-6xl font-bold text-yellow-500 leading-tight mb-6" style="font-family: 'DM Serif Display', serif;">
               Secure Your Future,
