@@ -14,7 +14,7 @@ defmodule InsuranceWeb.AfyaTeleLive do
       annual_family_2:   7_500,
       annual_family_4:   10_500,
       description:
-        "Affordable outpatient and telemedicine cover for individuals. " <>
+        "Affordable outpatient cover for individuals. " <>
         "Includes unlimited 24/7 virtual consultations with licensed doctors via app or phone, " <>
         "a fixed outpatient limit for physical visits, and basic lab tests. " <>
         "No waiting period for telemedicine services.",
